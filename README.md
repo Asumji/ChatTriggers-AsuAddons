@@ -15,7 +15,7 @@ or manual Install (after step 5):
 
 Current mods:
 
-CarryHelper
+1. CarryHelper
 
 
 Helps with dungeon carries (made for SBM carries specifically).
