@@ -50,4 +50,18 @@ Will start working as soon as installed but there's a few commands that can be e
 
 #settings Display an overview of the above mentioned settings.
   
+3. Dungeon Party Utils
+
+A Party Finder mod for dungeons to quickly see what stuff your teammates have.
+
+/dpu key <API key> Adds your API key (although it also gets automatically added with /api new)
+
+/dpu add <item> Adds an item to check for in a players inventory
+
+/dpu remove <item> Removes and item to check for
+
+/dpu list Lists all items that are being checked for
+
+/dpu toggle Toggles the mod
+
 For any problems dm me on Discord Asumji#2143
