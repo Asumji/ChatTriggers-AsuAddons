@@ -9,7 +9,10 @@ const data = new PogObject("AsuAddons", {
   FRAGenabled: true,
   apiKey: "",
   DPUrelevantItems: ["scylla", "hyperion", "astraea", "valkyrie", "terminator", "juju", "axe of the shredded", "livid dagger", "spirit bow", "last breath"],
-  DPUenabled: true
+  DPUenabled: true,
+  RGHOSTnames: [],
+  RGHOSTreplace: "and skillissued too much",
+  RGHOSTenabled: true
 });
 data.save();
 
