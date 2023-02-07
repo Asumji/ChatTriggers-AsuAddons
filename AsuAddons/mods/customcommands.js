@@ -3,16 +3,6 @@ import { data, modPrefix } from "../index.js"
 
 function hasCommand(command) {
     let returnBool = false
-    for (let i = 0;i<data.CCcommands.length;i++) {
-        if (data.CCcommands[i][0] == command) {
-            returnBool = true
-        }
-    }
-    return returnBool
-}
-
-function hasCommand(command) {
-    let returnBool = false
 
     command = command.split(" ")[0]
     command = command.replace("/", "")
