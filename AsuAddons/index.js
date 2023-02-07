@@ -12,7 +12,8 @@ const data = new PogObject("AsuAddons", {
   DPUenabled: true,
   RGHOSTnames: [],
   RGHOSTreplace: "and skillissued too much",
-  RGHOSTenabled: true
+  RGHOSTenabled: true,
+  CCcommands: []
 });
 data.save();
 
