@@ -1,60 +1,66 @@
 import request from "requestV2/index";
-import { data, modPrefix } from "../index.js";
+import {
+    data,
+    modPrefix
+} from "../index.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons", "rarities.json"))
 const cataLevelArray = [0, 50, 125, 235, 395, 625, 955, 1425, 2095, 3045, 4385, 6275, 8940, 12700, 17960, 25340, 35640, 50040, 70040, 97640, 135640, 188140, 259640, 356640, 488640, 668640, 911640, 1239640, 1684640, 2284640, 3084640, 4149640, 5559640, 7459640, 9959640, 13259640, 17559640, 23159640, 30359640, 39559640, 51559640, 66559640, 85559640, 109559640, 139559640, 177559640, 225559640, 285559640, 360559640, 453559640, 569809640]
 
 const getrequest = function(url) {
-  return request({
-      url: url,
-      headers: {
-          'User-Agent': 'Mozilla/5.0 (ChatTriggers)'
-      },
-      json: true
-  });
+    return request({
+        url: url,
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (ChatTriggers)'
+        },
+        json: true
+    });
 }
 
 function getCurrentProfile(player) {
-  let profiles = player["profiles"]
-  let curProfile = [0, "None"]
-  profiles.forEach(profile => {
-    if (profile["last_save"] > curProfile[0]) {
-      curProfile = [profile["last_save"], profile["cute_name"]]
-    }
-  })
-  return curProfile[1]
+    let profiles = player["profiles"]
+    let curProfile = [0, "None"]
+    profiles.forEach(profile => {
+        if (profile["last_save"] > curProfile[0]) {
+            curProfile = [profile["last_save"], profile["cute_name"]]
+        }
+    })
+    return curProfile[1]
 }
 
 function decodeInv(data) {
-  let bytearray = java.util.Base64.getDecoder().decode(data);
-  let inputstream = new java.io.ByteArrayInputStream(bytearray);   
-  let nbt = net.minecraft.nbt.CompressedStreamTools.func_74796_a(inputstream); //CompressedStreamTools.readCompressed()                            
-  let items = nbt.func_150295_c("i", 10); //NBTTagCompound.getTagList()
-  
-  return items
+    let bytearray = java.util.Base64.getDecoder().decode(data);
+    let inputstream = new java.io.ByteArrayInputStream(bytearray);
+    let nbt = net.minecraft.nbt.CompressedStreamTools.func_74796_a(inputstream); //CompressedStreamTools.readCompressed()                            
+    let items = nbt.func_150295_c("i", 10); //NBTTagCompound.getTagList()
+
+    return items
 }
 
 function buildOutput(player, items, armor, secrets, pet, cata) {
-  var output = new Message(
-    "§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n" + items + "\n§6Armor:§r\n" + armor + "\n§6Pet: §r" + pet[0],
-     new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player));
-  ChatLib.chat(output)
-}
+    var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
 
-function isDungeonItem(item) {
-  Lore = item.func_74781_a("tag").func_74781_a("display").func_74781_a("Lore")
-  if (Lore.toString().toLowerCase().includes("dungeon")) {
-    return true
-  }
-  return false
+    for (let i = items.length - 1; i >= 0; i--) {
+        output.addTextComponent(new TextComponent(" " + items[i][0] + " ").setHover("show_text", items[i][1]))
+    }
+    output.addTextComponent("\n\n§6Armor:§r\n")
+    for (let i = 0; i < armor.length; i++) {
+        output.addTextComponent(new TextComponent(" " + armor[i][0] + " ").setHover("show_text", armor[i][1]))
+    }
+    output.addTextComponent("\n\n§6Pet: §r" + pet[0])
+    output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
+    output.addTextComponent("        ")
+    output.addTextComponent(new TextComponent("§7[Ignore]").setClick("run_command", "/ignore add " + player))
+
+    ChatLib.chat(output)
 }
 
 register('Chat', (event) => {
     if (data.DPUenabled == true) {
         let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-        unformattedMessage = unformattedMessage.replace(/ /g,"")
+        unformattedMessage = unformattedMessage.replace(/ /g, "")
 
         let name = ""
-        for (let i = 0;i<unformattedMessage.indexOf("joinedthedungeongroup");i++) {
+        for (let i = 0; i < unformattedMessage.indexOf("joinedthedungeongroup"); i++) {
             if (i > unformattedMessage.indexOf(">")) {
                 name = name + unformattedMessage[i]
             }
@@ -63,167 +69,171 @@ register('Chat', (event) => {
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
             getrequest("https://api.hypixel.net/player?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
-            let secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
-            if (secrets == undefined) {
-                secrets = "0"
-            }
-            getrequest("https://api.hypixel.net/skyblock/profiles?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
-                let curProfile = getCurrentProfile(response)
-                let profiles = response["profiles"]
-                let itemString = ""
-                let armorString = ""
-                let pets = ["§cNone","§cNo"]
-                let cata = -1
-                profiles.forEach(profile => {
-                if (profile["cute_name"] == curProfile) {
-                    if (profile["members"][uuid]["inv_contents"] != null) {
-                    // Build Item String
+                let secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
+                if (secrets == undefined) {
+                    secrets = "0"
+                }
+                getrequest("https://api.hypixel.net/skyblock/profiles?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
+                    let curProfile = getCurrentProfile(response)
+                    let profiles = response["profiles"]
+                    let itemArray = []
+                    let armorArray = []
+                    let pets = ["§cNone", "§cNo"]
+                    let cata = -1
+                    profiles.forEach(profile => {
+                        if (profile["cute_name"] == curProfile) {
+                            if (profile["members"][uuid]["inv_contents"] != null) {
+                                // Build Item Array
 
-                    let items = decodeInv(profile["members"][uuid]["inv_contents"]["data"])
-                    let length = items.func_74745_c(); //NBTTagList.tagCount()
-                    itemArray = []
-                    for(let i = 0; i < length; i++){                                    
-                        item = items.func_150305_b(i); //NBTTagList.getCompoundTagAt()
-                        if(!item.func_82582_d()) { //NBTTagCompound.hasNoTags()
-                        Name = item.func_74781_a("tag").func_74781_a("display").func_74781_a("Name").toString().replace(/"/g,"") //NBTTagCompound.getTag()
-                        itemArray.push(Name)
-                        }
-                    }
-                    string = ""
-                    for(let i = 0; i < itemArray.length; i++) {
-                        for (let j = 0; j < data.DPUrelevantItems.length; j++) {
-                        if (itemArray[i].toLowerCase().includes(data.DPUrelevantItems[j])) {
-                            string = string + " " + itemArray[i]
-                        }
-                        }
-                    }
-                    if (string != "") {
-                        itemString = itemString + string + "§r\n"
-                    }
-                    }
-                    if (profile["members"][uuid]["inv_armor"] != null) {
-                    //Build Armor String
+                                let items = decodeInv(profile["members"][uuid]["inv_contents"]["data"])
+                                let length = items.func_74745_c(); //NBTTagList.tagCount()
+                                for (let i = 0; i < length; i++) {
+                                    let item = items.func_150305_b(i); //NBTTagList.getCompoundTagAt()
+                                    if (!item.func_82582_d()) { //NBTTagCompound.hasNoTags()
+                                        let Name = item.func_74781_a("tag").func_74781_a("display").func_74781_a("Name").toString().replace(/"/g, "") //NBTTagCompound.getTag()
+                                        let Lore = item.func_74781_a("tag").func_74781_a("display").func_74781_a("Lore")
 
-                    let armor = decodeInv(profile["members"][uuid]["inv_armor"]["data"])
-                    let length2 = armor.func_74745_c();
-                    string = ""
-                    for (let i = length2; i > -1; i--) {
-                        armorPiece = armor.func_150305_b(i)
-                        if(!armorPiece.func_82582_d()) {
-                        if (isDungeonItem(armorPiece)) {
-                            Name = armorPiece.func_74781_a("tag").func_74781_a("display").func_74781_a("Name").toString().replace(/"/g,"")
-                            string = string + " " + Name
-                        }
-                        }
-                    }
-                    if (string != "") {
-                        armorString = armorString + string + "§r\n"
-                    }
-                    }
-                    if (profile["members"][uuid]["pets"] != null) {
-                    if (profile["members"][uuid]["pets"].length != 0) {
-                        for (let i = 0; i < profile["members"][uuid]["pets"].length; i++) {
-                        if (profile["members"][uuid]["pets"][i]["type"] == "SPIRIT") {
-                            pets[1] = "§aYes"
-                        }
-                        if (profile["members"][uuid]["pets"][i]["active"] == true) {
-                            let type = profile["members"][uuid]["pets"][i]["type"]
-                            type = type.toLowerCase()
-                            type = type[0].toUpperCase() + type.slice(1,type.length)
-                            type = type.replace(/_/g, " ")
-                            if (pets[0] != "§cNone") {
-                            pets[0] = pets[0] + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"   
-                            } else {
-                            pets[0] = rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
+                                        let LoreString = Name
+                                        let LLength = Lore.func_74745_c()
+                                        for (let i = 0; i < LLength; i++) {
+                                            let line = Lore.func_150307_f(i) //NBTTagList.getStringTagAt()
+                                            LoreString = LoreString + "\n " + line
+                                        }
+
+                                        for (let i = 0; i < data.DPUrelevantItems.length; i++) {
+                                            if (Name.toLowerCase().includes(data.DPUrelevantItems[i])) {
+                                                itemArray.push([Name, LoreString])
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (profile["members"][uuid]["inv_armor"] != null) {
+                                //Build Armor Array
+
+                                let armor = decodeInv(profile["members"][uuid]["inv_armor"]["data"])
+                                let length2 = armor.func_74745_c();
+                                for (let i = length2; i > -1; i--) {
+                                    armorPiece = armor.func_150305_b(i)
+                                    if (!armorPiece.func_82582_d()) {
+                                        let Name = armorPiece.func_74781_a("tag").func_74781_a("display").func_74781_a("Name").toString().replace(/"/g, "")
+                                        let Lore = armorPiece.func_74781_a("tag").func_74781_a("display").func_74781_a("Lore")
+
+                                        let LoreString = Name
+                                        let LLength = Lore.func_74745_c()
+                                        for (let i = 0; i < LLength; i++) {
+                                            let line = Lore.func_150307_f(i) //NBTTagList.getStringTagAt()
+                                            LoreString = LoreString + "\n " + line
+                                        }
+
+                                        armorArray.push([Name, LoreString])
+                                    }
+                                }
+                            }
+                            if (profile["members"][uuid]["pets"] != null) {
+                                if (profile["members"][uuid]["pets"].length != 0) {
+                                    for (let i = 0; i < profile["members"][uuid]["pets"].length; i++) {
+                                        if (profile["members"][uuid]["pets"][i]["type"] == "SPIRIT") {
+                                            pets[1] = "§aYes"
+                                        }
+                                        if (profile["members"][uuid]["pets"][i]["active"] == true) {
+                                            let type = profile["members"][uuid]["pets"][i]["type"]
+                                            type = type.toLowerCase()
+                                            type = type[0].toUpperCase() + type.slice(1, type.length)
+                                            type = type.replace(/_/g, " ")
+                                            if (pets[0] != "§cNone") {
+                                                pets[0] = pets[0] + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
+                                            } else {
+                                                pets[0] = rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            for (let i = 0; i < cataLevelArray.length; i++) {
+                                let cataXP = Math.floor(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
+                                if (cataLevelArray[i] <= cataXP) {
+                                    cata += 1
+                                }
                             }
                         }
-                        }
-                    }
-                    }
-                    for (let i = 0; i < cataLevelArray.length; i++) {
-                        let cataXP = Math.floor(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
-                        if (cataLevelArray[i] <= cataXP) {
-                        cata += 1
-                        }
-                    }
-                } 
+                    })
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata)
                 })
-                buildOutput(name, itemString, armorString, secrets, pets, cata)
-            })
             })
         });
     }
 }).setChatCriteria("joined the dungeon group!").setContains();
 
 register("command", (...args) => {
-  const helpMessage = "§6Help\n§a/dpu key <API key>\n§2Set your api key.\n§a/dpu add <item>\n§2Add an Item to check for.\n§a/dpu remove <item>\n§2Remove an item that is being checked for.\n§a/dpu list\n§2List all items the mod currently checks for.\n§a/dpu toggle\n§2Toggle the mod."
-  if (args) {
-    if (args[0] == "key") {
-      if (args[1]) {
-        getrequest("https://api.hypixel.net/player?key="+args[1]+"&uuid=6abd94a3f33940dd95e49eaa46ee8016").then(response => {
-          data.apiKey = args[1]
-          data.save()
-          ChatLib.chat("§aSuccessfully set the API key!")
-        }).catch(error => {
-          if (error["cause"] == "Invalid API key") {
-            ChatLib.chat("§cAPI Key is invalid!")
-          }
-        })
-      } else {
-        ChatLib.chat("§cDidn't provide an API key!")
-      }
-    } else if (args[0] == "add") {
-      if (args[1]) {
-        if (!data.DPUrelevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
-          data.DPUrelevantItems.push(args.slice(1).join(" ").toLowerCase())
-          data.save()
-          ChatLib.chat("§aThe mod now checks for " + args.slice(1).join(" ") + ".")
+    const helpMessage = "§6Help\n§a/dpu key <API key>\n§2Set your api key.\n§a/dpu add <item>\n§2Add an Item to check for.\n§a/dpu remove <item>\n§2Remove an item that is being checked for.\n§a/dpu list\n§2List all items the mod currently checks for.\n§a/dpu toggle\n§2Toggle the mod."
+    if (args) {
+        if (args[0] == "key") {
+            if (args[1]) {
+                getrequest("https://api.hypixel.net/player?key=" + args[1] + "&uuid=6abd94a3f33940dd95e49eaa46ee8016").then(response => {
+                    data.apiKey = args[1]
+                    data.save()
+                    ChatLib.chat("§aSuccessfully set the API key!")
+                }).catch(error => {
+                    if (error["cause"] == "Invalid API key") {
+                        ChatLib.chat("§cAPI Key is invalid!")
+                    }
+                })
+            } else {
+                ChatLib.chat("§cDidn't provide an API key!")
+            }
+        } else if (args[0] == "add") {
+            if (args[1]) {
+                if (!data.DPUrelevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
+                    data.DPUrelevantItems.push(args.slice(1).join(" ").toLowerCase())
+                    data.save()
+                    ChatLib.chat("§aThe mod now checks for " + args.slice(1).join(" ") + ".")
+                } else {
+                    ChatLib.chat("§cItem is already being checked.")
+                }
+            } else {
+                ChatLib.chat("§cDidn't provide an item.")
+            }
+        } else if (args[0] == "remove") {
+            if (args[1]) {
+                if (data.DPUrelevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
+                    data.DPUrelevantItems.splice(data.DPUrelevantItems.indexOf(args.slice(1).join(" ").toLowerCase()), 1)
+                    data.save()
+                    ChatLib.chat("§aThe mod no longer checks for " + args.slice(1).join(" ") + ".")
+                } else {
+                    ChatLib.chat("§cItem isn't being checked.")
+                }
+            } else {
+                ChatLib.chat("§cDidn't provide an item.")
+            }
+        } else if (args[0] == "list") {
+            string = "§2Mod currently checks for:\n"
+            for (let i = 0; i < data.DPUrelevantItems.length; i++) {
+                if (i != data.DPUrelevantItems.length - 1) {
+                    string = string + "§a" + data.DPUrelevantItems[i] + ", "
+                } else {
+                    string = string + "§a" + data.DPUrelevantItems[i]
+                }
+            }
+            ChatLib.chat(string)
+        } else if (args[0] == "toggle") {
+            data.DPUenabled ? data.DPUenabled = false : data.DPUenabled = true
+            data.save()
+            data.DPUenabled ? ChatLib.chat(modPrefix + " Enabled Dungeon Party Utils") : ChatLib.chat(modPrefix + " Disabled Dungeon Party Utils")
         } else {
-          ChatLib.chat("§cItem is already being checked.")
+            ChatLib.chat(helpMessage)
         }
-      } else {
-        ChatLib.chat("§cDidn't provide an item.")
-      }
-    } else if (args[0] == "remove") {
-      if (args[1]) {
-        if (data.DPUrelevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
-          data.DPUrelevantItems.splice(data.DPUrelevantItems.indexOf(args.slice(1).join(" ").toLowerCase()),1)
-          data.save()
-          ChatLib.chat("§aThe mod no longer checks for " + args.slice(1).join(" ") + ".")
-        } else {
-          ChatLib.chat("§cItem isn't being checked.")
-        }
-      } else {
-        ChatLib.chat("§cDidn't provide an item.")
-      }
-    } else if (args[0] == "list") {
-      string = "§2Mod currently checks for:\n"
-      for (let i = 0; i < data.DPUrelevantItems.length; i++) {
-        if (i != data.DPUrelevantItems.length - 1) {
-          string = string + "§a" + data.DPUrelevantItems[i] + ", "
-        } else {
-          string = string + "§a" + data.DPUrelevantItems[i]
-        }
-      }
-      ChatLib.chat(string)
-    } else if (args[0] == "toggle") {
-        data.DPUenabled ? data.DPUenabled = false : data.DPUenabled = true
-        data.save()
-        data.DPUenabled ? ChatLib.chat(modPrefix + " Enabled Dungeon Party Utils") : ChatLib.chat(modPrefix + " Disabled Dungeon Party Utils")
     } else {
-      ChatLib.chat(helpMessage)
+        ChatLib.chat(helpMessage)
     }
-  } else {
-    ChatLib.chat(helpMessage)
-  }
 }).setName("dpu")
 
 register('Chat', (event) => {
-  let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-  unformattedMessage = unformattedMessage.replace(/ /g, "").replace("YournewAPIkeyis", "")
-  getrequest("https://api.hypixel.net/player?key="+unformattedMessage+"&uuid=6abd94a3f33940dd95e49eaa46ee8016").then(response => {
-    ChatLib.chat(modPrefix + " §aYour key has been set to §6" + unformattedMessage)
-    data.apiKey = unformattedMessage
-    data.save()
-  })
+    let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
+    unformattedMessage = unformattedMessage.replace(/ /g, "").replace("YournewAPIkeyis", "")
+    getrequest("https://api.hypixel.net/player?key=" + unformattedMessage + "&uuid=6abd94a3f33940dd95e49eaa46ee8016").then(response => {
+        ChatLib.chat(modPrefix + " §aYour key has been set to §6" + unformattedMessage)
+        data.apiKey = unformattedMessage
+        data.save()
+    })
 }).setChatCriteria("Your new API key is ").setContains()
