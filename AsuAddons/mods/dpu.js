@@ -107,6 +107,8 @@ register('Chat', (event) => {
                                         }
                                     }
                                 }
+                            } else {
+                                itemArray.push(["§cInventory API off!", ""])
                             }
                             if (profile["members"][uuid]["inv_armor"] != null) {
                                 //Build Armor Array
