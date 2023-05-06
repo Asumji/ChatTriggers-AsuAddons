@@ -1,5 +1,5 @@
 let carriees = []
-let display = new Display();
+const display = new Display();
 
 function render() {
     let carryString = ""

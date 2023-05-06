@@ -1,19 +1,19 @@
 import { data, modPrefix } from "../index.js"
 
 register("Chat", function(event) {
-  if (data.RGHOSTenabled == true) {
+  if (data.rghost.enabled == true) {
     let msg = ChatLib.getChatMessage(event, true)
-    if (data.RGHOSTnames.length != 0) {
-      for (let i = 0; i < data.RGHOSTnames.length; i++) {
-        if (msg.toLowerCase().includes(data.RGHOSTnames[i])) {
-          msgReplaced = msg.replace("and became a ghost", data.RGHOSTreplace)
+    if (data.rghost.names.length != 0) {
+      for (let i = 0; i < data.rghost.names.length; i++) {
+        if (msg.toLowerCase().includes(data.rghost.names[i])) {
+          msgReplaced = msg.replace("and became a ghost", data.rghost.replace)
           cancel(event)
           ChatLib.chat(msgReplaced)
           break;
         }
       }
     } else {
-      msgReplaced = msg.replace("and became a ghost", data.RGHOSTreplace)
+      msgReplaced = msg.replace("and became a ghost", data.rghost.replace)
       cancel(event)
       ChatLib.chat(msgReplaced)
     }
@@ -23,8 +23,8 @@ register("Chat", function(event) {
 register("command", (...args) => {
   if (args[0] == "add") {
     if (args[1]) {
-      if (!data.RGHOSTnames.includes(args.slice(1).join(" ").toLowerCase())) {
-        data.RGHOSTnames.push(args.slice(1).join(" ").toLowerCase())
+      if (!data.rghost.names.includes(args.slice(1).join(" ").toLowerCase())) {
+        data.rghost.names.push(args.slice(1).join(" ").toLowerCase())
         data.save()
         ChatLib.chat("§aThe mod now checks for " + args.slice(1).join(" ") + ".")
       } else {
@@ -35,8 +35,8 @@ register("command", (...args) => {
     }
   } else if (args[0] == "remove") {
     if (args[1]) {
-      if (data.RGHOSTnames.includes(args.slice(1).join(" ").toLowerCase())) {
-        data.RGHOSTnames.splice(data.RGHOSTnames.indexOf(args.slice(1).join(" ").toLowerCase()),1)
+      if (data.rghost.names.includes(args.slice(1).join(" ").toLowerCase())) {
+        data.rghost.names.splice(data.rghost.names.indexOf(args.slice(1).join(" ").toLowerCase()),1)
         data.save()
         ChatLib.chat("§aThe mod no longer checks for " + args.slice(1).join(" ") + ".")
       } else {
@@ -47,21 +47,21 @@ register("command", (...args) => {
     }
   } else if (args[0] == "list") {
     string = "§2Mod currently checks for:\n"
-    for (let i = 0; i < data.RGHOSTnames.length; i++) {
-      if (i != data.RGHOSTnames.length - 1) {
-        string = string + "§a" + data.RGHOSTnames[i] + ", "
+    for (let i = 0; i < data.rghost.names.length; i++) {
+      if (i != data.rghost.names.length - 1) {
+        string = string + "§a" + data.rghost.names[i] + ", "
       } else {
-        string = string + "§a" + data.RGHOSTnames[i]
+        string = string + "§a" + data.rghost.names[i]
       }
     }
     ChatLib.chat(string)
   } else if (args[0] == "toggle") {
-      data.RGHOSTenabled ? data.RGHOSTenabled = false : data.RGHOSTenabled = true
+      data.rghost.enabled ? data.rghost.enabled = false : data.rghost.enabled = true
       data.save()
-      data.RGHOSTenabled ? ChatLib.chat(modPrefix + " Enabled Replace Ghost.") : ChatLib.chat(modPrefix + " Disabled Replace Ghost.")
+      data.rghost.enabled ? ChatLib.chat(modPrefix + " Enabled Replace Ghost.") : ChatLib.chat(modPrefix + " Disabled Replace Ghost.")
   } else if (args[0] == "set") {
     if (args[1]) {
-        data.RGHOSTreplace = args.slice(1).join(" ")
+        data.rghost.replace = args.slice(1).join(" ")
         data.save()
         ChatLib.chat(modPrefix + " §aThe mod will now replace \"and became a ghost\" with \"" + args.slice(1).join(" ") + "\".\n§6Example:\n&r&r&c ☠ &r&7You were killed by Crypt Dreadlord&r&7 and became a ghost&r&7.&r&r\n    §6-> &r&r&c ☠ &r&7You were killed by Crypt Dreadlord&r&7 " + args.slice(1).join(" ") + "&r&7.&r&r")
     } else {

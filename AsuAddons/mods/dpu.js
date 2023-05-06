@@ -55,7 +55,7 @@ function buildOutput(player, items, armor, secrets, pet, cata) {
 }
 
 register('Chat', (event) => {
-    if (data.DPUenabled == true) {
+    if (data.dpu.enabled == true) {
         let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
         unformattedMessage = unformattedMessage.replace(/ /g, "")
 
@@ -100,8 +100,8 @@ register('Chat', (event) => {
                                             LoreString = LoreString + "\n " + line
                                         }
 
-                                        for (let i = 0; i < data.DPUrelevantItems.length; i++) {
-                                            if (Name.toLowerCase().includes(data.DPUrelevantItems[i])) {
+                                        for (let i = 0; i < data.dpu.relevantItems.length; i++) {
+                                            if (Name.toLowerCase().includes(data.dpu.relevantItems[i])) {
                                                 itemArray.push([Name, LoreString])
                                             }
                                         }
@@ -178,7 +178,7 @@ register("command", (...args) => {
                     ChatLib.chat("§aSuccessfully set the API key!")
                 }).catch(error => {
                     if (error["cause"] == "Invalid API key") {
-                        ChatLib.chat("§cAPI Key is invalid!")
+                        ChatLib.chat("§cAPI Key is invalid! Please run /api new again.")
                     }
                 })
             } else {
@@ -186,8 +186,8 @@ register("command", (...args) => {
             }
         } else if (args[0] == "add") {
             if (args[1]) {
-                if (!data.DPUrelevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
-                    data.DPUrelevantItems.push(args.slice(1).join(" ").toLowerCase())
+                if (!data.dpu.relevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
+                    data.dpu.relevantItems.push(args.slice(1).join(" ").toLowerCase())
                     data.save()
                     ChatLib.chat("§aThe mod now checks for " + args.slice(1).join(" ") + ".")
                 } else {
@@ -198,8 +198,8 @@ register("command", (...args) => {
             }
         } else if (args[0] == "remove") {
             if (args[1]) {
-                if (data.DPUrelevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
-                    data.DPUrelevantItems.splice(data.DPUrelevantItems.indexOf(args.slice(1).join(" ").toLowerCase()), 1)
+                if (data.dpu.relevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
+                    data.dpu.relevantItems.splice(data.dpu.relevantItems.indexOf(args.slice(1).join(" ").toLowerCase()), 1)
                     data.save()
                     ChatLib.chat("§aThe mod no longer checks for " + args.slice(1).join(" ") + ".")
                 } else {
@@ -210,18 +210,18 @@ register("command", (...args) => {
             }
         } else if (args[0] == "list") {
             string = "§2Mod currently checks for:\n"
-            for (let i = 0; i < data.DPUrelevantItems.length; i++) {
-                if (i != data.DPUrelevantItems.length - 1) {
-                    string = string + "§a" + data.DPUrelevantItems[i] + ", "
+            for (let i = 0; i < data.dpu.relevantItems.length; i++) {
+                if (i != data.dpu.relevantItems.length - 1) {
+                    string = string + "§a" + data.dpu.relevantItems[i] + ", "
                 } else {
-                    string = string + "§a" + data.DPUrelevantItems[i]
+                    string = string + "§a" + data.dpu.relevantItems[i]
                 }
             }
             ChatLib.chat(string)
         } else if (args[0] == "toggle") {
-            data.DPUenabled ? data.DPUenabled = false : data.DPUenabled = true
+            data.dpu.enabled ? data.dpu.enabled = false : data.dpu.enabled = true
             data.save()
-            data.DPUenabled ? ChatLib.chat(modPrefix + " Enabled Dungeon Party Utils") : ChatLib.chat(modPrefix + " Disabled Dungeon Party Utils")
+            data.dpu.enabled ? ChatLib.chat(modPrefix + " Enabled Dungeon Party Utils") : ChatLib.chat(modPrefix + " Disabled Dungeon Party Utils")
         } else {
             ChatLib.chat(helpMessage)
         }
