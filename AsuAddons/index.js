@@ -121,6 +121,9 @@ register("command", () => {
 
   §6§lAlias
     §a/addalias <alias> <ign> §eAdds an alias.
-    §a/removealias <alias> §e Removes an alias.`
+    §a/removealias <alias> §e Removes an alias.
+    
+  §6§lTrophyFish
+    §a/trophy Toggles the mod.`
   )
 }).setName("au")
