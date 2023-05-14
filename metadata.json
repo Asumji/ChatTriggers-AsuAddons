@@ -1,8 +1,0 @@
-{
-  "name": "AsuAddons",
-  "creator": "asumji",
-  "description": "A collection of all the small mods I decide to make.",
-  "version": "2.0.0",
-  "entry": "index.js",
-  "requires": ["PogData", "requestv2"]
-}
