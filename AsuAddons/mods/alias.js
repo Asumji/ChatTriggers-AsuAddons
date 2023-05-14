@@ -39,7 +39,7 @@ register("command", (...args) => {
         if (!hasIGN(args[1].toLowerCase()) && !hasAlias(args[0].toLowerCase())) {
             data.alias.names.push([args[0].toLowerCase(), args[1].toLowerCase()])
             data.save()
-            ChatLib.chat(modPrefix + "§aAdded the alias \"" + args[0] + "\" for the player \"" + args[1] + "\".")
+            ChatLib.chat(modPrefix + " §aAdded the alias \"" + args[0] + "\" for the player \"" + args[1] + "\".")
         } else {
             ChatLib.chat("§cThat player already has an alias or the alias already exists.")
         }

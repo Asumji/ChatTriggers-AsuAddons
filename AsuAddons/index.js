@@ -62,13 +62,17 @@ const data = new PogObject("AsuAddons", {
     },
     firstUse: true,
     enabled: false
+  },
+  bridge: {
+    botIGN: "bridgebot",
+    bridgeMessage: "§2Brdige: §6<1>: §r<2>"
   }
 });
 data.save();
 
 const File = Java.type("java.io.File")
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")
-const modPrefix = "&6AU > &r"
+const modPrefix = "&6AU >&r"
 
 export { data, modPrefix }
 
@@ -124,6 +128,6 @@ register("command", () => {
     §a/removealias <alias> §e Removes an alias.
     
   §6§lTrophyFish
-    §a/trophy Toggles the mod.`
+    §a/trophy §eToggles the mod.`
   )
 }).setName("au")

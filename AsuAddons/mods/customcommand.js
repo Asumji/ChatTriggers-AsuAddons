@@ -22,11 +22,9 @@ for (let i = 0; i < data.cc.commands.length;i++) {
 }
 
 register("messageSent", (message, event) => {
-    console.log(message)
     let command = message.split(" ")[0]
     let args = message.replace(command, "")
     command = command.replace("/", "")
-    console.log(command)
 
     if (message.startsWith("/") && hasCommand(message.toLowerCase())) {
         for (let i = 0;i<data.cc.commands.length;i++) {
@@ -46,7 +44,7 @@ register("command", (...args) => {
             register("command", () => {
                 return
             }).setName(args[0].toLowerCase())
-            ChatLib.chat(modPrefix + "§a Added new command with name \"/" + args[0] + "\" that runs \"/" + cmdArgs + "\".")
+            ChatLib.chat(modPrefix + " §aAdded new command with name \"/" + args[0] + "\" that runs \"/" + cmdArgs + "\".")
         } else {
             ChatLib.chat("§cCommand already exists.")
         }

@@ -47,9 +47,7 @@ if (data.trophy.firstUse) {
             let curProfile = getCurrentProfile(response)
             profiles.forEach(profile => {
                 if (profile["cute_name"] == curProfile) {
-                    console.log(profile["members"][uuid]["trophy_fish"]["total_caught"])
                     for (fish in data.trophy.collected) {
-                        console.log(fish)
                         if (profile["members"][uuid]["trophy_fish"][fish + "_bronze"] != null) {
                             data.trophy.collected[fish][0] = profile["members"][uuid]["trophy_fish"][fish + "_bronze"]
                             console.log(profile["members"][uuid]["trophy_fish"][fish + "_bronze"])
@@ -99,4 +97,5 @@ register("command", () => {
     data.trophy.enabled ? data.trophy.enabled = false : data.trophy.enabled = true
     data.save()
     data.trophy.enabled ? ChatLib.chat(modPrefix + " Enabled the Trophy Fishing mod") : ChatLib.chat(modPrefix + " Disabled the Trophy Fishing mod")
+    render()
   }).setName("trophy")
