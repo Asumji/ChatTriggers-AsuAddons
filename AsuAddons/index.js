@@ -128,6 +128,10 @@ register("command", () => {
     §a/removealias <alias> §e Removes an alias.
     
   §6§lTrophyFish
-    §a/trophy §eToggles the mod.`
+    §a/trophy §eToggles the mod.
+    
+  §6§lBridge
+    §a/bridgeset <IGN> §eSets the bot IGN.
+    §a/trophy <message> §eSets the bot message. (Has to contain "<1>" (sender name) and "<2>" (message))`
   )
 }).setName("au")
