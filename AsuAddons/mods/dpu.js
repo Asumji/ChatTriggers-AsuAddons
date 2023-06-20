@@ -16,17 +16,6 @@ const getrequest = function(url) {
     });
 }
 
-function getCurrentProfile(player) {
-    let profiles = player["profiles"]
-    let curProfile = [0, "None"]
-    profiles.forEach(profile => {
-        if (profile["last_save"] > curProfile[0]) {
-            curProfile = [profile["last_save"], profile["cute_name"]]
-        }
-    })
-    return curProfile[1]
-}
-
 function decodeInv(data) {
     let bytearray = java.util.Base64.getDecoder().decode(data);
     let inputstream = new java.io.ByteArrayInputStream(bytearray);
@@ -74,14 +63,13 @@ register('Chat', (event) => {
                     secrets = "0"
                 }
                 getrequest("https://api.hypixel.net/skyblock/profiles?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
-                    let curProfile = getCurrentProfile(response)
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
                     let pets = ["§cNone", "§cNo"]
                     let cata = -1
                     profiles.forEach(profile => {
-                        if (profile["cute_name"] == curProfile) {
+                        if (profile.selected) {
                             if (profile["members"][uuid]["inv_contents"] != null) {
                                 // Build Item Array
 

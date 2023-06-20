@@ -132,6 +132,6 @@ register("command", () => {
     
   §6§lBridge
     §a/bridgeset <IGN> §eSets the bot IGN.
-    §a/bridgemessage <message> §eSets the bot message. (Has to contain "<1>" (sender name) and "<2>" (message))`
+    §a/trophy <message> §eSets the bot message. (Has to contain "<1>" (sender name) and "<2>" (message))`
   )
 }).setName("au")
