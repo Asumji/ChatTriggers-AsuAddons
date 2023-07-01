@@ -7,62 +7,57 @@ function hasCommand(command) {
     command = command.split(" ")[0]
     command = command.replace("/", "")
 
-    for (let i = 0;i<data.CCcommands.length;i++) {
-        if (data.CCcommands[i][0] == command) {
+    for (let i = 0;i<data.cc.commands.length;i++) {
+        if (data.cc.commands[i][0] == command) {
             returnBool = true
         }
     }
     return returnBool
 }
 
-for (let i = 0; i < data.CCcommands.length;i++) {
-    register("command", () => {
-        return
-    }).setName(data.CCcommands[i][0])
-}
-
-register("messageSent", (message, event) => {
-    let command = message.split(" ")[0]
-    let args = message.replace(command, "")
-    command = command.replace("/", "")
-
-    if (message.startsWith("/") && hasCommand(message.toLowerCase())) {
-        for (let i = 0;i<data.CCcommands.length;i++) {
-            if (data.CCcommands[i][0] == command) {
-                ChatLib.command(data.CCcommands[i][1] + args)
-            }
+let tempCmds = data.cc.commands
+tempCmds.forEach(cmd => {
+    const index = tempCmds.indexOf(cmd)
+    cmd.push(false)
+    tempCmds[index] = cmd
+});
+for (let i = 0; i < tempCmds;i++) {
+    for (let i = 0; i < tempCmds;i++) {
+        if (tempCmds[i][2] != true) {
+            let correctCmd = tempCmds[i][1]
+            register("command", (...args) => {
+                console.log(correctCmd)
+                ChatLib.command(correctCmd + " " + args.join(" "))
+            }).setName(tempCmds[i][0])
+            tempCmds[i][2] = true
         }
     }
-})
+}
 
 register("command", (...args) => {
-    if (args[0]) {
-        if (args[1]) {
-            if (!hasCommand(args[0].toLowerCase())) {
-                let cmdArgs = args.slice(1).join(" ")
-                data.CCcommands.push([args[0].toLowerCase(), cmdArgs])
-                data.save()
-                register("command", () => {
-                    return
-                }).setName(args[0].toLowerCase())
-                ChatLib.chat(modPrefix + "§a Added new command with name \"/" + args[0] + "\" that runs \"/" + cmdArgs + "\".")
-            } else {
-                ChatLib.chat("§cCommand already exists.")
-            }
+    if (args[0] && args[1]) {
+        if (!hasCommand(args[0].toLowerCase())) {
+            let cmdArgs = args.slice(1).join(" ")
+            data.cc.commands.push([args[0].toLowerCase(), cmdArgs])
+            data.save()
+            register("command", (...args) => {
+                ChatLib.command(cmdArgs + " " + args.join(" "))
+            }).setName(args[0].toLowerCase())
+            ChatLib.chat(modPrefix + " §aAdded new command with name \"/" + args[0] + "\" that runs \"/" + cmdArgs + "\".")
         } else {
-            ChatLib.chat("§cUsage: /addcommand <new command> <command to run>")
+            ChatLib.chat("§cCommand already exists.")
         }
     } else {
         ChatLib.chat("§cUsage: /addcommand <new command> <command to run>")
     }
-}).setName("addCommand")
+}).setName("addcommand")
 
 register("command", (...args) => {
     if (args[0]) {
         if (hasCommand(args[0].toLowerCase())) {
-            for (let i = 0;i<data.CCcommands.length;i++) {
-                if (data.CCcommands[i][0] == args[0].toLowerCase()) {
-                    data.CCcommands.splice(i,1)
+            for (let i = 0;i<data.cc.commands.length;i++) {
+                if (data.cc.commands[i][0] == args[0].toLowerCase()) {
+                    data.cc.commands.splice(i,1)
                     data.save()
                     ChatLib.chat(modPrefix + " §aRemoved \"/" + args[0] + "\".")
                 }
@@ -74,3 +69,15 @@ register("command", (...args) => {
         ChatLib.chat("§cUsage /removecommand <command>")
     }
 }).setName("removecommand")
+
+register("command", () => {
+    string = "§2Commands:\n"
+    for (let i = 0; i < data.cc.commands.length; i++) {
+        if (i != data.cc.commands.length - 1) {
+            string = string + "§a/" + data.cc.commands[i][0] + "§2 -> " + "§a/" + data.cc.commands[i][1] + "\n"
+        } else {
+            string = string + "§a/" + data.cc.commands[i][0] + "§2 -> " + "§a/" + data.cc.commands[i][1]
+        }
+    }
+    ChatLib.chat(string)
+}).setName("listcommand")
