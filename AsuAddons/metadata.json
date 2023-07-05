@@ -2,7 +2,7 @@
   "name": "AsuAddons",
   "creator": "asumji",
   "description": "A collection of all the small mods I decide to make.",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "entry": "index.js",
   "requires": ["PogData", "requestv2"]
 }
