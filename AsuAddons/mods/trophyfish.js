@@ -13,17 +13,6 @@ const getrequest = function(url) {
     });
 }
 
-function getCurrentProfile(player) {
-    let profiles = player["profiles"]
-    let curProfile = [0, "None"]
-    profiles.forEach(profile => {
-        if (profile["last_save"] > curProfile[0]) {
-            curProfile = [profile["last_save"], profile["cute_name"]]
-        }
-    })
-    return curProfile[1]
-}
-
 function render() {
     if (data.trophy.enabled) {
         let trophyString = ""
@@ -43,14 +32,11 @@ if (data.trophy.firstUse) {
     getrequest("https://api.mojang.com/users/profiles/minecraft/" + Player.name).then(response => {
         let uuid = response["id"];
         getrequest("https://api.hypixel.net/skyblock/profiles?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
-            let profiles = response["profiles"]
-            let curProfile = getCurrentProfile(response)
-            profiles.forEach(profile => {
-                if (profile["cute_name"] == curProfile) {
+            response["profiles"].forEach(profile => {
+                if (profile.selected) {
                     for (fish in data.trophy.collected) {
                         if (profile["members"][uuid]["trophy_fish"][fish + "_bronze"] != null) {
                             data.trophy.collected[fish][0] = profile["members"][uuid]["trophy_fish"][fish + "_bronze"]
-                            console.log(profile["members"][uuid]["trophy_fish"][fish + "_bronze"])
                         }
                         if (profile["members"][uuid]["trophy_fish"][fish + "_silver"] != null) {
                             data.trophy.collected[fish][1] = profile["members"][uuid]["trophy_fish"][fish + "_silver"]

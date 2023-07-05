@@ -65,7 +65,11 @@ const data = new PogObject("AsuAddons", {
   },
   bridge: {
     botIGN: "bridgebot",
-    bridgeMessage: "§2Brdige: §6<1>: §r<2>"
+    bridgeMessage: "§2Bridge: §6<1>: §r<2>"
+  },
+  rp: {
+    autojoin: false,
+    cooldown: 15000
   }
 });
 data.save();

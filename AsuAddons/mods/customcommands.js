@@ -26,7 +26,6 @@ for (let i = 0; i < tempCmds;i++) {
         if (tempCmds[i][2] != true) {
             let correctCmd = tempCmds[i][1]
             register("command", (...args) => {
-                console.log(correctCmd)
                 ChatLib.command(correctCmd + " " + args.join(" "))
             }).setName(tempCmds[i][0])
             tempCmds[i][2] = true
