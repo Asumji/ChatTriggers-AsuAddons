@@ -6,7 +6,7 @@ let allowCommands = ["Everyone", true]
 
 register("chat", event => {
   if (data.frag.enabled == true) {
-    if (Player.name == data.frag.bot) {
+    if (Player.name.toLowerCase() == data.frag.bot) {
       let msg = ChatLib.getChatMessage(event)
       for (let i = 0; i < data.frag.names.length; i++) {
         if (msg.toLowerCase().includes(data.frag.names[i])) {
@@ -22,10 +22,10 @@ register("chat", event => {
 
 register("chat", event => {
   if (data.frag.enabled == true) {
-    if (Player.name == data.frag.bot) {
+    if (Player.name.toLowerCase() == data.frag.bot) {
       let msg = ChatLib.getChatMessage(event).removeFormatting()
       if (msg.startsWith("Party >")) {
-        const ign = msg.split(": ")[0]
+        const ign = msg.split(": ")[0].replace(/ /g,"").replace("Party>").replace(/\[[^\]]+\]/,"").toLowerCase()
         msg = msg.split(": ")[1] 
         const args = msg.split(" ")
         if (allowCommands[0] == "Owner" && ign == data.frag.owner || allowCommands[0] == "Everyone") {
@@ -68,7 +68,7 @@ register("chat", event => {
 
 register("chat", event => {
   if (data.frag.enabled == true) {
-    if (Player.name == data.frag.bot) {
+    if (Player.name.toLowerCase() == data.frag.bot) {
       if (mode[0] == "leave") {
         setTimeout(() => {
           ChatLib.command("p leave")

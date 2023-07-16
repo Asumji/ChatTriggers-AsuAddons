@@ -1,7 +1,8 @@
 import request from "requestV2/index";
 import {
     data,
-    modPrefix
+    modPrefix,
+    apiKey
 } from "../index.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons", "rarities.json"))
 const cataLevelArray = [0, 50, 125, 235, 395, 625, 955, 1425, 2095, 3045, 4385, 6275, 8940, 12700, 17960, 25340, 35640, 50040, 70040, 97640, 135640, 188140, 259640, 356640, 488640, 668640, 911640, 1239640, 1684640, 2284640, 3084640, 4149640, 5559640, 7459640, 9959640, 13259640, 17559640, 23159640, 30359640, 39559640, 51559640, 66559640, 85559640, 109559640, 139559640, 177559640, 225559640, 285559640, 360559640, 453559640, 569809640]
@@ -57,12 +58,12 @@ register('Chat', (event) => {
 
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
-            getrequest("https://api.hypixel.net/player?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
+            getrequest("https://api.hypixel.net/player?key=" + apiKey + "&uuid=" + uuid).then(response => {
                 let secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
                 if (secrets == undefined) {
                     secrets = "0"
                 }
-                getrequest("https://api.hypixel.net/skyblock/profiles?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
+                getrequest("https://api.hypixel.net/skyblock/profiles?key=" + apiKey + "&uuid=" + uuid).then(response => {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
@@ -158,21 +159,7 @@ register('Chat', (event) => {
 register("command", (...args) => {
     const helpMessage = "§6Help\n§a/dpu key <API key>\n§2Set your api key.\n§a/dpu add <item>\n§2Add an Item to check for.\n§a/dpu remove <item>\n§2Remove an item that is being checked for.\n§a/dpu list\n§2List all items the mod currently checks for.\n§a/dpu toggle\n§2Toggle the mod."
     if (args) {
-        if (args[0] == "key") {
-            if (args[1]) {
-                getrequest("https://api.hypixel.net/player?key=" + args[1] + "&uuid=6abd94a3f33940dd95e49eaa46ee8016").then(response => {
-                    data.apiKey = args[1]
-                    data.save()
-                    ChatLib.chat("§aSuccessfully set the API key!")
-                }).catch(error => {
-                    if (error["cause"] == "Invalid API key") {
-                        ChatLib.chat("§cAPI Key is invalid! Please run /api new again.")
-                    }
-                })
-            } else {
-                ChatLib.chat("§cDidn't provide an API key!")
-            }
-        } else if (args[0] == "add") {
+        if (args[0] == "add") {
             if (args[1]) {
                 if (!data.dpu.relevantItems.includes(args.slice(1).join(" ").toLowerCase())) {
                     data.dpu.relevantItems.push(args.slice(1).join(" ").toLowerCase())
@@ -217,13 +204,3 @@ register("command", (...args) => {
         ChatLib.chat(helpMessage)
     }
 }).setName("dpu")
-
-register('Chat', (event) => {
-    let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    unformattedMessage = unformattedMessage.replace(/ /g, "").replace("YournewAPIkeyis", "")
-    getrequest("https://api.hypixel.net/player?key=" + unformattedMessage + "&uuid=6abd94a3f33940dd95e49eaa46ee8016").then(response => {
-        ChatLib.chat(modPrefix + " §aYour key has been set to §6" + unformattedMessage)
-        data.apiKey = unformattedMessage
-        data.save()
-    })
-}).setChatCriteria("Your new API key is ").setContains()

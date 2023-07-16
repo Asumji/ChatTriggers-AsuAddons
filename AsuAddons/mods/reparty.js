@@ -55,6 +55,9 @@ register("command", () => {
         members.forEach((mem,int) => {
             setTimeout(() => {
                 ChatLib.command("p " + mem) 
+                if (int-1 == members.length) {
+                    repartying = false
+                }
             }, 500*int); 
         })
     }, 1000);
