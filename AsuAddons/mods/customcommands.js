@@ -15,14 +15,15 @@ function hasCommand(command) {
     return returnBool
 }
 
-let tempCmds = data.cc.commands
+let tempCmds = Object.assign([],data.cc.commands)
 tempCmds.forEach(cmd => {
     const index = tempCmds.indexOf(cmd)
     cmd.push(false)
     tempCmds[index] = cmd
 });
-for (let i = 0; i < tempCmds;i++) {
-    for (let i = 0; i < tempCmds;i++) {
+
+for (let i = 0; i < tempCmds.length;i++) {
+    for (let i = 0; i < tempCmds.length;i++) {
         if (tempCmds[i][2] != true) {
             let correctCmd = tempCmds[i][1]
             register("command", (...args) => {

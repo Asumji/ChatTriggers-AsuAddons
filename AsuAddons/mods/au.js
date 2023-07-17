@@ -61,10 +61,16 @@ register("command", (...args) => {
     
 §6§lPartyCommands
     §a/partycommands add <ign> §eAdds a player to the PartyCommands whitelist.
-    §a/partycommands remove <ign> §eRemoves a player from the PartyCommands whitelist
+    §a/partycommands remove <ign> §eRemoves a player from the PartyCommands whitelist.
     §a/partycommands list §eLists all players in the PartyCommands whitelist.`
             )
-    } else  {
+    } else if (args[0] == "key") {
+        if (args[1]) {
+            data.apiKey = args[1]
+        } else {
+            ChatLib.chat("§cUsage: /au key <api key>")
+        }
+    } else {
         Settings.openGUI()
     }
 }).setName("au");

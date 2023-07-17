@@ -1,26 +1,6 @@
 /// <reference types="../../CTAutocomplete" />
 import { data, modPrefix } from "../index.js"
 
-register("command", (...args) => {
-    if (args[0] == "cd") {
-        if (args[1]) {
-            if (Number(args[1])) {
-                data.rp.cooldown = Number(args[1])*1000
-                data.save()
-                ChatLib.chat(`§aCooldown has been set to ${args[1]}s!`)
-            } else {
-                ChatLib.chat("§cCooldown has to be a number (seconds)!")
-            }
-        } else {
-            ChatLib.chat("§cUsage: /autojoin cd [seconds]")
-        }
-        return
-    }
-    data.rp.autojoin ? data.rp.autojoin = false : data.rp.autojoin = true
-    data.save()
-    data.rp.autojoin ? ChatLib.chat(modPrefix + " Enabled AutoPartyJoin") : ChatLib.chat(modPrefix + " Disabled AutoPartyJoin")
-}).setName("autojoin").setAliases(["aj"])
-
 let disbanded = undefined
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))

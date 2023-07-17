@@ -4,10 +4,10 @@ import {
     modPrefix
 } from "../index.js";
 
-function isWhitelisted(ign) {    
+function isInArray(object1,array) {    
     let returnBool = false
-    data.partycmd.whitelist.forEach(player => {
-        if (player == ign) {
+    array.forEach(object2 => {
+        if (object2 == object1) {
             returnBool = true
         }
     })
@@ -16,13 +16,18 @@ function isWhitelisted(ign) {
 
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    if (unformattedMessage.startsWith("Party >") && unformattedMessage.includes("!p")) {
-        if (isWhitelisted(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("Party > ","").replace(/ /g,"").replace(/:/g,"").toLowerCase())) {
+    if (unformattedMessage.startsWith("Party >") && unformattedMessage.includes("!p ")) {
+        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("Party > ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray(unformattedMessage.split("!")[1],data.partycmd.blacklist)) {
+            ChatLib.command(unformattedMessage.split("!")[1])
+            ChatLib.chat(modPrefix + " Executing: /" + unformattedMessage.split("!")[1])
+        }
+    } else if (unformattedMessage.startsWith("From ") && data.partycmd.msgEnabled) {
+        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("From ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray(unformattedMessage.split("!")[1],data.partycmd.blacklist)) {
             ChatLib.command(unformattedMessage.split("!")[1])
             ChatLib.chat(modPrefix + " Executing: /" + unformattedMessage.split("!")[1])
         }
     }
-}) 
+})
 
 register("command", (...args) => {
     if (args[0]) {

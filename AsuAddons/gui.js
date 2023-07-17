@@ -15,21 +15,21 @@ class Settings {
         description: "Whitelisted players for the fragbot. Seperate with \",\" ex. player1,player2",
         category: "FragBot"
     })
-    fragNames = data.frag.names.length > 1 ? data.frag.names.join(",") : ""
+    fragNames = data.frag.names.length > 1 ? data.frag.names.join(",") : "";
 
     @TextProperty({
         name: "Bot",
         description: "The IGN of your current fragbot account.",
         category: "FragBot"
     })
-    fragBot = data.frag.bot
+    fragBot = data.frag.bot;
 
     @TextProperty({
         name: "Owner",
         description: "The IGN of your main account.",
         category: "FragBot"
     })
-    fragOwner = data.frag.owner
+    fragOwner = data.frag.owner;
 
     @SwitchProperty({
         name: "Enable DPU",
@@ -43,7 +43,7 @@ class Settings {
         description: "List of all items the mod checks for. Seperate with \",\" ex. item1,item2",
         category: "DungeonPartyUtils"
     })
-    dpuItems = data.dpu.relevantItems.length > 1 ? data.dpu.relevantItems.join(",") : ""
+    dpuItems = data.dpu.relevantItems.length > 1 ? data.dpu.relevantItems.join(",") : "";
 
     @SwitchProperty({
         name: "Enable ReplaceGhost",
@@ -57,14 +57,14 @@ class Settings {
         description: "List of all players the mod replaces for. Seperate with \",\" ex. player1,player2",
         category: "ReplaceGhost"
     })
-    rghostNames = data.rghost.names.length > 1 ? data.rghost.names.join(",") : ""
+    rghostNames = data.rghost.names.length > 1 ? data.rghost.names.join(",") : "";
 
     @TextProperty({
         name: "Message",
         description: "The message to replace \"and became a ghost\" with.",
         category: "ReplaceGhost"
     })
-    rghostMsg = data.rghost.replace
+    rghostMsg = data.rghost.replace;
 
     @SwitchProperty({
         name: "Enable TrophyFish",
@@ -78,14 +78,14 @@ class Settings {
         description: "The name of the bridge bot.",
         category: "Bridge"
     })
-    bridgeBot = data.bridge.botIGN
+    bridgeBot = data.bridge.botIGN;
 
     @TextProperty({
         name: "Bridge Formatting",
         description: 'Sets the bot message. (Has to contain "<1>" (sender name) and "<2>" (message))',
         category: "Bridge"
     })
-    bridgeMsg = data.bridge.bridgeMessage
+    bridgeMsg = data.bridge.bridgeMessage;
 
     @ButtonProperty({
         name: "Preview Bridge Message",
@@ -119,12 +119,26 @@ class Settings {
     })
     autojoinCD = data.rp.cooldown / 1000;
 
+    @SwitchProperty({
+        name: "MSG",
+        description: "Allow whitelisted players to also execute commands through /msg.",
+        category: "PartyCommands"
+    })
+    partycmdMsgEnabled = data.partycmd.msgEnabled;
+
     @ParagraphProperty({
         name: "Allowed Players",
         description: "List of all players the mod allows to execute party commands for. Seperate with \",\" ex. player1,player2",
         category: "PartyCommands"
     })
-    partycmdWhitelist = data.partycmd.whitelist.length > 1 ? data.partycmd.whitelist.join(",") : ""
+    partycmdWhitelist = data.partycmd.whitelist.length > 1 ? data.partycmd.whitelist.join(",") : "";
+
+    @ParagraphProperty({
+        name: "Command Blacklist",
+        description: "List of all /p commands that won't be executed. Seperate with \",\" and include \"p\" ex. p command1,p command2",
+        category: "PartyCommands"
+    })
+    partycmdBlacklist = data.partycmd.blacklist.length > 1 ? data.partycmd.blacklist.join(",") : "";
 
 
     constructor() {
@@ -190,7 +204,16 @@ class Settings {
                 data.partycmd.whitelist = [newValue.toLowerCase()]
             }
         });
-
+        this.registerListener("Command Blacklist", newValue => {
+            if (newValue.includes(",")) {
+                data.partycmd.blacklist = newValue.toLowerCase().split(",")
+            } else {
+                data.partycmd.blacklist = [newValue.toLowerCase()]
+            }
+        });
+        this.registerListener("MSG", newValue => {
+            data.partycmd.msgEnabled = newValue
+        });
         this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.")
         this.setCategoryDescription("Bridge", "Simple Bridge bot formatting since I didn't like the other bridge mods.\n\n§aMessage Preview: " + data.bridge.bridgeMessage.replace("<1>","Player").replace("<2>","This is a test message."))

@@ -2,21 +2,8 @@
 
 import PogObject from "PogData";
 
-if (FileLib.exists("config/ChatTriggers/modules/AsuAddons/.data.json")) {
-  const oldData = JSON.parse(FileLib.read("config/ChatTriggers/modules/AsuAddons/.data.json"))
-  if (oldData["FRAGnames"]) {
-    console.log("AU > Bad Data File Found!")
-    FileLib.append("config/ChatTriggers/modules/AsuAddons/.newdata.json", JSON.stringify({apiKey: oldData["apiKey"],frag: {names: oldData["FRAGnames"],owner: oldData["FRAGowner"],bot: oldData["FRAGbot"],enabled: oldData["FRAGenabled"],},dpu: {relevantItems: oldData["DPUrelevantItems"],enabled: oldData["DPUenabled"],},rghost: {names: oldData["RGHOSTnames"],replace: oldData["RGHOSTreplace"],enabled: oldData["RGHOSTenabled"]},cc: {commands: oldData["CCcommands"]},alias: {names: oldData["ALIASnames"]}},null,4))
-    FileLib.write("config/ChatTriggers/modules/AsuAddons/.data.json",JSON.stringify(JSON.parse(FileLib.read("config/ChatTriggers/modules/AsuAddons/.newdata.json")),null,4))
-    setTimeout(() => {
-      FileLib.delete("config/ChatTriggers/modules/AsuAddons/.newdata.json")
-    }, 1000);
-    console.log("AU > Data File Fixed!")
-  }
-}
-
-
 const data = new PogObject("AsuAddons", {
+  apiKey: "",
   frag: {
     names: [],
     owner: "",
@@ -71,7 +58,9 @@ const data = new PogObject("AsuAddons", {
     cooldown: 15000
   },
   partycmd: {
-    whitelist: []
+    whitelist: [],
+    blacklist: [],
+    msgEnabled: false
   }
 });
 data.save();
@@ -79,9 +68,16 @@ data.save();
 const File = Java.type("java.io.File")
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")
 const modPrefix = "&6AU >&r"
-const apiKey = "e3e84d2e-d571-4027-9d12-6a4f39e38ae8"
 
-export { data, modPrefix, apiKey }
+register('Chat', (event) => {
+  let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
+  unformattedMessage = unformattedMessage.replace(/ /g, "").replace("YournewAPIkeyis", "")
+  ChatLib.chat(modPrefix + " §aYour key has been set to §6" + unformattedMessage)
+  data.apiKey = unformattedMessage
+  data.save()
+}).setChatCriteria("Your new API key is ").setContains()
+
+export { data, modPrefix }
 
 if (f.exists()) {
     const fileArray = f.listFiles()
