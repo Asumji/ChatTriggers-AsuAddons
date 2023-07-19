@@ -1,7 +1,6 @@
 import { data, modPrefix } from "../index.js"
 import { isInArrayIdx } from "../utils.js";
 
-
 register("messageSent", (message, event) => {
     if (message.includes("/addalias") || message.includes("/removealias")) return
     for (let i = 0; i < data.alias.names.length; i++) {
