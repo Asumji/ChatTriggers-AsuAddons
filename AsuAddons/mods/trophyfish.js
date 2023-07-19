@@ -1,17 +1,7 @@
 import { data, modPrefix } from "../index.js"
-import request from "requestV2/index";
+import { getrequest } from "../utils.js";
 const fishnames = JSON.parse(FileLib.read("AsuAddons", "trophyfish.json"))
 const display = new Display();
-
-const getrequest = function(url) {
-    return request({
-        url: url,
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (ChatTriggers)'
-        },
-        json: true
-    });
-}
 
 function render() {
     if (data.trophy.enabled) {

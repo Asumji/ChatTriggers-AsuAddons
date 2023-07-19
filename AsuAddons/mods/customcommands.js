@@ -1,27 +1,11 @@
 /// <reference types="../../CTAutocomplete" />
 import { data, modPrefix } from "../index.js"
+import { isInArrayIdx } from "../utils.js";
 
-function hasCommand(command) {
-    let returnBool = false
-
-    command = command.split(" ")[0]
-    command = command.replace("/", "")
-
-    for (let i = 0;i<data.cc.commands.length;i++) {
-        if (data.cc.commands[i][0] == command) {
-            returnBool = true
-        }
-    }
-    return returnBool
-}
-
-let tempCmds = Object.assign([],data.cc.commands)
-tempCmds.forEach(cmd => {
-    const index = tempCmds.indexOf(cmd)
-    cmd.push(false)
-    tempCmds[index] = cmd
-});
-
+let tempCmds = []
+data.cc.commands.forEach(cmd => {
+    tempCmds.push([cmd[0],cmd[1],false])
+})
 for (let i = 0; i < tempCmds.length;i++) {
     for (let i = 0; i < tempCmds.length;i++) {
         if (tempCmds[i][2] != true) {
@@ -29,6 +13,7 @@ for (let i = 0; i < tempCmds.length;i++) {
             register("command", (...args) => {
                 ChatLib.command(correctCmd + " " + args.join(" "))
             }).setName(tempCmds[i][0])
+
             tempCmds[i][2] = true
         }
     }
@@ -36,7 +21,7 @@ for (let i = 0; i < tempCmds.length;i++) {
 
 register("command", (...args) => {
     if (args[0] && args[1]) {
-        if (!hasCommand(args[0].toLowerCase())) {
+        if (!isInArrayIdx(args[0].toLowerCase().split(" ")[0].replace("/", ""),data.cc.commands,0)) {
             let cmdArgs = args.slice(1).join(" ")
             data.cc.commands.push([args[0].toLowerCase(), cmdArgs])
             data.save()
@@ -54,7 +39,7 @@ register("command", (...args) => {
 
 register("command", (...args) => {
     if (args[0]) {
-        if (hasCommand(args[0].toLowerCase())) {
+        if (isInArrayIdx(args[0].toLowerCase().split(" ")[0].replace("/", ""),data.cc.commands,0)) {
             for (let i = 0;i<data.cc.commands.length;i++) {
                 if (data.cc.commands[i][0] == args[0].toLowerCase()) {
                     data.cc.commands.splice(i,1)

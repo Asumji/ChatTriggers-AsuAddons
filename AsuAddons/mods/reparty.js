@@ -1,5 +1,5 @@
 /// <reference types="../../CTAutocomplete" />
-import { data, modPrefix } from "../index.js"
+import { data } from "../index.js"
 
 let disbanded = undefined
 register("chat", (event) => {
