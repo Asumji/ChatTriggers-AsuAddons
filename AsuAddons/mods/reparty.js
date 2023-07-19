@@ -1,4 +1,3 @@
-/// <reference types="../../CTAutocomplete" />
 import { data } from "../index.js"
 
 let disbanded = undefined

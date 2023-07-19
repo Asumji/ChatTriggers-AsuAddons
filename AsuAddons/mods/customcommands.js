@@ -1,4 +1,3 @@
-/// <reference types="../../CTAutocomplete" />
 import { data, modPrefix } from "../index.js"
 import { isInArrayIdx } from "../utils.js";
 

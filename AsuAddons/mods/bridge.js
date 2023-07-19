@@ -1,5 +1,3 @@
-/// <reference types="../../CTAutocomplete" />
-
 import { data, modPrefix } from "../index.js"
 
 register("chat", (event) => {
