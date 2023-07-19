@@ -1,0 +1,11 @@
+{
+    "COMMON": "§f",
+    "UNCOMMON": "§a",
+    "RARE": "§9",
+    "EPIC": "§5",
+    "LEGENDARY": "§6",
+    "MYTHIC": "§d",
+    "DIVINE": "§b",
+    "SPECIAL": "§c",
+    "VERY SPECIAL": "§4"
+}
