@@ -1,4 +1,4 @@
-import { data } from "../index.js"
+import { data, modPrefix } from "../index.js"
 import Settings from "../gui.js";
 
 register("command", (...args) => {
@@ -67,6 +67,8 @@ register("command", (...args) => {
     } else if (args[0] == "key") {
         if (args[1]) {
             data.apiKey = args[1]
+            data.save()
+            ChatLib.chat(modPrefix+" §cThe key was set as " + args[1])
         } else {
             ChatLib.chat("§cUsage: /au key <api key>")
         }

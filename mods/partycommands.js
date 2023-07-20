@@ -7,12 +7,12 @@ import { isInArray } from "../utils.js";
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
     if (unformattedMessage.startsWith("Party >") && unformattedMessage.includes("!p ")) {
-        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("Party > ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray(unformattedMessage.split("!")[1],data.partycmd.blacklist) && unformattedMessage.split("!")[1].startsWith("p ")) {
+        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("Party > ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray("p " + unformattedMessage.split("!")[1].split(" ")[1],data.partycmd.blacklist) && unformattedMessage.split("!")[1].startsWith("p ")) {
             ChatLib.command(unformattedMessage.split("!")[1])
             ChatLib.chat(modPrefix + " Executing: /" + unformattedMessage.split("!")[1])
         }
     } else if (unformattedMessage.startsWith("From ") && data.partycmd.msgEnabled && unformattedMessage.includes("!p ")) {
-        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("From ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray(unformattedMessage.split("!")[1],data.partycmd.blacklist) && unformattedMessage.split("!")[1].startsWith("p ")) {
+        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("From ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray("p " + unformattedMessage.split("!")[1].split(" ")[1],data.partycmd.blacklist) && unformattedMessage.split("!")[1].startsWith("p ")) {
             ChatLib.command(unformattedMessage.split("!")[1])
             ChatLib.chat(modPrefix + " Executing: /" + unformattedMessage.split("!")[1])
         }
