@@ -1,4 +1,3 @@
-import request from "requestV2/index";
 import {
     data,
     modPrefix
@@ -147,7 +146,6 @@ register('Chat', (event) => {
 }).setChatCriteria("joined the dungeon group!").setContains();
 
 register("command", (...args) => {
-    const helpMessage = "§6Help\n§a/dpu key <API key>\n§2Set your api key.\n§a/dpu add <item>\n§2Add an Item to check for.\n§a/dpu remove <item>\n§2Remove an item that is being checked for.\n§a/dpu list\n§2List all items the mod currently checks for.\n§a/dpu toggle\n§2Toggle the mod."
     if (args) {
         if (args[0] == "add") {
             if (args[1]) {
@@ -188,9 +186,9 @@ register("command", (...args) => {
             data.save()
             data.dpu.enabled ? ChatLib.chat(modPrefix + " Enabled Dungeon Party Utils") : ChatLib.chat(modPrefix + " Disabled Dungeon Party Utils")
         } else {
-            ChatLib.chat(helpMessage)
+            ChatLib.chat("§cInvalid command. Run /au help for help.")
         }
     } else {
-        ChatLib.chat(helpMessage)
+        ChatLib.chat("§cInvalid command. Run /au help for help.")
     }
 }).setName("dpu")
