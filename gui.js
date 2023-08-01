@@ -215,11 +215,11 @@ class Settings {
             data.partycmd.msgEnabled = newValue
         });
         this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
-        this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.")
+        this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")
         this.setCategoryDescription("Bridge", "Simple Bridge bot formatting since I didn't like the other bridge mods.\n\n§aMessage Preview: " + data.bridge.bridgeMessage.replace("<1>","Player").replace("<2>","This is a test message."))
-        this.setCategoryDescription("Reparty", "Just your average reparty mod.")
+        this.setCategoryDescription("Reparty", "Just your average reparty mod.\n\n§4Use At Your Own Risk! (technically a chat macro)")
         this.setCategoryDescription("ReplaceGhost", "A simple dungeons mod that replaced and became a ghost with any msg you want (includes formatting). Leaving the list of player to check for empty will replace the msg for everyone.")
-        this.setCategoryDescription("FragBot", "A better FragBot mod than most other mods.")
+        this.setCategoryDescription("FragBot", "A better FragBot mod than most other mods.\n\n§4Use At Your Own Risk! (fragbots are bannable)")
         this.setCategoryDescription("DungeonPartyUtils", "A Party Finder mod for dungeons to quickly see what stuff your teammates have.")
     }
 }
