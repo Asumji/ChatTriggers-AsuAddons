@@ -13,6 +13,7 @@ const data = new PogObject("AsuAddons", {
   dpu: {
     relevantItems: ["scylla", "hyperion", "astraea", "valkyrie", "terminator", "juju", "axe of the shredded", "livid dagger", "spirit bow", "last breath"],
     enabled: false,
+    kuudra: false
   },
   rghost: {
     names: [],
@@ -63,6 +64,11 @@ const data = new PogObject("AsuAddons", {
     msgEnabled: false
   }
 });
+
+if (data.dpu.kuudra == undefined) {
+  data.dpu.kuudra = false
+}
+
 data.save();
 
 const File = Java.type("java.io.File")

@@ -15,8 +15,12 @@ function decodeInv(data) {
     return items
 }
 
-function buildOutput(player, items, armor, secrets, pet, cata) {
-    var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
+function buildOutput(player, items, armor, secrets, pet, cata, isDungeon) {
+    if (isDungeon) {
+        var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
+    } else {
+        var output = new Message("§cName:§b " + player + "\n\n§6Items:§r\n")
+    }
 
     for (let i = items.length - 1; i >= 0; i--) {
         output.addTextComponent(new TextComponent(" " + items[i][0] + " ").setHover("show_text", items[i][1]))
@@ -37,20 +41,26 @@ register('Chat', (event) => {
     if (data.dpu.enabled == true) {
         let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
         unformattedMessage = unformattedMessage.replace(/ /g, "")
-
+        let isDungeon = true
+        if (!unformattedMessage.includes("dungeon")) {
+            if (!data.dpu.kuudra) return
+            isDungeon = false
+        }
         let name = ""
-        for (let i = 0; i < unformattedMessage.indexOf("joinedthedungeongroup"); i++) {
+        for (let i = 0; i < unformattedMessage.indexOf("joinedthe"); i++) {
             if (i > unformattedMessage.indexOf(">")) {
                 name = name + unformattedMessage[i]
             }
         }
-
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
+            let secrets = "0"
             getrequest("https://api.hypixel.net/player?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
-                let secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
-                if (secrets == undefined) {
-                    secrets = "0"
+                if (isDungeon) {
+                    secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
+                    if (secrets == undefined) {
+                        secrets = "0"
+                    }
                 }
                 getrequest("https://api.hypixel.net/skyblock/profiles?key=" + data.apiKey + "&uuid=" + uuid).then(response => {
                     let profiles = response["profiles"]
@@ -61,8 +71,6 @@ register('Chat', (event) => {
                     profiles.forEach(profile => {
                         if (profile.selected) {
                             if (profile["members"][uuid]["inv_contents"] != null) {
-                                // Build Item Array
-
                                 let items = decodeInv(profile["members"][uuid]["inv_contents"]["data"])
                                 let length = items.func_74745_c(); //NBTTagList.tagCount()
                                 for (let i = 0; i < length; i++) {
@@ -89,8 +97,6 @@ register('Chat', (event) => {
                                 itemArray.push(["§cInventory API off!", ""])
                             }
                             if (profile["members"][uuid]["inv_armor"] != null) {
-                                //Build Armor Array
-
                                 let armor = decodeInv(profile["members"][uuid]["inv_armor"]["data"])
                                 let length2 = armor.func_74745_c();
                                 for (let i = length2; i > -1; i--) {
@@ -118,6 +124,7 @@ register('Chat', (event) => {
                                         }
                                         if (profile["members"][uuid]["pets"][i]["active"] == true) {
                                             let type = profile["members"][uuid]["pets"][i]["type"]
+                                            let level = profile["members"][uuid]["pets"][i]["exp"]
                                             type = type.toLowerCase()
                                             type = type[0].toUpperCase() + type.slice(1, type.length)
                                             type = type.replace(/_/g, " ")
@@ -130,20 +137,22 @@ register('Chat', (event) => {
                                     }
                                 }
                             }
-                            for (let i = 0; i < cataLevelArray.length; i++) {
-                                let cataXP = Math.floor(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
-                                if (cataLevelArray[i] <= cataXP) {
-                                    cata += 1
+                            if (isDungeon) {
+                                for (let i = 0; i < cataLevelArray.length; i++) {
+                                    let cataXP = Math.floor(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
+                                    if (cataLevelArray[i] <= cataXP) {
+                                        cata += 1
+                                    }
                                 }
                             }
                         }
                     })
-                    buildOutput(name, itemArray, armorArray, secrets, pets, cata)
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon)
                 })
             })
         });
     }
-}).setChatCriteria("joined the dungeon group!").setContains();
+}).setChatCriteria("joined the").setContains();
 
 register("command", (...args) => {
     if (args) {

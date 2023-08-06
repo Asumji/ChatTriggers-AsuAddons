@@ -38,6 +38,13 @@ class Settings {
     })
     dpuEnabled = data.dpu.enabled;
 
+    @SwitchProperty({
+        name: "Enable Kuudra",
+        description: "Toggles the party finder for kuudra.",
+        category: "DungeonPartyUtils"
+    })
+    dpuKuudra = data.dpu.kuudra;
+
     @ParagraphProperty({
         name: "Relevant Items",
         description: "List of all items the mod checks for. Seperate with \",\" ex. item1,item2",
@@ -161,6 +168,9 @@ class Settings {
         });
         this.registerListener("Enable DPU", newValue => {
             data.dpu.enabled = newValue
+        });
+        this.registerListener("Enable Kuudra", newValue => {
+            data.dpu.kuudra = newValue
         });
         this.registerListener("Relevant Items", newValue => {
             if (newValue.includes(",")) {
