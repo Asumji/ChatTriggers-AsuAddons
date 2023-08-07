@@ -2,9 +2,8 @@ import {
     data,
     modPrefix
 } from "../index.js";
-import { getrequest } from "../utils.js";
+import { getPetLevel, getrequest, getCataLevel } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons", "rarities.json"))
-const cataLevelArray = [0, 50, 125, 235, 395, 625, 955, 1425, 2095, 3045, 4385, 6275, 8940, 12700, 17960, 25340, 35640, 50040, 70040, 97640, 135640, 188140, 259640, 356640, 488640, 668640, 911640, 1239640, 1684640, 2284640, 3084640, 4149640, 5559640, 7459640, 9959640, 13259640, 17559640, 23159640, 30359640, 39559640, 51559640, 66559640, 85559640, 109559640, 139559640, 177559640, 225559640, 285559640, 360559640, 453559640, 569809640]
 
 function decodeInv(data) {
     let bytearray = java.util.Base64.getDecoder().decode(data);
@@ -124,26 +123,22 @@ register('Chat', (event) => {
                                         }
                                         if (profile["members"][uuid]["pets"][i]["active"] == true) {
                                             let type = profile["members"][uuid]["pets"][i]["type"]
-                                            let level = profile["members"][uuid]["pets"][i]["exp"]
+                                            let level = 0
+                                            if (profile["members"][uuid]["pets"][i]["type"] == "GOLDEN_DRAGON") {
+                                                level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],200)
+                                            } else {
+                                                level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],100)
+                                            }
                                             type = type.toLowerCase()
                                             type = type[0].toUpperCase() + type.slice(1, type.length)
                                             type = type.replace(/_/g, " ")
-                                            if (pets[0] != "§cNone") {
-                                                pets[0] = pets[0] + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
-                                            } else {
-                                                pets[0] = rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
-                                            }
+                                            pets[0] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
                                         }
                                     }
                                 }
                             }
                             if (isDungeon) {
-                                for (let i = 0; i < cataLevelArray.length; i++) {
-                                    let cataXP = Math.floor(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
-                                    if (cataLevelArray[i] <= cataXP) {
-                                        cata += 1
-                                    }
-                                }
+                                cata = getCataLevel(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
                             }
                         }
                     })
