@@ -229,7 +229,7 @@ class Settings {
         this.setCategoryDescription("Bridge", "Simple Bridge bot formatting since I didn't like the other bridge mods.\n\n§aMessage Preview: " + data.bridge.bridgeMessage.replace("<1>","Player").replace("<2>","This is a test message."))
         this.setCategoryDescription("Reparty", "Just your average reparty mod.\n\n§4Use At Your Own Risk! (technically a chat macro)")
         this.setCategoryDescription("ReplaceGhost", "A simple dungeons mod that replaced and became a ghost with any msg you want (includes formatting). Leaving the list of player to check for empty will replace the msg for everyone.")
-        this.setCategoryDescription("FragBot", "A better FragBot mod than most other mods.\nBroken Indefinitely cuz hypixel admins are cringe.\n\n§4Use At Your Own Risk! (fragbots are bannable)")
+        this.setCategoryDescription("FragBot", "A better FragBot mod than most other mods.\nSolo dungeons are being added so this is mostly irrelavent but keeping it here for anyone that needs it.\n\n§4Use At Your Own Risk! (fragbots are bannable)")
         this.setCategoryDescription("DungeonPartyUtils", "A Party Finder mod for dungeons to quickly see what stuff your teammates have.")
     }
 }
