@@ -147,7 +147,7 @@ register('Chat', (event) => {
             })
         });
     }
-}).setChatCriteria("joined the").setContains();
+}).setChatCriteria(/joined the group!|joined the dungeon group!/).setContains();
 
 register("command", (...args) => {
     if (args) {
