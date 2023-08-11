@@ -96,7 +96,7 @@ function getCataLevel(xp) {
             cata += 1
         }
     }
-    cata += Math.floor((xp-569809640)/200000000)
+    if (cata == 50) cata += Math.floor((xp-569809640)/200000000)
     return cata
 }
 
