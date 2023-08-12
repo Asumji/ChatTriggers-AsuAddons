@@ -1,6 +1,8 @@
 /// <reference types="../CTAutocomplete" />
 
 import PogObject from "PogData";
+import { isInArrayIdx } from "./utils";
+const File = Java.type("java.io.File")
 
 const data = new PogObject("AsuAddons", {
   apiKey: "",
@@ -61,17 +63,37 @@ const data = new PogObject("AsuAddons", {
   partycmd: {
     whitelist: [],
     blacklist: [],
-    msgEnabled: false
+    msgEnabled: false,
+    customBlacklist: [],
+    customEnabled: false,
+    commands: []
   }
 });
 
-if (data.dpu.kuudra == undefined) {
-  data.dpu.kuudra = false
+if (data.partycmd.customBlacklist == undefined) {
+  data.partycmd.customBlacklist = []
+}
+if (data.partycmd.customEnabled == undefined) {
+  data.partycmd.customEnabled = false
+}
+if (data.partycmd.commands == undefined) {
+  const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")
+  const fileArray = f.listFiles()
+  data.partycmd.commands = []
+  for (let i = 0; i < fileArray.length; i++) {
+    data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
+  }
+} else {
+  const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")
+  const fileArray = f.listFiles()
+  for (let i = 0; i < fileArray.length; i++) {
+    if (!isInArrayIdx(fileArray[i].toString().split("\\")[6].split(".")[0],data.partycmd.commands,0))
+      data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
+  }
 }
 
 data.save();
 
-const File = Java.type("java.io.File")
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")
 const modPrefix = "&6AU >&r"
 
@@ -83,13 +105,13 @@ register('Chat', (event) => {
   data.save()
 }).setChatCriteria("Your new API key is ").setContains()
 
-export { data, modPrefix }
+export { data, modPrefix, File }
 
 if (f.exists()) {
     const fileArray = f.listFiles()
     for (const i in fileArray) {
         const f1 = new File(fileArray[i])
         if (f1.isFile())
-            require("./mods/" + f1.getName())
+          require("./mods/" + f1.getName())
     }
 }

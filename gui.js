@@ -1,8 +1,85 @@
-import { data } from "./index.js";
-import { @Vigilant, @ButtonProperty, @SliderProperty, @SwitchProperty, @ParagraphProperty, @TextProperty } from 'Vigilance';
+import { data, File } from "./index.js";
+import { @Vigilant, @ButtonProperty, @SliderProperty, @SwitchProperty, @ParagraphProperty, @TextProperty, @SelectorProperty } from 'Vigilance';
+const JavaString = Java.type("java.lang.String")
+
+const f = new File("config/ChatTriggers/modules/AsuAddons/mods/", "custompcmds")
+let fileArray = f.listFiles()
+let output = []
+for (let i = 0; i < fileArray.length; i++) {
+    output.push(new JavaString(fileArray[i].toString().split("\\")[6].split(".")[0] + " - enabled"))
+}
 
 @Vigilant("AsuAddons", "AsuAddons Settings")
 class Settings {
+    @SwitchProperty({
+        name: "MSG",
+        description: "Allow whitelisted players to also execute commands through /msg.",
+        category: "PartyCommands"
+    })
+    partycmdMsgEnabled = data.partycmd.msgEnabled;
+
+    @ParagraphProperty({
+        name: "Allowed Players",
+        description: "List of all players the mod allows to execute party commands for. Seperate with \",\" ex. player1,player2",
+        category: "PartyCommands"
+    })
+    partycmdWhitelist = data.partycmd.whitelist.length > 1 ? data.partycmd.whitelist.join(",") : "";
+
+    @ParagraphProperty({
+        name: "Command Blacklist",
+        description: "List of all /p commands that won't be executed. Seperate with \",\" and include \"p\" ex. p command1,p command2",
+        category: "PartyCommands"
+    })
+    partycmdBlacklist = data.partycmd.blacklist.length > 1 ? data.partycmd.blacklist.join(",") : "";
+
+    @SwitchProperty({
+        name: "Fun Commands",
+        description: "Allow party members to access the fun commands below.",
+        category: "PartyCommands"
+    })
+    partycmdCustomEnabled = data.partycmd.customEnabled;
+
+    @ParagraphProperty({
+        name: "Fun Blacklist",
+        description: "List of all players that can't use the fun commands. Seperate with \",\" ex. player1,player2",
+        category: "PartyCommands"
+    })
+    partycmdCustomBlacklist = data.partycmd.customBlacklist.length > 1 ? data.partycmd.customBlacklist.join(",") : "";
+
+    @SelectorProperty({
+        name: "Commands",
+        description: "List of all fun commands",
+        category: "PartyCommands",
+        options: output
+    })
+    partycmdFunCommands = 0;
+
+    @ButtonProperty({
+        name: "Toggle Command",
+        description: "Toggle the above command.",
+        category: "PartyCommands",
+        placeholder: "Toggle"
+    })
+    toggleCommand() {
+        if (output[this.partycmdFunCommands].split(" - ")[1] == "enabled") {
+            for (let i = 0; i < data.partycmd.commands.length; i++) {
+                if (data.partycmd.commands[i][0] == output[this.partycmdFunCommands].split(" - ")[0]) {
+                    data.partycmd.commands[i][1] = false
+                }
+            }
+            output[this.partycmdFunCommands] = output[this.partycmdFunCommands].replace("enabled","disabled")
+            this.openGUI()
+        } else {
+            for (let i = 0; i < data.partycmd.commands.length; i++) {
+                if (data.partycmd.commands[i][0] == output[this.partycmdFunCommands].split(" - ")[0]) {
+                    data.partycmd.commands[i][1] = true
+                }
+            }
+            output[this.partycmdFunCommands] = output[this.partycmdFunCommands].replace("disabled","enabled")
+            this.openGUI()
+        }
+    }
+
     @SwitchProperty({
         name: "Enable FragBot",
         description: "Toggle the mod.",
@@ -126,30 +203,13 @@ class Settings {
     })
     autojoinCD = data.rp.cooldown / 1000;
 
-    @SwitchProperty({
-        name: "MSG",
-        description: "Allow whitelisted players to also execute commands through /msg.",
-        category: "PartyCommands"
-    })
-    partycmdMsgEnabled = data.partycmd.msgEnabled;
-
-    @ParagraphProperty({
-        name: "Allowed Players",
-        description: "List of all players the mod allows to execute party commands for. Seperate with \",\" ex. player1,player2",
-        category: "PartyCommands"
-    })
-    partycmdWhitelist = data.partycmd.whitelist.length > 1 ? data.partycmd.whitelist.join(",") : "";
-
-    @ParagraphProperty({
-        name: "Command Blacklist",
-        description: "List of all /p commands that won't be executed. Seperate with \",\" and include \"p\" ex. p command1,p command2",
-        category: "PartyCommands"
-    })
-    partycmdBlacklist = data.partycmd.blacklist.length > 1 ? data.partycmd.blacklist.join(",") : "";
-
-
     constructor() {
         this.initialize(this);
+
+        this.addDependency("Commands","Fun Commands")
+        this.addDependency("Fun Blacklist","Fun Commands")
+        this.addDependency("Toggle Command","Fun Commands")
+
         this.registerListener("Enable FragBot", newValue => {
             data.frag.enabled = newValue
         });
@@ -224,8 +284,19 @@ class Settings {
         this.registerListener("MSG", newValue => {
             data.partycmd.msgEnabled = newValue
         });
-        this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
+        this.registerListener("Fun Commands", newValue => {
+            data.partycmd.customEnabled = newValue
+        });
+        this.registerListener("Fun Blacklist", newValue => {
+            if (newValue.includes(",")) {
+                data.partycmd.customBlacklist = newValue.toLowerCase().split(",")
+            } else {
+                data.partycmd.customBlacklist = [newValue.toLowerCase()]
+            }
+        });
+
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")
+        this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
         this.setCategoryDescription("Bridge", "Simple Bridge bot formatting since I didn't like the other bridge mods.\n\n§aMessage Preview: " + data.bridge.bridgeMessage.replace("<1>","Player").replace("<2>","This is a test message."))
         this.setCategoryDescription("Reparty", "Just your average reparty mod.\n\n§4Use At Your Own Risk! (technically a chat macro)")
         this.setCategoryDescription("ReplaceGhost", "A simple dungeons mod that replaced and became a ghost with any msg you want (includes formatting). Leaving the list of player to check for empty will replace the msg for everyone.")
