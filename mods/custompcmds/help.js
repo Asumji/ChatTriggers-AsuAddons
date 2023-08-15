@@ -8,6 +8,6 @@ export function execute(args) {
             output += "!" + fileArray[i].toString().split("\\")[6].split(".")[0] + ", "
         }
         output = output.slice(0,-2)
-        return output;
+        ChatLib.command("pc " + output)
     }
 }

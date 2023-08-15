@@ -30,13 +30,12 @@ register("chat", (event) => {
             const fileArray = f.listFiles()
             for (let i = 0; i < fileArray.length; i++) {
                 let f1 = fileArray[i].toString().split("\\")[6].split(".")[0]
-                if (f1 == cmd.split(" ")[0]) {
-                    print(f1)
-                    for (let j = 0; j < data.partycmd.commands.length; j++) {
+                if (f1 == cmd.split(" ")[0].toLowerCase()) {
+                for (let j = 0; j < data.partycmd.commands.length; j++) {
                         if (data.partycmd.commands[j][0] == f1 && data.partycmd.commands[j][1]) {
-                            ChatLib.chat(modPrefix + " Executing: !" + data.partycmd.commands[j][0])
+                            ChatLib.chat(modPrefix + " Executing: !" + cmd)
                             setTimeout(() => {
-                                ChatLib.command("pc " + require("../mods/custompcmds/" + f1).execute(cmd.split(" ")))
+                                require("../mods/custompcmds/" + f1).execute(cmd.split(" "))
                             }, 1000);
                         }
                     }

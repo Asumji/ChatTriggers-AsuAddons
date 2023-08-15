@@ -65,13 +65,14 @@ register("command", (...args) => {
     §a/partycommands list §eLists all players in the PartyCommands whitelist.`
             )
     } else if (args[0] == "key") {
-        if (args[1]) {
-            data.apiKey = args[1]
-            data.save()
-            ChatLib.chat(modPrefix+" §cThe key was set as " + args[1])
-        } else {
-            ChatLib.chat("§cUsage: /au key <api key>")
-        }
+        // if (args[1]) {
+        //     data.apiKey = args[1]
+        //     data.save()
+        //     ChatLib.chat(modPrefix+" §cThe key was set as " + args[1])
+        // } else {
+        //     ChatLib.chat("§cUsage: /au key <api key>")
+        // }
+        ChatLib.chat(modPrefix + " Since hypixel is now api banning for dev keys in multiple mods you do not need to create your own anymore!")
     } else {
         Settings.openGUI()
     }

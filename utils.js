@@ -100,4 +100,8 @@ function getCataLevel(xp) {
     return cata
 }
 
-export { isInArray, isInArrayIdx, getrequest, getPetLevel, getCataLevel }
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+  }
+
+export { isInArray, isInArrayIdx, getrequest, getPetLevel, getCataLevel, getKeyByValue }

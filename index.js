@@ -5,7 +5,6 @@ import { isInArrayIdx } from "./utils";
 const File = Java.type("java.io.File")
 
 const data = new PogObject("AsuAddons", {
-  apiKey: "",
   frag: {
     names: [],
     owner: "",
@@ -96,16 +95,18 @@ data.save();
 
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")
 const modPrefix = "&6AU >&r"
+const apiKey = "f2875914-b6ba-43b0-a0c3-828516ee01f0"
 
 register('Chat', (event) => {
-  let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-  unformattedMessage = unformattedMessage.replace(/ /g, "").replace("YournewAPIkeyis", "")
-  ChatLib.chat(modPrefix + " §aYour key has been set to §6" + unformattedMessage)
-  data.apiKey = unformattedMessage
-  data.save()
+  // let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
+  // unformattedMessage = unformattedMessage.replace(/ /g, "").replace("YournewAPIkeyis", "")
+  // ChatLib.chat(modPrefix + " §aYour key has been set to §6" + unformattedMessage)
+  // data.apiKey = unformattedMessage
+  // data.save()
+  ChatLib.chat(modPrefix + " Since hypixel is now api banning for dev keys in multiple mods you do not need to create your own anymore!")
 }).setChatCriteria("Your new API key is ").setContains()
 
-export { data, modPrefix, File }
+export { data, modPrefix, File, apiKey }
 
 if (f.exists()) {
     const fileArray = f.listFiles()
