@@ -1,4 +1,5 @@
 import request from "requestV2"
+
 function isInArray(object1,array) {    
     let returnBool = false
     array.forEach(object2 => {
@@ -20,6 +21,7 @@ function isInArrayIdx(object1,array,index) {
 }
 
 const getrequest = function(url) {
+    console.log(url)
     return request({
         url: url,
         headers: {
@@ -102,6 +104,20 @@ function getCataLevel(xp) {
 
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
-  }
+}
 
-export { isInArray, isInArrayIdx, getrequest, getPetLevel, getCataLevel, getKeyByValue }
+function upload(image) {
+    return request({
+        url: "https://api.imgur.com/3/image",
+        method: "POST",
+        headers: {
+            Authorization: `Client-ID d30c6dc9941b52b`,
+        },
+        body: {
+            image
+        },
+        json: true
+    });
+};
+
+export { isInArray, isInArrayIdx, getrequest, getPetLevel, getCataLevel, getKeyByValue, upload }

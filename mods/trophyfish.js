@@ -1,4 +1,4 @@
-import { data, modPrefix, apiKey } from "../index.js"
+import { data, modPrefix, getKey } from "../index.js"
 import { getrequest } from "../utils.js";
 const fishnames = JSON.parse(FileLib.read("AsuAddons", "trophyfish.json"))
 const display = new Display();
@@ -21,7 +21,7 @@ if (data.trophy.firstUse) {
 
     getrequest("https://api.mojang.com/users/profiles/minecraft/" + Player.name).then(response => {
         let uuid = response["id"];
-        getrequest("https://api.hypixel.net/skyblock/profiles?key=" + apiKey + "&uuid=" + uuid).then(response => {
+        getrequest("https://api.hypixel.net/skyblock/profiles?key=" + getKey() + "&uuid=" + uuid).then(response => {
             response["profiles"].forEach(profile => {
                 if (profile.selected) {
                     for (fish in data.trophy.collected) {
