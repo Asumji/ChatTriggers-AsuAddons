@@ -2,12 +2,15 @@
 
 import PogObject from "PogData";
 import { isInArrayIdx } from "./utils";
+import request from "requestV2"
 const File = Java.type("java.io.File")
+const UUID = Java.type("java.util.UUID")
+const Minecraft = Java.type("net.minecraft.client.Minecraft")
 
 const data = new PogObject("AsuAddons", {
-  dev: {
-    key: "",
-    devMode: false
+  ursa: {
+    ursaToken: "",
+    ursaTokenExpires: 0
   },
   frag: {
     names: [],
@@ -94,9 +97,9 @@ if (data.partycmd.commands == undefined) {
       data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
   }
 }
-if (data.dev.key == undefined || data.dev.devMode == undefined) {
-  data.dev.key = ""
-  data.dev.devMode = false
+if (data.ursa.ursaTokenExpires == undefined) {
+  data.ursa.ursaToken = ""
+  data.ursa.ursaTokenExpires = 0
 }
 
 data.save();
@@ -113,12 +116,46 @@ register('Chat', (event) => {
   ChatLib.chat(modPrefix + " Since hypixel is now api banning for dev keys in multiple mods you do not need to create your own anymore!")
 }).setChatCriteria("Your new API key is ").setContains()
 
-function getKey() {
-  if (data.dev.devMode) return data.dev.key
-  return "f2875914-b6ba-43b0-a0c3-828516ee01f0"
+function authorizedRequest(url,_callback) {
+  if (Date.now() >= data.ursa.ursaTokenExpires || data.ursa.ursaToken == "") {
+      console.log("Invalid Ursa Token! Starting joinServer Authentication")
+      let serverId = UUID.randomUUID().toString()
+      let session = Minecraft.func_71410_x().func_110432_I()
+      let name = session.func_111285_a()
+      Minecraft.func_71410_x().func_152347_ac().joinServer(session.func_148256_e(), session.func_148254_d(), serverId)
+      request({
+          url: url,
+          headers: {
+              'User-Agent': 'Mozilla/5.0 (ChatTriggers)',
+              "x-ursa-username": name,
+              "x-ursa-serverid": serverId
+          },
+          json: true,
+          resolveWithFullResponse: true
+      }).then(response => {
+          data.ursa.ursaToken = response.headers["X-Ursa-Token"]
+          data.ursa.ursaTokenExpires = Number(response.headers["X-Ursa-Expires"])
+          data.save()
+          _callback(response.body)
+          console.log("Finished Authentication")
+          return true
+      });
+  } else {
+      request({
+          url: url,
+          headers: {
+              'User-Agent': 'Mozilla/5.0 (ChatTriggers)',
+              "x-ursa-token": data.ursa.ursaToken
+          },
+          json: true,
+      }).then(response => {
+          _callback(response)
+          return true
+      });
+  }
 }
 
-export { data, modPrefix, File, getKey }
+export { data, modPrefix, File, authorizedRequest }
 
 if (f.exists()) {
     const fileArray = f.listFiles()

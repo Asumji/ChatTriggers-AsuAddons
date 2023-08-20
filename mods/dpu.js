@@ -1,4 +1,4 @@
-import { data, modPrefix, getKey } from "../index.js";
+import { data, modPrefix, authorizedRequest } from "../index.js";
 import { getPetLevel, getrequest, getCataLevel } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons", "rarities.json"))
 
@@ -51,14 +51,14 @@ register('Chat', (event) => {
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
             let secrets = "0"
-            getrequest("https://api.hypixel.net/player?key=" + getKey() + "&uuid=" + uuid).then(response => {
+            authorizedRequest("https://ursa.notenoughupdates.org/v1/hypixel/player/"+uuid,function(response) {
                 if (isDungeon) {
                     secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
                     if (secrets == undefined) {
                         secrets = "0"
                     }
                 }
-                getrequest("https://api.hypixel.net/skyblock/profiles?key=" + getKey() + "&uuid=" + uuid).then(response => {
+                authorizedRequest("https://ursa.notenoughupdates.org/v1/hypixel/profiles/"+uuid,function(response) {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
