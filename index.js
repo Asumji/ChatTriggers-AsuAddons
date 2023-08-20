@@ -119,9 +119,9 @@ function authorizedRequest(url,_callback) {
   if (Date.now() >= data.ursa.ursaTokenExpires || data.ursa.ursaToken == "") {
       console.log("AU > Invalid Ursa Token! Starting joinServer Authentication")
       let serverId = UUID.randomUUID().toString()
-      let session = Minecraft.func_71410_x().func_110432_I()
-      let name = session.func_111285_a()
-      Minecraft.func_71410_x().func_152347_ac().joinServer(session.func_148256_e(), session.func_148254_d(), serverId)
+      let session = Minecraft.func_71410_x().func_110432_I() // Minecraft.getInstance().getSession()
+      let name = session.func_111285_a() //Session.getUsername()
+      Minecraft.func_71410_x().func_152347_ac().joinServer(session.func_148256_e(), session.func_148254_d(), serverId) //Minecraft.getInstance().getSessionService(), Session.getProfile(), Session.getToken()
       request({
           url: url,
           headers: {
