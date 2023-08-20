@@ -1,4 +1,4 @@
-import { data, modPrefix } from "../index.js"
+import { data } from "../index.js"
 import Settings from "../gui.js";
 
 register("command", (...args) => {

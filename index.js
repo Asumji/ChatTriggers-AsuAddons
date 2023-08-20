@@ -1,5 +1,3 @@
-/// <reference types="../CTAutocomplete" />
-
 import PogObject from "PogData";
 import { isInArrayIdx } from "./utils";
 import request from "requestV2"
@@ -116,9 +114,10 @@ register('Chat', (event) => {
   ChatLib.chat(modPrefix + " Since hypixel is now api banning for dev keys in multiple mods you do not need to create your own anymore!")
 }).setChatCriteria("Your new API key is ").setContains()
 
+//https://github.com/NotEnoughUpdates/ursa-minor/
 function authorizedRequest(url,_callback) {
   if (Date.now() >= data.ursa.ursaTokenExpires || data.ursa.ursaToken == "") {
-      console.log("Invalid Ursa Token! Starting joinServer Authentication")
+      console.log("AU > Invalid Ursa Token! Starting joinServer Authentication")
       let serverId = UUID.randomUUID().toString()
       let session = Minecraft.func_71410_x().func_110432_I()
       let name = session.func_111285_a()
@@ -137,7 +136,7 @@ function authorizedRequest(url,_callback) {
           data.ursa.ursaTokenExpires = Number(response.headers["X-Ursa-Expires"])
           data.save()
           _callback(response.body)
-          console.log("Finished Authentication")
+          console.log("AU > Finished Authentication")
           return true
       });
   } else {
