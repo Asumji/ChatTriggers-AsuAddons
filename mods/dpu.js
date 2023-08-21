@@ -11,7 +11,7 @@ function decodeInv(data) {
     return items
 }
 
-function buildOutput(player, items, armor, secrets, pet, cata, isDungeon) {
+function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, aurora, terror) {
     if (isDungeon) {
         var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
     } else {
@@ -24,6 +24,16 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon) {
     output.addTextComponent("\n\n§6Armor:§r\n")
     for (let i = 0; i < armor.length; i++) {
         output.addTextComponent(new TextComponent(" " + armor[i][0] + " ").setHover("show_text", armor[i][1]))
+    }
+    if (!isDungeon) {
+        output.addTextComponent("\n\n§6Aurora|Storm:§r\n")
+        for (let i = 0; i < armor.length; i++) {
+            output.addTextComponent(new TextComponent(" " + aurora[i][0] + " ").setHover("show_text", aurora[i][1]))
+        }
+        output.addTextComponent("\n\n§6Terror:§r\n")
+        for (let i = 0; i < armor.length; i++) {
+            output.addTextComponent(new TextComponent(" " + terror[i][0] + " ").setHover("show_text", terror[i][1]))
+        }
     }
     output.addTextComponent("\n\n§6Pet: §r" + pet[0])
     output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
@@ -62,6 +72,8 @@ register('Chat', (event) => {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
+                    let auroraArray = []
+                    let terrorArray = []
                     let pets = ["§cNone", "§cNo"]
                     let cata = -1
                     profiles.forEach(profile => {
@@ -112,6 +124,14 @@ register('Chat', (event) => {
                                     }
                                 }
                             }
+                            if (!isDungeon) {
+                                if (armorArray[1][0].includes("Aurora") || armorArray[1][0].includes("Storm")) {
+                                    auroraArray = armorArray
+                                }
+                                if (armorArray[1][0].includes("Terror")) {
+                                    terrorArray = armorArray
+                                }
+                            }
                             if (profile["members"][uuid]["pets"] != null) {
                                 if (profile["members"][uuid]["pets"].length != 0) {
                                     for (let i = 0; i < profile["members"][uuid]["pets"].length; i++) {
@@ -139,7 +159,7 @@ register('Chat', (event) => {
                             }
                         }
                     })
-                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon)
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, auroraArray, terrorArray)
                 })
             })
         });

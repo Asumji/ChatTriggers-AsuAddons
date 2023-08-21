@@ -256,7 +256,7 @@ class Settings {
             data.trophy.enabled = newValue
         });
         this.registerListener("Bridge Bot", newValue => {
-            data.bridge.bridgeBot = newValue
+            data.bridge.botIGN = newValue
         });
         this.registerListener("Bridge Formatting", newValue => {
             data.bridge.bridgeMessage = newValue
