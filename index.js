@@ -118,6 +118,7 @@ register('Chat', (event) => {
 function authorizedRequest(url,_callback) {
   if (Date.now() >= data.ursa.ursaTokenExpires || data.ursa.ursaToken == "") {
       console.log("AU > Invalid Ursa Token! Starting joinServer Authentication")
+<<<<<<< HEAD
 
       // let output = new Message(`Generating new Ursa Token\n§aTime: §c${new Date(Date.now())}\n§aExpires: §c${new Date(data.ursa.ursaTokenExpires)}\n`)
       // output.addTextComponent(new TextComponent("§cOld Token").setHover("show_text", data.ursa.ursaToken))
@@ -127,6 +128,12 @@ function authorizedRequest(url,_callback) {
       let session = Minecraft.func_71410_x().func_110432_I()
       let name = session.func_111285_a()
       Minecraft.func_71410_x().func_152347_ac().joinServer(session.func_148256_e(), session.func_148254_d(), serverId)
+=======
+      let serverId = UUID.randomUUID().toString()
+      let session = Minecraft.func_71410_x().func_110432_I() // Minecraft.getInstance().getSession()
+      let name = session.func_111285_a() //Session.getUsername()
+      Minecraft.func_71410_x().func_152347_ac().joinServer(session.func_148256_e(), session.func_148254_d(), serverId) //Minecraft.getInstance().getSessionService(), Session.getProfile(), Session.getToken()
+>>>>>>> 452b80e09f649890a7862b44d3dd6169d08404eb
       request({
           url: url,
           headers: {
@@ -140,11 +147,14 @@ function authorizedRequest(url,_callback) {
           data.ursa.ursaToken = response.headers["X-Ursa-Token"]
           data.ursa.ursaTokenExpires = Number(response.headers["X-Ursa-Expires"])
           data.save()
+<<<<<<< HEAD
 
           // output = new Message(`Generated new Ursa Token\n§aTime: §c${new Date(Date.now())}\n§aExpires: §c${new Date(data.ursa.ursaTokenExpires)}\n`)
           // output.addTextComponent(new TextComponent("§cNew Token").setHover("show_text", data.ursa.ursaToken))
           // ChatLib.chat(output)
 
+=======
+>>>>>>> 452b80e09f649890a7862b44d3dd6169d08404eb
           _callback(response.body)
           console.log("AU > Finished Authentication")
           return true
