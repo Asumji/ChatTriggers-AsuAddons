@@ -1,4 +1,4 @@
-import { data, modPrefix } from "../index.js"
+import { data } from "../index.js"
 import Settings from "../gui.js";
 
 register("command", (...args) => {
@@ -66,22 +66,6 @@ register("command", (...args) => {
     §a/partycommands remove <ign> §eRemoves a player from the PartyCommands whitelist.
     §a/partycommands list §eLists all players in the PartyCommands whitelist.`
             )
-    } else if (args[0] == "key") {
-        if (data.dev.devMode == true) {
-            if (args[1]) {
-                data.dev.key = args[1]
-                data.save()
-                ChatLib.chat(modPrefix + " Your Devkey was successfully set.\n§cOnly use this if you know exactly what you are doing! You are risking an api ban.")
-            } else {
-                ChatLib.chat("§cUsage: /au key <key>")
-            }
-        } else {
-            ChatLib.chat("§cYou can only set your key if developer mode is on. Toggle it with /au dev\n§cOnly use this if you know exactly what you are doing! You are risking an api ban.")
-        }
-    } else if (args[0] == "dev") {
-        data.dev.devMode ? data.dev.devMode = false : data.dev.devMode = true
-        data.save()
-        data.dev.devMode ? ChatLib.chat(modPrefix + " Developer mode has been toggled on.\n§cOnly use this if you know exactly what you are doing! You are risking an api ban.") : ChatLib.chat(modPrefix + " Developer mode has been toggled off.")
     } else {
         Settings.openGUI()
     }

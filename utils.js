@@ -21,7 +21,6 @@ function isInArrayIdx(object1,array,index) {
 }
 
 const getrequest = function(url) {
-    console.log(url)
     return request({
         url: url,
         headers: {
