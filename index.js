@@ -109,9 +109,11 @@ if (data.ursa.ursaTokenExpires == undefined) {
   data.ursa.ursaToken = ""
   data.ursa.ursaTokenExpires = 0
 }
-if (data.trophy.renderX == undefined) {
-  data.trophy.renderX = 0
-  data.trophy.renderY = 0
+if (data.trophy.location == undefined) {
+  data.trophy.location = [
+    0,
+    50
+  ]
 }
 
 data.save();
