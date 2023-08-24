@@ -1,7 +1,9 @@
 import { data, modPrefix, authorizedRequest } from "../index.js"
 import { getrequest } from "../utils.js";
+import { Overlay } from "../moveGUI.js";
+
 const fishnames = JSON.parse(FileLib.read("AsuAddons", "trophyfish.json"))
-const display = new Display();
+export const display = new Display();
 
 function render() {
     if (data.trophy.enabled) {
@@ -12,9 +14,11 @@ function render() {
 
         display.clearLines()
         display.setLine(0, trophyString);
-        display.setRenderLoc(0,50)
+        display.setRenderLoc(data.trophy.location[0],data.trophy.location[1])
     }
 }
+
+new Overlay("trophy","movetrophy","trophyfish.js")
 
 if (data.trophy.firstUse) {
     data.trophy.firstUse = false

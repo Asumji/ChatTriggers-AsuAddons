@@ -54,7 +54,11 @@ const data = new PogObject("AsuAddons", {
       obfuscated_fish_3: [0,0,0,0]
     },
     firstUse: true,
-    enabled: false
+    enabled: false,
+    location: [
+      0,
+      50
+    ]
   },
   bridge: {
     botIGN: "bridgebot",
@@ -71,6 +75,12 @@ const data = new PogObject("AsuAddons", {
     customBlacklist: [],
     customEnabled: false,
     commands: []
+  },
+  carry: {
+    location: [
+      0,
+      250
+    ]
   }
 });
 
@@ -98,6 +108,10 @@ if (data.partycmd.commands == undefined) {
 if (data.ursa.ursaTokenExpires == undefined) {
   data.ursa.ursaToken = ""
   data.ursa.ursaTokenExpires = 0
+}
+if (data.trophy.renderX == undefined) {
+  data.trophy.renderX = 0
+  data.trophy.renderY = 0
 }
 
 data.save();

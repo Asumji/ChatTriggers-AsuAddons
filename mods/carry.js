@@ -1,5 +1,8 @@
+import { data } from "../index.js";
+import { Overlay } from "../moveGUI.js";
+
 let carriees = []
-const display = new Display();
+export const display = new Display();
 
 function render() {
     let carryString = ""
@@ -9,8 +12,11 @@ function render() {
 
     display.clearLines()
     display.setLine(0, carryString);
-    display.setRenderLoc(0,250)
+    display.scale(100)
+    display.setRenderLoc(data.carry.location[0],data.carry.location[1])
 }
+
+new Overlay("carry","movecarry","carry.js")
 
 register("command", (...args) => {
     if (args[0]) {

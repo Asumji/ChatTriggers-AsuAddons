@@ -3,12 +3,11 @@ import { data, modPrefix } from "../index.js"
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
     if (unformattedMessage.replace(/\[[^\]]+\]/, "").replace(/ /g, "").toLowerCase().startsWith("guild>" + data.bridge.botIGN) && unformattedMessage.toLowerCase() != "guild > " + data.bridge.botIGN + " joined.") {
-        unformattedMessage = unformattedMessage.split(":").splice(1,2)
+        unformattedMessage = unformattedMessage.split(":").splice(1,unformattedMessage.length)
         unformattedMessage[0] = unformattedMessage[0].replace(" ", "")
-        unformattedMessage[1] = unformattedMessage[1].replace(" ", "")
+        unformattedMessage[1] = unformattedMessage.splice(1).join(" ").replace(" ", "")
         cancel(event)
         ChatLib.chat(data.bridge.bridgeMessage.replace("<1>", unformattedMessage[0]).replace("<2>", unformattedMessage[1]))
-        print(unformattedMessage.toString())
     }
 
 }).setCriteria("Guild > ").setStart()
