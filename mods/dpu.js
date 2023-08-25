@@ -1,6 +1,6 @@
 import { data, modPrefix, authorizedRequest } from "../index.js";
 import { getPetLevel, getrequest, getCataLevel } from "../utils.js";
-const rarities = JSON.parse(FileLib.read("AsuAddons", "rarities.json"))
+const rarities = JSON.parse(FileLib.read("AsuAddons/jsonData", "rarities.json"))
 
 function decodeInv(data) {
     let bytearray = java.util.Base64.getDecoder().decode(data);

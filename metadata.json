@@ -4,5 +4,5 @@
   "description": "A collection of all the small mods I decide to make.",
   "version": "3.1.0",
   "entry": "index.js",
-  "requires": ["PogData", "requestv2", "Vigilance"]
+  "requires": ["PogData", "requestv2", "Vigilance", "RenderLib"]
 }

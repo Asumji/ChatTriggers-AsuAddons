@@ -2,7 +2,7 @@ import { data, modPrefix, authorizedRequest } from "../index.js"
 import { getrequest } from "../utils.js";
 import { Overlay } from "../moveGUI.js";
 
-const fishnames = JSON.parse(FileLib.read("AsuAddons", "trophyfish.json"))
+const fishnames = JSON.parse(FileLib.read("AsuAddons/jsonData", "trophyfish.json"))
 export const display = new Display();
 
 function render() {

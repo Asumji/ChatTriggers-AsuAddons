@@ -1,4 +1,5 @@
 import request from "requestV2"
+import RenderLib from "RenderLib"
 
 function isInArray(object1,array) {    
     let returnBool = false
@@ -119,4 +120,23 @@ function upload(image) {
     });
 };
 
-export { isInArray, isInArrayIdx, getrequest, getPetLevel, getCataLevel, getKeyByValue, upload }
+function calculateDistanceQuick(p1, p2) {
+    var a = p2[0] - p1[0];
+    var b = p2[1] - p1[1];
+    var c = p2[2] - p1[2];
+
+    let ret = a * a + b * b + c * c
+
+    if (ret < 0) {
+        ret *= -1
+    }
+    return ret;
+}
+
+function drawWaypoint(x, y, z, w, h, r, g, b, name, throughWalls)
+{
+    RenderLib.drawEspBox(x+0.5,y,z+0.5,w,h,r,g,b,1,throughWalls)
+    Tessellator.drawString(name,x+0.5,y+1.5,z+0.5,0x37F31A,false,0.1,false)
+}
+
+export { isInArray, isInArrayIdx, getrequest, getPetLevel, getCataLevel, getKeyByValue, upload, drawWaypoint, calculateDistanceQuick }
