@@ -18,7 +18,7 @@ register("Chat", () => {
         renderTrigger = register("renderWorld", () => {
             waypoints.forEach(waypoint => {
                 if (waypoint.phase == currentPhase && !termsDone.includes(waypoint.id)) {
-                    drawWaypoint(waypoint.location[0],waypoint.location[1],waypoint.location[2],1,1,1,1,1,waypoint.type,true) 
+                    drawWaypoint(waypoint.location[0],waypoint.location[1],waypoint.location[2],1,1,0.55,0.09,0.09,waypoint.type,0x0ac324,true,data.dpu.termbeacon,true) 
                 }
             })
         })

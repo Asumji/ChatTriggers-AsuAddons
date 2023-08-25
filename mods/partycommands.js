@@ -3,17 +3,16 @@ import {
     modPrefix,
     File
 } from "../index.js";
-import { isInArray } from "../utils.js";
 
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
     if (unformattedMessage.startsWith("Party >") && unformattedMessage.includes("!p ")) {
-        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("Party > ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray("p " + unformattedMessage.split("!")[1].split(" ")[1],data.partycmd.blacklist) && unformattedMessage.split("!")[1].startsWith("p ")) {
+        if (data.partycmd.whitelist.includes(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("Party > ","").replace(/ /g,"").replace(/:/g,"").toLowerCase()) && !data.partycmd.blacklist.includes("p " + unformattedMessage.split("!")[1].split(" ")[1]) && unformattedMessage.split("!")[1].startsWith("p ")) {
             ChatLib.command(unformattedMessage.split("!")[1])
             ChatLib.chat(modPrefix + " Executing: /" + unformattedMessage.split("!")[1])
         }
     } else if (unformattedMessage.startsWith("From ") && data.partycmd.msgEnabled && unformattedMessage.includes("!p ")) {
-        if (isInArray(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("From ","").replace(/ /g,"").replace(/:/g,"").toLowerCase(),data.partycmd.whitelist) && !isInArray("p " + unformattedMessage.split("!")[1].split(" ")[1],data.partycmd.blacklist) && unformattedMessage.split("!")[1].startsWith("p ")) {
+        if (data.partycmd.whitelist.includes(unformattedMessage.split("!")[0].replace(/\[[^\]]+\]/,"").replace("From ","").replace(/ /g,"").replace(/:/g,"").toLowerCase()) && !data.partycmd.blacklist.includes("p " + unformattedMessage.split("!")[1].split(" ")[1]) && unformattedMessage.split("!")[1].startsWith("p ")) {
             ChatLib.command(unformattedMessage.split("!")[1])
             ChatLib.chat(modPrefix + " Executing: /" + unformattedMessage.split("!")[1])
         }
@@ -23,7 +22,7 @@ register("chat", (event) => {
 commandPrefix = "!"
 register("chat", (event) => {
     let cmd = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    if (data.partycmd.customEnabled && cmd.split(": ")[1].startsWith(commandPrefix) &! isInArray(cmd.split(":")[0].replace(/ /g,"").replace(/\[[^\]]+\]/,"").replace("Party>",""),data.partycmd.customBlacklist)) {
+    if (data.partycmd.customEnabled && cmd.split(": ")[1].startsWith(commandPrefix) &! data.partycmd.customBlacklist.includes(cmd.split(":")[0].replace(/ /g,"").replace(/\[[^\]]+\]/,"").replace("Party>",""))) {
         cmd = cmd.split(commandPrefix)[1]
         const f = new File("config/ChatTriggers/modules/AsuAddons/mods/", "custompcmds")
         if (f.exists()) {

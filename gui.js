@@ -123,6 +123,13 @@ class Settings {
     dpuTermwaypoints = data.dpu.termwaypoints;
 
     @SwitchProperty({
+        name: "Waypoint Beacon",
+        description: "Toggles whether or not the term waypoint has a beacon or not.",
+        category: "Dungeons"
+    })
+    dpuTermbeacon = data.dpu.termbeacon;
+
+    @SwitchProperty({
         name: "Terms Overview",
         description: "Shows you a list of what party members did in f7 p3.",
         category: "Dungeons"
@@ -223,6 +230,7 @@ class Settings {
         this.addDependency("Commands","Fun Commands")
         this.addDependency("Fun Blacklist","Fun Commands")
         this.addDependency("Toggle Command","Fun Commands")
+        this.addDependency("Waypoint Beacon","Terminal Waypoints")
 
         this.registerListener("Enable FragBot", newValue => {
             data.frag.enabled = newValue
@@ -245,6 +253,9 @@ class Settings {
         });
         this.registerListener("Terminal Waypoints", newValue => {
             data.dpu.termwaypoints = newValue
+        });
+        this.registerListener("Waypoint Beacon", newValue => {
+            data.dpu.termbeacon = newValue
         });
         this.registerListener("Terms Overview", newValue => {
             data.dpu.termsummary = newValue

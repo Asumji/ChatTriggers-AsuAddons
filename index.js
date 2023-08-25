@@ -21,7 +21,8 @@ const data = new PogObject("AsuAddons", {
     enabled: false,
     kuudra: false,
     termwaypoints: false,
-    termsummary: false
+    termsummary: false,
+    termbeacon: false
   },
   rghost: {
     names: [],
@@ -95,6 +96,7 @@ if (data.partycmd.customEnabled == undefined) {
 if (data.dpu.termwaypoints == undefined) {
   data.dpu.termwaypoints = false
   data.dpu.termsummary = false
+  data.dpu.termbeacon = false
 }
 if (data.partycmd.commands == undefined) {
   const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")
