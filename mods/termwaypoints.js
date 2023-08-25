@@ -1,4 +1,4 @@
-import { modPrefix } from "../index.js"
+import { data, modPrefix } from "../index.js"
 import { drawWaypoint, calculateDistanceQuick } from "../utils.js"
 const waypoints = JSON.parse(FileLib.read("AsuAddons/jsonData","termCoords.json"))
 
@@ -9,13 +9,20 @@ let termsDone = []
 let players = {}
 
 register("Chat", () => {
-    renderTrigger = register("renderWorld", () => {
-        waypoints.forEach(waypoint => {
-            if (waypoint.phase == currentPhase && !termsDone.includes(waypoint.id)) {
-                drawWaypoint(waypoint.location[0],waypoint.location[1],waypoint.location[2],1,1,1,1,1,waypoint.type,true) 
-            }
+
+    currentPhase = 0
+    termsDone = []
+    players = {}
+
+    if (data.dpu.termwaypoints) {
+        renderTrigger = register("renderWorld", () => {
+            waypoints.forEach(waypoint => {
+                if (waypoint.phase == currentPhase && !termsDone.includes(waypoint.id)) {
+                    drawWaypoint(waypoint.location[0],waypoint.location[1],waypoint.location[2],1,1,1,1,1,waypoint.type,true) 
+                }
+            })
         })
-    })
+    }
 }).setCriteria("[BOSS] Storm: I should have known that I stood no chance.").setStart()
 
 register("Chat", (name,type,current,goal) => {
@@ -30,6 +37,7 @@ register("Chat", (name,type,current,goal) => {
         }
     }
     players[name][type]++
+    
 
     if (type == "device") {
         waypoints.forEach(waypoint => {
@@ -37,6 +45,9 @@ register("Chat", (name,type,current,goal) => {
                 termsDone.push(waypoint.id)
             }
         })
+        if (current == goal) {
+            currentPhase++
+        }
     } else if (type == "lever") {
         let closest = [0,9999999]
         waypoints.forEach(waypoint => {
@@ -47,31 +58,36 @@ register("Chat", (name,type,current,goal) => {
             }
         })
         termsDone.push(closest[0])
+        if (current == goal) {
+            currentPhase++
+        }
     } else if (type == "terminal") {
-        let closest = [0,9999999]
+        let closest = [0,999999999999]
         waypoints.forEach(waypoint => {
             if (waypoint.type == "terminal") {
-                if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])) {
+                if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()]) && !termsDone.includes(waypoint.id)) {
                     closest = [waypoint.id,calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])]
                 }
             }
         })
         termsDone.push(closest[0])
-    }
-
-    if (current == goal) {
-        currentPhase++
-    }
-
-    if (currentPhase > 3 && renderTrigger != undefined) {
-        renderTrigger.unregister()
-
-        let playerString = ""
-        for (let player in players) {
-            print(JSON.stringify(players[player]))
-            playerString += `${modPrefix} §b${player}: §aTerms: §c${players[player].terminal}, §aDevices: §c${players[player].device}, §aLevers: §c${players[player].lever}`
+        if (current == goal) {
+            currentPhase++
         }
-
-        ChatLib.chat(playerString)
     }
-}).setCriteria(/(.*) activated a (lever|terminal|device)! \((\d)\/(\d)\)/).setStart()
+
+    if (currentPhase > 3) {
+        if (renderTrigger != undefined) renderTrigger.unregister()
+
+        if (data.dpu.termsummary) {
+            let playerString = ""
+            for (let player in players) {
+                print(JSON.stringify(players[player]))
+                playerString += `${modPrefix} §b${player}: §aTerms: §c${players[player].terminal}, §aDevices: §c${players[player].device}, §aLevers: §c${players[player].lever}\n`
+            }
+            playerString = playerString.replace(/\n$/, "")
+
+            ChatLib.chat(playerString)
+        }
+    }
+}).setCriteria(/(.*) (?:activated|completed) a (lever|terminal|device)! \((\d)\/(\d)\)/).setStart()

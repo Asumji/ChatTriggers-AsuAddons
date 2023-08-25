@@ -19,7 +19,9 @@ const data = new PogObject("AsuAddons", {
   dpu: {
     relevantItems: ["scylla", "hyperion", "astraea", "valkyrie", "terminator", "juju", "axe of the shredded", "livid dagger", "spirit bow", "last breath"],
     enabled: false,
-    kuudra: false
+    kuudra: false,
+    termwaypoints: false,
+    termsummary: false
   },
   rghost: {
     names: [],
@@ -89,6 +91,10 @@ if (data.partycmd.customBlacklist == undefined) {
 }
 if (data.partycmd.customEnabled == undefined) {
   data.partycmd.customEnabled = false
+}
+if (data.dpu.termwaypoints == undefined) {
+  data.dpu.termwaypoints = false
+  data.dpu.termsummary = false
 }
 if (data.partycmd.commands == undefined) {
   const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")

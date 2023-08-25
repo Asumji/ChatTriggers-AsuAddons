@@ -111,21 +111,35 @@ class Settings {
     @SwitchProperty({
         name: "Enable DPU",
         description: "Toggle the mod.",
-        category: "DungeonPartyUtils"
+        category: "Dungeons"
     })
     dpuEnabled = data.dpu.enabled;
 
     @SwitchProperty({
+        name: "Terminal Waypoints",
+        description: "Marks undone terminals. (Same as Soopy but less buggy I think)",
+        category: "Dungeons"
+    })
+    dpuTermwaypoints = data.dpu.termwaypoints;
+
+    @SwitchProperty({
+        name: "Terms Overview",
+        description: "Shows you a list of what party members did in f7 p3.",
+        category: "Dungeons"
+    })
+    dpuTermsummary = data.dpu.termsummary;
+
+    @SwitchProperty({
         name: "Enable Kuudra",
         description: "Toggles the party finder for kuudra.",
-        category: "DungeonPartyUtils"
+        category: "Dungeons"
     })
     dpuKuudra = data.dpu.kuudra;
 
     @ParagraphProperty({
         name: "Relevant Items",
         description: "List of all items the mod checks for. Seperate with \",\" ex. item1,item2",
-        category: "DungeonPartyUtils"
+        category: "Dungeons"
     })
     dpuItems = data.dpu.relevantItems.length > 1 ? data.dpu.relevantItems.join(",") : "";
 
@@ -229,6 +243,12 @@ class Settings {
         this.registerListener("Enable DPU", newValue => {
             data.dpu.enabled = newValue
         });
+        this.registerListener("Terminal Waypoints", newValue => {
+            data.dpu.termwaypoints = newValue
+        });
+        this.registerListener("Terms Overview", newValue => {
+            data.dpu.termsummary = newValue
+        });
         this.registerListener("Enable Kuudra", newValue => {
             data.dpu.kuudra = newValue
         });
@@ -301,7 +321,7 @@ class Settings {
         this.setCategoryDescription("Reparty", "Just your average reparty mod.\n\n§4Use At Your Own Risk! (technically a chat macro)")
         this.setCategoryDescription("ReplaceGhost", "A simple dungeons mod that replaced and became a ghost with any msg you want (includes formatting). Leaving the list of player to check for empty will replace the msg for everyone.")
         this.setCategoryDescription("FragBot", "A better FragBot mod than most other mods.\nSolo dungeons are being added so this is mostly irrelavent but keeping it here for anyone that needs it.\n\n§4Use At Your Own Risk! (fragbots are bannable)")
-        this.setCategoryDescription("DungeonPartyUtils", "A Party Finder mod for dungeons to quickly see what stuff your teammates have.")
+        this.setCategoryDescription("Dungeons", "A QOL mod for dungeons to give useful information for your runs.")
     }
 }
 
