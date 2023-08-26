@@ -9,7 +9,13 @@ for (let i = 0; i < fileArray.length; i++) {
     output.push(new JavaString(fileArray[i].toString().split("\\")[6].split(".")[0] + " - enabled"))
 }
 
-@Vigilant("AsuAddons", "AsuAddons Settings")
+@Vigilant("AsuAddons", "AsuAddons Settings", {
+    getCategoryComparator: () => (a, b) => {
+        const categories = ["PartyCommand","TrophyFish","Bridge","Reparty","ReplaceGhost","FragBot","Dungeons"];
+
+        return categories.indexOf(a.name) - categories.indexOf(b.name);
+    }
+})
 class Settings {
     @SwitchProperty({
         name: "MSG",

@@ -139,6 +139,13 @@ register('Chat', (event) => {
 }).setChatCriteria("Your new API key is ").setContains()
 
 //https://github.com/NotEnoughUpdates/ursa-minor/
+
+/**
+ * Sends an authorized request to the NotEnoughUpdates Hypixel API Proxy.
+ * @param {String} url The url to request.
+ * @param {Function} _callback The function the callback calls.
+ * @callback callback The body of the request.
+ */
 function authorizedRequest(url,_callback) {
   if (Date.now() >= data.ursa.ursaTokenExpires || data.ursa.ursaToken == "") {
       console.log("AU > Invalid Ursa Token! Starting joinServer Authentication")
