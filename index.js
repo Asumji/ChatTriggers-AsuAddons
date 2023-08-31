@@ -1,6 +1,7 @@
 import PogObject from "PogData";
 import { isInArrayIdx } from "./utils";
 import request from "requestV2"
+const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
 const File = Java.type("java.io.File")
 const UUID = Java.type("java.util.UUID")
 const Minecraft = Java.type("net.minecraft.client.Minecraft")
@@ -21,8 +22,7 @@ const data = new PogObject("AsuAddons", {
     enabled: false,
     kuudra: false,
     termwaypoints: false,
-    termsummary: false,
-    termbeacon: false
+    termsummary: false
   },
   rghost: {
     names: [],
@@ -96,7 +96,6 @@ if (data.partycmd.customEnabled == undefined) {
 if (data.dpu.termwaypoints == undefined) {
   data.dpu.termwaypoints = false
   data.dpu.termsummary = false
-  data.dpu.termbeacon = false
 }
 if (data.partycmd.commands == undefined) {
   const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")
@@ -139,13 +138,6 @@ register('Chat', (event) => {
 }).setChatCriteria("Your new API key is ").setContains()
 
 //https://github.com/NotEnoughUpdates/ursa-minor/
-
-/**
- * Sends an authorized request to the NotEnoughUpdates Hypixel API Proxy.
- * @param {String} url The url to request.
- * @param {Function} _callback The function the callback calls.
- * @callback callback The body of the request.
- */
 function authorizedRequest(url,_callback) {
   if (Date.now() >= data.ursa.ursaTokenExpires || data.ursa.ursaToken == "") {
       console.log("AU > Invalid Ursa Token! Starting joinServer Authentication")
@@ -161,7 +153,7 @@ function authorizedRequest(url,_callback) {
       request({
           url: url,
           headers: {
-              'User-Agent': 'Mozilla/5.0 (ChatTriggers)',
+              'User-Agent': 'AsuAddons ' + metadata.version,
               "x-ursa-username": name,
               "x-ursa-serverid": serverId
           },
@@ -184,7 +176,7 @@ function authorizedRequest(url,_callback) {
       request({
           url: url,
           headers: {
-              'User-Agent': 'Mozilla/5.0 (ChatTriggers)',
+              'User-Agent': 'AsuAddons ' + metadata.version,
               "x-ursa-token": data.ursa.ursaToken
           },
           json: true,

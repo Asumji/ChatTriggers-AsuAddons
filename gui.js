@@ -11,7 +11,7 @@ for (let i = 0; i < fileArray.length; i++) {
 
 @Vigilant("AsuAddons", "AsuAddons Settings", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["PartyCommand","TrophyFish","Bridge","Reparty","ReplaceGhost","FragBot","Dungeons"];
+        const categories = ["PartyCommands","TrophyFish","Bridge","Reparty","ReplaceGhost","FragBot","Dungeons"];
 
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
