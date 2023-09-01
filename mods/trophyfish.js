@@ -25,7 +25,7 @@ if (data.trophy.firstUse) {
 
     getrequest("https://api.mojang.com/users/profiles/minecraft/" + Player.name).then(response => {
         let uuid = response["id"];
-        authorizedRequest("https://ursa.notenoughupdates.org/v1/hypixel/profiles/"+uuid,function(response) {
+        authorizedRequest("http://asumji.duckdns.org:3000/skyblock/profiles/"+uuid,function(response) {
             response["profiles"].forEach(profile => {
                 if (profile.selected) {
                     for (fish in data.trophy.collected) {

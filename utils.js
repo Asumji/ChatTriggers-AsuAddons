@@ -1,6 +1,7 @@
 import request from "requestV2"
 import RenderLib from "RenderLib"
 import renderBeaconBeam from "../BeaconBeam"
+const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
 
 /**
  * Checks if an array made of smaller array includes a value at a specified index in the inner array.
@@ -27,7 +28,7 @@ const getrequest = function(url) {
     return request({
         url: url,
         headers: {
-            'User-Agent': 'Mozilla/5.0 (ChatTriggers)'
+            'User-Agent': 'AsuAddons ' + metadata.version + " | " + Player.name
         },
         json: true
     });

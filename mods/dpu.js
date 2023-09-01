@@ -51,14 +51,14 @@ register('Chat', (event) => {
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
             let secrets = "0"
-            authorizedRequest("https://ursa.notenoughupdates.org/v1/hypixel/player/"+uuid,function(response) {
+            authorizedRequest("http://asumji.duckdns.org:3000/player?uuid="+uuid,function(response) {
                 if (isDungeon) {
                     secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
                     if (secrets == undefined) {
                         secrets = "0"
                     }
                 }
-                authorizedRequest("https://ursa.notenoughupdates.org/v1/hypixel/profiles/"+uuid,function(response) {
+                authorizedRequest("http://asumji.duckdns.org:3000/skyblock/profiles?uuid="+uuid,function(response) {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
