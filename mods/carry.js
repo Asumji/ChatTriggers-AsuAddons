@@ -12,7 +12,6 @@ function render() {
 
     display.clearLines()
     display.setLine(0, carryString);
-    display.scale(100)
     display.setRenderLoc(data.carry.location[0],data.carry.location[1])
 }
 
