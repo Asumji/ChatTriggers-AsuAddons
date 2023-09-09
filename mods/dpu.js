@@ -1,4 +1,4 @@
-import { data, modPrefix, authorizedRequest } from "../index.js";
+import { data, modPrefix } from "../index.js";
 import { getPetLevel, getrequest, getCataLevel } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons/jsonData", "rarities.json"))
 
@@ -51,14 +51,14 @@ register('Chat', (event) => {
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
             let secrets = "0"
-            authorizedRequest("http://asumji.duckdns.org:3000/player?uuid="+uuid,function(response) {
+            getrequest("http://asumji.duckdns.org:3000/player?uuid="+uuid).then(response => {
                 if (isDungeon) {
                     secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
                     if (secrets == undefined) {
                         secrets = "0"
                     }
                 }
-                authorizedRequest("http://asumji.duckdns.org:3000/skyblock/profiles?uuid="+uuid,function(response) {
+                getrequest("http://asumji.duckdns.org:3000/skyblock/profiles?uuid="+uuid).then(response => {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []

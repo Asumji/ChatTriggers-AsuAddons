@@ -1,10 +1,6 @@
 import PogObject from "PogData";
 import { isInArrayIdx } from "./utils";
-import { getrequest } from "./utils.js"
-const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
 const File = Java.type("java.io.File")
-const UUID = Java.type("java.util.UUID")
-const Minecraft = Java.type("net.minecraft.client.Minecraft")
 
 const data = new PogObject("AsuAddons", {
   ursa: {
@@ -139,13 +135,7 @@ register('Chat', (event) => {
   ChatLib.chat(modPrefix + " Since hypixel is now api banning for dev keys in multiple mods you do not need to create your own anymore!")
 }).setChatCriteria("Your new API key is ").setContains()
 
-function authorizedRequest(url,_callback) {
-  getrequest(url).then(response => {
-    _callback(response)
-  })
-}
-
-export { data, modPrefix, File, authorizedRequest }
+export { data, modPrefix, File }
 
 if (f.exists()) {
     const fileArray = f.listFiles()

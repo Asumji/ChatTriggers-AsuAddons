@@ -1,4 +1,4 @@
-import { data, modPrefix, authorizedRequest } from "../index.js"
+import { data, modPrefix } from "../index.js"
 import { getrequest } from "../utils.js";
 import { Overlay } from "../moveGUI.js";
 
@@ -25,7 +25,7 @@ if (data.trophy.firstUse) {
 
     getrequest("https://api.mojang.com/users/profiles/minecraft/" + Player.name).then(response => {
         let uuid = response["id"];
-        authorizedRequest("http://asumji.duckdns.org:3000/skyblock/profiles/"+uuid,function(response) {
+        getrequest("http://asumji.duckdns.org:3000/skyblock/profiles/"+uuid).then(response => {
             response["profiles"].forEach(profile => {
                 if (profile.selected) {
                     for (fish in data.trophy.collected) {
