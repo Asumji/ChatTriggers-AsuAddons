@@ -9,7 +9,7 @@ const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
  * @param {Array[]} array The array to look through. 
  * @returns {bool} If the value exists.
  */
-function isInArrayIdx(object1,array,index) {    
+export function isInArrayIdx(object1,array,index) {    
     let returnBool = false
     array.forEach(object2 => {
         if (object2[index] == object1) {
@@ -24,7 +24,7 @@ function isInArrayIdx(object1,array,index) {
  * @param {url} url The url to request.
  * @returns The request body.
  */
-const getrequest = function(url) {
+export const getrequest = function(url) {
     return request({
         url: url,
         headers: {
@@ -41,7 +41,7 @@ const getrequest = function(url) {
  * @param {String} offsetRarity The rarity of a pet.
  * @returns The level of a pet.
  */
-function getPetLevel(petExp, offsetRarity, maxLevel) {
+export function getPetLevel(petExp, offsetRarity, maxLevel) {
     const offset = {
         COMMON: 0,
         UNCOMMON: 6,
@@ -98,7 +98,7 @@ function getPetLevel(petExp, offsetRarity, maxLevel) {
  * @param {Number} xp The cata xp of a player.
  * @returns The cata level of a player.
  */
-function getCataLevel(xp) {
+export function getCataLevel(xp) {
     const cataLevelArray = [
         0, 50, 125, 235, 395, 625, 955, 1425, 2095, 3045, 4385, 6275, 8940, 12700, 17960, 25340,
         35640, 50040, 70040, 97640, 135640, 188140, 259640, 356640, 488640, 668640, 911640, 1239640,
@@ -123,7 +123,7 @@ function getCataLevel(xp) {
  * @param {any} value The value of they key to look for.
  * @returns The Key in which the value is held.
  */
-function getKeyByValue(object, value) {
+export function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
@@ -132,7 +132,7 @@ function getKeyByValue(object, value) {
  * @param {Image} image 
  * @returns The request body including the link to the image.
  */
-function upload(image) {
+export function upload(image) {
     return request({
         url: "https://api.imgur.com/3/image",
         method: "POST",
@@ -152,7 +152,7 @@ function upload(image) {
  * @param {Number[3]} p2 End Place.
  * @returns The Distance between the 2 places.
  */
-function calculateDistanceQuick(p1, p2) {
+export function calculateDistanceQuick(p1, p2) {
     var a = p2[0] - p1[0];
     var b = p2[1] - p1[1];
     var c = p2[2] - p1[2];
@@ -167,11 +167,11 @@ function calculateDistanceQuick(p1, p2) {
 
 /**
  * Lightens or Darkens a HEX colour.
- * @param num The HEX colour in number form.
- * @param amt The amount to darken (-) or lighten (+) it by.
+ * @param {Number} num The HEX colour in number form.
+ * @param {Number} amt The amount to darken (-) or lighten (+) it by.
  * @returns The new shifted colour.
  */
-function LightenDarkenColor(num, amt) {
+export function LightenDarkenColor(num, amt) {
     var r = (num >> 16) + amt;
     var b = ((num >> 8) & 0x00FF) + amt;
     var g = (num & 0x0000FF) + amt;
@@ -195,7 +195,7 @@ function LightenDarkenColor(num, amt) {
  * @param {Boolean} beacon If it should have a beacon.
  * @param {Boolean} distance If it should display the distacne to the player. (Inherits the colour of the above text but shifts it a little.) 
  */
-function drawWaypoint(x, y, z, w, h, r, g, b, name, textColour, throughWalls, beacon, distance)
+export function drawWaypoint(x, y, z, w, h, r, g, b, name, textColour, throughWalls, beacon, distance)
 {
     let distToPlayer=Math.sqrt((x-Player.getRenderX())**2+(y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2+(z-Player.getRenderZ())**2);
     if (beacon) renderBeaconBeam(x,y,z,r,g,b,1,true)
@@ -203,5 +203,3 @@ function drawWaypoint(x, y, z, w, h, r, g, b, name, textColour, throughWalls, be
     Tessellator.drawString(name,x+0.5,y+2,z+0.5,textColour,false,0.09,false)
     if (distance) Tessellator.drawString("("+String(Math.round(distToPlayer))+"m)",x+0.5,y+1,z+0.5,LightenDarkenColor(textColour,+40),false,0.06,false)
 }
-
-export { isInArrayIdx, getrequest, getPetLevel, getCataLevel, getKeyByValue, upload, drawWaypoint, calculateDistanceQuick }
