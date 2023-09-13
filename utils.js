@@ -203,3 +203,20 @@ export function drawWaypoint(x, y, z, w, h, r, g, b, name, textColour, throughWa
     Tessellator.drawString(name,x+0.5,y+2,z+0.5,textColour,false,0.09,false)
     if (distance) Tessellator.drawString("("+String(Math.round(distToPlayer))+"m)",x+0.5,y+1,z+0.5,LightenDarkenColor(textColour,+40),false,0.06,false)
 }
+
+/**
+ * Send a message to any webhook.
+ * @param {JSON} params The parameters for the message (ex. username,content,embeds) 
+ * @param {String} webhook The webhook url.
+*/
+export function sendWebhookMessage(params,webhook) {
+    request({
+        method: "POST",
+        url: webhook,
+        headers: {
+            "Content-type": "application/json",
+            "User-Agent": "Mozilla/5.0"
+        },
+        body: params
+    })
+}

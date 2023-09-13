@@ -1,5 +1,6 @@
-import { data } from "../index.js"
+import { data, modPrefix } from "../index.js"
 import Settings from "../gui.js";
+import { sendWebhookMessage } from "../utils.js";
 
 register("command", (...args) => {
     if (args[0] == "help") {
@@ -37,6 +38,16 @@ register("command", (...args) => {
     §a/addalias <alias> <ign> §eAdds an alias.
     §a/removealias <alias> §e Removes an alias.`
             )
+    } else if (args[0] == "report") {
+        //I mean I'll assume no one's gonna spam this webhook but do I care? not really. Please don't tho <3
+        sendWebhookMessage({username:"AsuAddons API Reports",content:"Someone has reported an api outage.",embeds:[{
+            title:"New API Outage Report",
+            color:0xFF0000,
+            description:Player.name + " has reported that the API is down.\n\n" + String(new Date(Date.now())).split(" GMT")[0],
+            footer:{text:"This message was sent through the /au report command."},
+            thumbnail:{url:"https://mc-heads.net/player/"+Player.name}
+        }]},"https://discord.com/api/webhooks/1151510044827983924/epsDb2J6l9LrLQLSrJnXVKgAeUGSdXoisavTt9cjIUjrJPvYFLw4HwkquYtenKmskbEv")
+        ChatLib.chat(modPrefix + " §aYour report has been sent.")
     } else {
         Settings.openGUI()
     }
