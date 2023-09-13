@@ -1,7 +1,7 @@
 import { getrequest } from "../utils.js"
 import { modPrefix } from "../index.js"
 
-const checkIntervalSeconds = 6
+const checkIntervalSeconds = 600
 
 let counter = 9
 const stepRegister = register("step", () => {
