@@ -193,7 +193,7 @@ export function LightenDarkenColor(num, amt) {
  * @param {Number} textColour The colour of the drawn text.
  * @param {Boolean} throughWalls If the waypoint can be seen through walls.
  * @param {Boolean} beacon If it should have a beacon.
- * @param {Boolean} distance If it should display the distacne to the player. (Inherits the colour of the above text but shifts it a little.) 
+ * @param {Boolean} distance If it should display the distance to the player. (Inherits the colour of the above text but shifts it a little.) 
  */
 export function drawWaypoint(x, y, z, w, h, r, g, b, name, textColour, throughWalls, beacon, distance)
 {

@@ -49,7 +49,7 @@ register("Chat", (name,type,current,goal) => {
             currentPhase++
         }
     } else if (type == "lever") {
-        let closest = [0,9999999]
+        let closest = [0,999999999999]
         waypoints.forEach(waypoint => {
             if (waypoint.type == "lever") {
                 if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])) {
@@ -82,7 +82,6 @@ register("Chat", (name,type,current,goal) => {
         if (data.dpu.termsummary) {
             let playerString = ""
             for (let player in players) {
-                print(JSON.stringify(players[player]))
                 playerString += `${modPrefix} §b${player}: §aTerms: §c${players[player].terminal}, §aDevices: §c${players[player].device}, §aLevers: §c${players[player].lever}\n`
             }
             playerString = playerString.replace(/\n$/, "")

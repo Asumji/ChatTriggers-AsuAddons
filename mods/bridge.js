@@ -10,7 +10,7 @@ register("chat", (event) => {
         ChatLib.chat(data.bridge.bridgeMessage.replace("<1>", unformattedMessage[0]).replace("<2>", unformattedMessage[1]))
     }
 
-}).setCriteria("Guild > ").setStart()
+}).setCriteria(/Guild > (?:\[[^\]]+\] )?.* (?:\[[^\]]+\])?: .*/).setStart()
 
 register("command", (...args) => {
     if (args[0]) {
