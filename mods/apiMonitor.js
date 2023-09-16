@@ -3,7 +3,7 @@ import { modPrefix } from "../index.js"
 
 const checkIntervalSeconds = 600
 
-let counter = 9
+let counter = 0
 const stepRegister = register("step", () => {
     counter++
     if (counter >= checkIntervalSeconds) {
