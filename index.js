@@ -3,10 +3,6 @@ import { isInArrayIdx } from "./utils";
 const File = Java.type("java.io.File")
 
 const data = new PogObject("AsuAddons", {
-  ursa: {
-    ursaToken: "",
-    ursaTokenExpires: 0
-  },
   frag: {
     names: [],
     owner: "",
@@ -109,10 +105,6 @@ if (data.partycmd.commands == undefined) {
     if (!isInArrayIdx(fileArray[i].toString().split("\\")[6].split(".")[0],data.partycmd.commands,0))
       data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
   }
-}
-if (data.ursa.ursaTokenExpires == undefined) {
-  data.ursa.ursaToken = ""
-  data.ursa.ursaTokenExpires = 0
 }
 if (data.trophy.location == undefined) {
   data.trophy.location = [
