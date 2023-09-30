@@ -2,6 +2,9 @@ import { data, modPrefix } from "../index.js"
 import Settings from "../gui.js";
 import { sendWebhookMessage } from "../utils.js";
 
+//au report should only ever be used once in a session.
+used = false
+
 register("command", (...args) => {
     if (args[0] == "help") {
         ChatLib.chat(
@@ -33,12 +36,13 @@ register("command", (...args) => {
 §6§lCustomCommands
     §a/addcommand <new command> <command to run> §eAdds a command.
     §a/removecommand <command> §eRemoves a command.
+    §a/listcommand <command> §eLists all currently set up commands.
 
 §6§lAlias
     §a/addalias <alias> <ign> §eAdds an alias.
     §a/removealias <alias> §e Removes an alias.`
             )
-    } else if (args[0] == "report") {
+    } else if (args[0] == "report" && used != true) {
         //I mean I'll assume no one's gonna spam this webhook but do I care? not really. Please don't tho <3
         sendWebhookMessage({username:"AsuAddons API Reports",content:"Someone has reported an api outage.",embeds:[{
             title:"New API Outage Report",
@@ -47,6 +51,7 @@ register("command", (...args) => {
             footer:{text:"This message was sent through the /au report command."},
             thumbnail:{url:"https://mc-heads.net/player/"+Player.name}
         }]},"https://discord.com/api/webhooks/1151510044827983924/epsDb2J6l9LrLQLSrJnXVKgAeUGSdXoisavTt9cjIUjrJPvYFLw4HwkquYtenKmskbEv")
+        used = false
         ChatLib.chat(modPrefix + " §aYour report has been sent.")
     } else {
         Settings.openGUI()

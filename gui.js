@@ -179,7 +179,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Enable TrophyFish",
-        description: "Toggle the mod.",
+        description: "Toggle the mod.\n§a/movetrophy §rto move the gui.",
         category: "TrophyFish"
     })
     trophyEnabled = data.trophy.enabled;
