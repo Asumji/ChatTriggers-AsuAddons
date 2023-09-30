@@ -80,39 +80,6 @@ const data = new PogObject("AsuAddons", {
   }
 });
 
-if (data.partycmd.customBlacklist == undefined) {
-  data.partycmd.customBlacklist = []
-}
-if (data.partycmd.customEnabled == undefined) {
-  data.partycmd.customEnabled = false
-}
-if (data.dpu.termwaypoints == undefined) {
-  data.dpu.termwaypoints = false
-  data.dpu.termsummary = false
-  data.dpu.termbeacon = false
-}
-if (data.partycmd.commands == undefined) {
-  const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")
-  const fileArray = f.listFiles()
-  data.partycmd.commands = []
-  for (let i = 0; i < fileArray.length; i++) {
-    data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
-  }
-} else {
-  const f = new File("config/ChatTriggers/modules/AsuAddons/mods", "custompcmds")
-  const fileArray = f.listFiles()
-  for (let i = 0; i < fileArray.length; i++) {
-    if (!isInArrayIdx(fileArray[i].toString().split("\\")[6].split(".")[0],data.partycmd.commands,0))
-      data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
-  }
-}
-if (data.trophy.location == undefined) {
-  data.trophy.location = [
-    0,
-    50
-  ]
-}
-
 data.save();
 
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")
