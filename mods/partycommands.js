@@ -28,9 +28,14 @@ register("chat", (event) => {
         if (f.exists()) {
             const fileArray = f.listFiles()
             for (let i = 0; i < fileArray.length; i++) {
+
+                if (!isInArrayIdx(fileArray[i].toString().split("\\")[6].split(".")[0],data.partycmd.commands,0)) {
+                    data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
+                }
+
                 let f1 = fileArray[i].toString().split("\\")[6].split(".")[0]
                 if (f1 == cmd.split(" ")[0].toLowerCase()) {
-                for (let j = 0; j < data.partycmd.commands.length; j++) {
+                    for (let j = 0; j < data.partycmd.commands.length; j++) {
                         if (data.partycmd.commands[j][0] == f1 && data.partycmd.commands[j][1]) {
                             ChatLib.chat(modPrefix + " Executing: !" + cmd)
                             setTimeout(() => {
