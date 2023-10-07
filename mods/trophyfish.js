@@ -59,14 +59,11 @@ register("chat", (event) => {
 
     if (fishRarity == "BRONZE.") {
         data.trophy.collected[fishnames[fishName]][0] += 1
-    }
-    if (fishRarity == "SILVER.") {
+    } else if (fishRarity == "SILVER.") {
         data.trophy.collected[fishnames[fishName]][1] += 1
-    }
-    if (fishRarity == "GOLD.") {
+    } else if (fishRarity == "GOLD.") {
         data.trophy.collected[fishnames[fishName]][2] += 1
-    }
-    if (fishRarity == "DIAMOND.") {
+    } else if (fishRarity == "DIAMOND.") {
         data.trophy.collected[fishnames[fishName]][3] += 1
     }
     data.save()

@@ -9,7 +9,6 @@ let termsDone = []
 let players = {}
 
 register("Chat", () => {
-
     currentPhase = 0
     termsDone = []
     players = {}

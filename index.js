@@ -1,5 +1,4 @@
 import PogObject from "PogData";
-import { isInArrayIdx } from "./utils";
 const File = Java.type("java.io.File")
 
 const data = new PogObject("AsuAddons", {
