@@ -1,6 +1,7 @@
 import { modPrefix } from "../index.js"
 import { getrequest } from "../utils.js";
 
+//TODO: eventually add support for non-kuudra items if I ever feel like it.
 register("command", () => {
     if (Player.getHeldItem() == null) {
         ChatLib.chat(modPrefix + " §cYou are not holding an item.")
