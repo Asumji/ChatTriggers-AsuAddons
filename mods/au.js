@@ -10,9 +10,10 @@ register("command", (...args) => {
         ChatLib.chat(
 `§2All Commands:
 
-§6§lMain
+§6§lMisc
     §a/au §eOpens the Config GUI.
     §a/au help §eShows this message.
+    §a/attributevalue §eShows lowest BIN of the attributes on the item you are holding.
 
 §6§lCarryHelper
     §a/movecarry §eMove the GUI.        

@@ -82,7 +82,7 @@ const data = new PogObject("AsuAddons", {
 data.save();
 
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")
-const modPrefix = "&6AU >&r"
+const modPrefix = "§6AU >§r"
 
 register('Chat', (event) => {
   // let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
