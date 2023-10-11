@@ -52,7 +52,7 @@ register("command", (...args) => {
             footer:{text:"This message was sent through the /au report command."},
             thumbnail:{url:"https://mc-heads.net/player/"+Player.name}
         }]},"https://discord.com/api/webhooks/1151510044827983924/epsDb2J6l9LrLQLSrJnXVKgAeUGSdXoisavTt9cjIUjrJPvYFLw4HwkquYtenKmskbEv")
-        used = false
+        used = true
         ChatLib.chat(modPrefix + " §aYour report has been sent.")
     } else {
         Settings.openGUI()
