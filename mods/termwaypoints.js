@@ -24,6 +24,10 @@ register("Chat", () => {
     }
 }).setCriteria("[BOSS] Storm: I should have known that I stood no chance.").setStart()
 
+register("Chat", () => {
+    if (renderTrigger != undefined) renderTrigger.unregister()
+}).setCriteria("The Core entrance is opening!").setStart()
+
 register("Chat", (name,type,current,goal) => {
     let player = World.getPlayerByName(name)
     if (player == undefined) return
