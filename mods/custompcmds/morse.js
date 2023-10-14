@@ -1,5 +1,7 @@
 import { getKeyByValue } from "../../utils";
 
+export const desc = "Encode/Decode sentences into morsecode."
+
 export function execute(args) {
     const dict = {
         "A": ".-",

@@ -4,6 +4,8 @@ import {
     File
 } from "../index.js";
 
+import { isInArrayIdx } from "../utils.js"
+
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
     if (unformattedMessage.startsWith("Party >") && unformattedMessage.includes("!p ")) {

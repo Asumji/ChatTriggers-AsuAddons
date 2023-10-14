@@ -1,3 +1,5 @@
+export const desc = "Calculate numbers."
+
 export function execute(args) {
     const formula = args.splice(1,args.length).join(" ").replace(/[^-()\d\/*+.]/g, "")
     if (formula == "" || !formula.match(/\d/g)) return ChatLib.command("pc " + "That was not a valid calculation.")

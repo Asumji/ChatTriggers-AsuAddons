@@ -1,13 +1,10 @@
-import { data, File } from "./index.js";
-import { @Vigilant, @ButtonProperty, @SliderProperty, @SwitchProperty, @ParagraphProperty, @TextProperty, @SelectorProperty } from 'Vigilance';
-const JavaString = Java.type("java.lang.String")
+import { data } from "./index.js";
+import { @Vigilant, @ButtonProperty, @SliderProperty, @SwitchProperty, @ParagraphProperty, @TextProperty, @SelectorProperty, createPropertyAttributesExt } from 'Vigilance';
 
-const f = new File("config/ChatTriggers/modules/AsuAddons/mods/", "custompcmds")
-let fileArray = f.listFiles()
-let output = []
-for (let i = 0; i < fileArray.length; i++) {
-    output.push(new JavaString(fileArray[i].toString().split("\\")[6].split(".")[0] + " - enabled"))
-}
+const File = Java.type("java.io.File")
+const ValueBackedPropertyValue = Java.type("gg.essential.vigilance.data.ValueBackedPropertyValue");
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+const PropertyData = Java.type("gg.essential.vigilance.data.PropertyData");
 
 @Vigilant("AsuAddons", "AsuAddons Settings", {
     getCategoryComparator: () => (a, b) => {
@@ -51,40 +48,6 @@ class Settings {
         category: "PartyCommands"
     })
     partycmdCustomBlacklist = data.partycmd.customBlacklist.length > 1 ? data.partycmd.customBlacklist.join(",") : "";
-
-    @SelectorProperty({
-        name: "Commands",
-        description: "List of all fun commands",
-        category: "PartyCommands",
-        options: output
-    })
-    partycmdFunCommands = 0;
-
-    @ButtonProperty({
-        name: "Toggle Command",
-        description: "Toggle the above command.",
-        category: "PartyCommands",
-        placeholder: "Toggle"
-    })
-    toggleCommand() {
-        if (output[this.partycmdFunCommands].split(" - ")[1] == "enabled") {
-            for (let i = 0; i < data.partycmd.commands.length; i++) {
-                if (data.partycmd.commands[i][0] == output[this.partycmdFunCommands].split(" - ")[0]) {
-                    data.partycmd.commands[i][1] = false
-                }
-            }
-            output[this.partycmdFunCommands] = output[this.partycmdFunCommands].replace("enabled","disabled")
-            this.openGUI()
-        } else {
-            for (let i = 0; i < data.partycmd.commands.length; i++) {
-                if (data.partycmd.commands[i][0] == output[this.partycmdFunCommands].split(" - ")[0]) {
-                    data.partycmd.commands[i][1] = true
-                }
-            }
-            output[this.partycmdFunCommands] = output[this.partycmdFunCommands].replace("disabled","enabled")
-            this.openGUI()
-        }
-    }
 
     @SwitchProperty({
         name: "Enable FragBot",
@@ -179,7 +142,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Enable TrophyFish",
-        description: "Toggle the mod.\n§a/movetrophy §rto move the gui.",
+        description: "Toggle the mod.",
         category: "TrophyFish"
     })
     trophyEnabled = data.trophy.enabled;
@@ -232,10 +195,40 @@ class Settings {
 
     constructor() {
         this.initialize(this);
+        
+        const f = new File("config/ChatTriggers/modules/AsuAddons/mods/", "custompcmds")
 
-        this.addDependency("Commands","Fun Commands")
+        if (f.exists()) {
+            const fileArray = f.listFiles()
+            fileArray.forEach(command => {
+                command = command.toString().split("\\")[command.toString().split("\\").length-1].replace(".js","")
+                const attributes = createPropertyAttributesExt(
+                    PropertyType.SWITCH,
+                    {
+                        name: command,
+                        category: "PartyCommands",
+                        description: require("./mods/custompcmds/"+command+".js").desc
+                    }
+                )
+    
+                const PropData = new PropertyData(
+                    attributes,
+                    new ValueBackedPropertyValue(true),
+                    this.getConfig()
+                )
+                this.registerProperty(PropData) 
+                this.addDependency(command,"Fun Commands")
+                this.registerListener(command, newValue => {
+                    data.partycmd.commands.forEach((commandValue,index) => {
+                        if (command == commandValue[0]) {
+                            data.partycmd.commands[index][1] = newValue
+                        }
+                    })
+                })
+            });
+        }
+
         this.addDependency("Fun Blacklist","Fun Commands")
-        this.addDependency("Toggle Command","Fun Commands")
         this.addDependency("Waypoint Beacon","Terminal Waypoints")
 
         this.registerListener("Enable FragBot", newValue => {
