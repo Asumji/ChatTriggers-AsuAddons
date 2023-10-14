@@ -8,7 +8,7 @@ const PropertyData = Java.type("gg.essential.vigilance.data.PropertyData");
 
 @Vigilant("AsuAddons", "AsuAddons Settings", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["PartyCommands","TrophyFish","Bridge","Reparty","ReplaceGhost","FragBot","Dungeons"];
+        const categories = ["Bridge","PartyCommands","TrophyFish","Reparty","ReplaceGhost","FragBot","Dungeons"];
 
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
