@@ -11,7 +11,7 @@ function decodeInv(data) {
     return items
 }
 
-function buildOutput(player, items, armor, secrets, pet, cata, isDungeon) {
+function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes) {
     if (isDungeon) {
         var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
     } else {
@@ -25,6 +25,7 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon) {
     for (let i = 0; i < armor.length; i++) {
         output.addTextComponent(new TextComponent(" " + armor[i][0] + " ").setHover("show_text", armor[i][1]))
     }
+    output.addTextComponent("\n§6Equipment: §6Dominance: §c" + attributes[0] + " §6Lifeline: §c" + attributes[1])
     output.addTextComponent("\n\n§6Pet: §r" + pet[0])
     output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
     output.addTextComponent("        ")
@@ -64,6 +65,7 @@ register('Chat', (event) => {
                     let armorArray = []
                     let pets = ["§cNone", "§cNo"]
                     let cata = -1
+                    let attributes = [0,0]
                     profiles.forEach(profile => {
                         if (profile.selected) {
                             if (profile["members"][uuid]["inv_contents"] != null) {
@@ -112,6 +114,24 @@ register('Chat', (event) => {
                                     }
                                 }
                             }
+                            if (profile["members"][uuid]["equippment_contents"] != null) {
+                                let equipment = decodeInv(profile["members"][uuid]["equippment_contents"]["data"])
+                                let length = equipment.func_74745_c();
+                                for (let i = length; i > -1; i--) {
+                                    equipmentPiece = equipment.func_150305_b(i)
+                                    if (!equipmentPiece.func_82582_d()) {
+                                        equipmentPiece = equipmentPiece.func_74781_a("tag").func_74781_a("ExtraAttributes").func_74781_a("attributes")
+                                        if (equipmentPiece != null) {
+                                            if (equipmentPiece.func_74781_a("dominance") != null) {
+                                                attributes[0] += Number(equipmentPiece.func_74781_a("dominance"))
+                                            }
+                                            if (equipmentPiece.func_74781_a("lifeline") != null) {
+                                                attributes[1] += Number(equipmentPiece.func_74781_a("lifeline"))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             if (profile["members"][uuid]["pets"] != null) {
                                 if (profile["members"][uuid]["pets"].length != 0) {
                                     for (let i = 0; i < profile["members"][uuid]["pets"].length; i++) {
@@ -139,7 +159,7 @@ register('Chat', (event) => {
                             }
                         }
                     })
-                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon)
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes)
                 })
             })
         });
