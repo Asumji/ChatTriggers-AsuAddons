@@ -25,7 +25,7 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attrib
     for (let i = 0; i < armor.length; i++) {
         output.addTextComponent(new TextComponent(" " + armor[i][0] + " ").setHover("show_text", armor[i][1]))
     }
-    output.addTextComponent("\n§6Equipment: §6Dominance: §c" + attributes[0] + " §6Lifeline: §c" + attributes[1])
+    if (data.dpu.showEquipment) output.addTextComponent("\n§6Equipment: §6Dominance: §c" + attributes[0] + " §6Lifeline: §c" + attributes[1])
     output.addTextComponent("\n\n§6Pet: §r" + pet[0])
     output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
     output.addTextComponent("        ")

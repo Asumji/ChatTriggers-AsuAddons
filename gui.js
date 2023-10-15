@@ -85,6 +85,27 @@ class Settings {
     dpuEnabled = data.dpu.enabled;
 
     @SwitchProperty({
+        name: "Enable Kuudra",
+        description: "Toggles the party finder for kuudra.",
+        category: "Dungeons"
+    })
+    dpuKuudra = data.dpu.kuudra;
+
+    @SwitchProperty({
+        name: "Show Equipment",
+        description: "Adds Dominance and Lifeline levels to the DPU message.",
+        category: "Dungeons"
+    })
+    dpuEquipment = data.dpu.showEquipment;
+
+    @ParagraphProperty({
+        name: "Relevant Items",
+        description: "List of all items the mod checks for. Seperate with \",\" ex. item1,item2",
+        category: "Dungeons"
+    })
+    dpuItems = data.dpu.relevantItems.length > 1 ? data.dpu.relevantItems.join(",") : "";
+
+    @SwitchProperty({
         name: "Terminal Waypoints",
         description: "Marks undone terminals. (Same as Soopy but less buggy I think)",
         category: "Dungeons"
@@ -104,20 +125,6 @@ class Settings {
         category: "Dungeons"
     })
     dpuTermsummary = data.dpu.termsummary;
-
-    @SwitchProperty({
-        name: "Enable Kuudra",
-        description: "Toggles the party finder for kuudra.",
-        category: "Dungeons"
-    })
-    dpuKuudra = data.dpu.kuudra;
-
-    @ParagraphProperty({
-        name: "Relevant Items",
-        description: "List of all items the mod checks for. Seperate with \",\" ex. item1,item2",
-        category: "Dungeons"
-    })
-    dpuItems = data.dpu.relevantItems.length > 1 ? data.dpu.relevantItems.join(",") : "";
 
     @SwitchProperty({
         name: "Enable ReplaceGhost",
@@ -228,6 +235,15 @@ class Settings {
             });
         }
 
+        this.addDependency("Cooldown","Enable AutoJoin")
+        this.addDependency("Ghostnames","Enable ReplaceGhost")
+        this.addDependency("Message","Enable ReplaceGhost")
+        this.addDependency("Whitelist","Enable FragBot")
+        this.addDependency("Bot","Enable FragBot")
+        this.addDependency("Owner","Enable FragBot")
+        this.addDependency("Show Equipment","Enable DPU")
+        this.addDependency("Enable Kuudra","Enable DPU")
+        this.addDependency("Relevant Items","Enable DPU")
         this.addDependency("Fun Blacklist","Fun Commands")
         this.addDependency("Waypoint Beacon","Terminal Waypoints")
 
@@ -261,6 +277,9 @@ class Settings {
         });
         this.registerListener("Enable Kuudra", newValue => {
             data.dpu.kuudra = newValue
+        });
+        this.registerListener("Show Equipment", newValue => {
+            data.dpu.showEquipment = newValue
         });
         this.registerListener("Relevant Items", newValue => {
             if (newValue.includes(",")) {
