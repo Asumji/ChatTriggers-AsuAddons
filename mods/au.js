@@ -61,11 +61,10 @@ register("command", (...args) => {
 
 register("guiClosed", (...gui) => {
     if(gui.toString().split("@")[0] == "gg.essential.vigilance.gui.SettingsGui") {
-        data.save()
         if (!data.bridge.bridgeMessage.includes("<1>") || !data.bridge.bridgeMessage.includes("<2>")) {
             Settings.bridgeMsg = "&2Bridge > &6<1>: &r<2>"
             data.bridge.bridgeMessage = "&2Bridge > &6<1>: &r<2>"
-            data.save()
         }
+        data.save()
     }
 })
