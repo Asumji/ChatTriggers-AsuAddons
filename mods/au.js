@@ -2,7 +2,6 @@ import { data, modPrefix } from "../index.js"
 import Settings from "../gui.js";
 import { sendWebhookMessage } from "../utils.js";
 
-//au report should only ever be used once in a session.
 used = false
 
 register("command", (...args) => {
@@ -41,7 +40,7 @@ register("command", (...args) => {
 
 §6§lAlias
     §a/addalias <alias> <ign> §eAdds an alias.
-    §a/removealias <alias> §e Removes an alias.`
+    §a/removealias <alias> §eRemoves an alias.`
             )
     } else if (args[0] == "report" && used != true && args[1]) {
         //I mean I'll assume no one's gonna spam this webhook but do I care? not really. Please don't tho <3
