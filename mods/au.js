@@ -50,7 +50,7 @@ register("command", (...args) => {
             description:Player.name + " has reported that the API is down.\nError:" + args[1] + "\n\n" + String(new Date(Date.now())).split(" GMT")[0],
             footer:{text:"This message was sent through the /au report command."},
             thumbnail:{url:"https://mc-heads.net/player/"+Player.name}
-        }]},"https://discord.com/api/webhooks/1151510044827983924/epsDb2J6l9LrLQLSrJnXVKgAeUGSdXoisavTt9cjIUjrJPvYFLw4HwkquYtenKmskbEv")
+        }]},"https://discord.com/api/webhooks/1166080498108465244/j8xdqoI1C58-Vn3A8wtX8aDdaz0yRyo7MINL3JzBc8TA_kNtM68ZfOtJl1pvlkuB23Gq")
         used = true
         ChatLib.chat(modPrefix + " §aYour report has been sent.")
     } else {
