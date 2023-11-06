@@ -1,15 +1,6 @@
 import { data, modPrefix } from "../index.js";
-import { getPetLevel, getrequest, getCataLevel } from "../utils.js";
+import { getPetLevel, getrequest, getCataLevel, decodeInv } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons/jsonData", "rarities.json"))
-
-function decodeInv(data) {
-    let bytearray = java.util.Base64.getDecoder().decode(data);
-    let inputstream = new java.io.ByteArrayInputStream(bytearray);
-    let nbt = net.minecraft.nbt.CompressedStreamTools.func_74796_a(inputstream); //CompressedStreamTools.readCompressed()                            
-    let items = nbt.func_150295_c("i", 10); //NBTTagCompound.getTagList()
-
-    return items
-}
 
 function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes) {
     if (isDungeon) {

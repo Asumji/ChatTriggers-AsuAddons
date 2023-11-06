@@ -220,3 +220,17 @@ export function sendWebhookMessage(params,webhook) {
         body: params
     })
 }
+
+/**
+ * Decode compressed nbt data.
+ * @param {String} data 
+ * @returns The uncompressed NBTTagList
+ */
+export function decodeInv(data) {
+    let bytearray = java.util.Base64.getDecoder().decode(data);
+    let inputstream = new java.io.ByteArrayInputStream(bytearray);
+    let nbt = net.minecraft.nbt.CompressedStreamTools.func_74796_a(inputstream); //CompressedStreamTools.readCompressed()                            
+    let items = nbt.func_150295_c("i", 10); //NBTTagCompound.getTagList()
+
+    return items
+}
