@@ -47,7 +47,7 @@ register("command", (...args) => {
         sendWebhookMessage({username:"AsuAddons API Reports",content:"Someone has reported an api outage.",embeds:[{
             title:"New API Outage Report",
             color:0xFF0000,
-            description:Player.name + " has reported that the API is down.\nError:" + args[1] + "\n\n" + String(new Date(Date.now())).split(" GMT")[0],
+            description:Player.name + " has reported that the API is down.\nError:" + args.slice(1).join(" ") + "\n\n" + String(new Date(Date.now())).split(" GMT")[0],
             footer:{text:"This message was sent through the /au report command."},
             thumbnail:{url:"https://mc-heads.net/player/"+Player.name}
         }]},"https://discord.com/api/webhooks/1166080498108465244/j8xdqoI1C58-Vn3A8wtX8aDdaz0yRyo7MINL3JzBc8TA_kNtM68ZfOtJl1pvlkuB23Gq")
