@@ -8,7 +8,6 @@ const stepRegister = register("step", () => {
     counter++
     if (counter >= checkIntervalSeconds) {
         counter = 0
-        console.log(".")
         getrequest("http://asumji.duckdns.org:3000/test").then(() => {
             console.log("AU > API Check succeeded everything is working properly!")
         }).catch(function(error) {
