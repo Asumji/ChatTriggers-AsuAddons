@@ -2,7 +2,7 @@ import { data, modPrefix } from "../index.js"
 
 register("chat", (event) => {
     let unformattedMessage = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    if (unformattedMessage.replace(/\[[^\]]+\]/, "").replace(/ /g, "").toLowerCase().startsWith("guild>" + data.bridge.botIGN) && unformattedMessage.toLowerCase() != "guild > " + data.bridge.botIGN + " joined.") {
+    if (unformattedMessage.replace(/\[[^\]]+\]/, "").replace(/ /g, "").toLowerCase().startsWith("guild>" + data.bridge.botIGN.toLowerCase()) && unformattedMessage.toLowerCase() != "guild > " + data.bridge.botIGN.toLowerCase() + " joined.") {
         unformattedMessage = unformattedMessage.split(":").splice(1,unformattedMessage.length)
         unformattedMessage[0] = unformattedMessage[0].replace(" ", "")
         unformattedMessage[1] = unformattedMessage.splice(1).join(" ").replace(" ", "")
@@ -10,7 +10,7 @@ register("chat", (event) => {
         ChatLib.chat(data.bridge.bridgeMessage.replace("<1>", unformattedMessage[0]).replace("<2>", unformattedMessage[1]))
     }
 
-}).setCriteria(/Guild > (?:\[[^\]]+\] )?.* (?:\[[^\]]+\])?: .*/).setStart()
+}).setCriteria(/Guild > (?:\[[^\]]+\] )?.* ?(?:\[[^\]]+\])?: .*/).setStart()
 
 register("command", (...args) => {
     if (args[0]) {
