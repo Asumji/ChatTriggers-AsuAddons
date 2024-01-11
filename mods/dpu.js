@@ -43,14 +43,14 @@ register('Chat', (event) => {
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
             let secrets = "0"
-            getrequest("http://asumji.duckdns.org:3000/player?uuid="+uuid).then(response => {
+            getrequest("http://asumji.duckdns.org/player?uuid="+uuid).then(response => {
                 if (isDungeon) {
                     secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
                     if (secrets == undefined) {
                         secrets = "0"
                     }
                 }
-                getrequest("http://asumji.duckdns.org:3000/skyblock/profiles?uuid="+uuid).then(response => {
+                getrequest("http://asumji.duckdns.org/skyblock/profiles?uuid="+uuid).then(response => {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []

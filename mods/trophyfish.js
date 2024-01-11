@@ -25,7 +25,7 @@ if (data.trophy.firstUse) {
 
     getrequest("https://api.mojang.com/users/profiles/minecraft/" + Player.name).then(response => {
         let uuid = response["id"];
-        getrequest("http://asumji.duckdns.org:3000/skyblock/profiles/"+uuid).then(response => {
+        getrequest("http://asumji.duckdns.org/skyblock/profiles/"+uuid).then(response => {
             response["profiles"].forEach(profile => {
                 if (profile.selected) {
                     for (fish in data.trophy.collected) {
