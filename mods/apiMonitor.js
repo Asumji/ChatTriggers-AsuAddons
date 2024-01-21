@@ -12,7 +12,7 @@ const stepRegister = register("step", () => {
             console.log("AU > API Check succeeded everything is working properly!")
         }).catch(function(error) {
             print("AU > API Check failed!\n" + error)
-            //if (error != "JavaException: java.net.ConnectException: Connection timed out: connect") return
+            if (error != "JavaException: java.net.ConnectException: Connection timed out: connect") return
             ChatLib.chat(new Message(modPrefix + " §cThe API cannot be reached! Some features might not work.\n").addTextComponent(new TextComponent("§a§l[CLICK HERE]§r§a to send a report to the dev.").setClick("run_command", "/au report " + error)))
             stepRegister.unregister()
         });
