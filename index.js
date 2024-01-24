@@ -15,7 +15,8 @@ const data = new PogObject("AsuAddons", {
     termwaypoints: false,
     termsummary: false,
     termbeacon: false,
-    showEquipment: true
+    showEquipment: true,
+    showEdrag: false
   },
   rghost: {
     names: [],
@@ -80,8 +81,8 @@ const data = new PogObject("AsuAddons", {
   }
 });
 
-if (data.dpu.showEquipment == null) {
-  data.dpu.showEquipment = true
+if (data.dpu.showEdrag == null) {
+  data.dpu.showEdrag = false
 }
 
 data.save();

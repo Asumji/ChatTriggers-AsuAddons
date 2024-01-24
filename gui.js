@@ -98,6 +98,13 @@ class Settings {
     })
     dpuEquipment = data.dpu.showEquipment;
 
+    @SwitchProperty({
+        name: "Show Ender Dragon",
+        description: "Show if (and what type of) Ender Dragon someone has. Useful for M7.",
+        category: "Dungeons"
+    })
+    dpuEdrag = data.dpu.showEdrag;
+
     @ParagraphProperty({
         name: "Relevant Items",
         description: "List of all items the mod checks for. Seperate with \",\" ex. item1,item2",
@@ -242,6 +249,7 @@ class Settings {
         this.addDependency("Bot","Enable FragBot")
         this.addDependency("Owner","Enable FragBot")
         this.addDependency("Show Equipment","Enable DPU")
+        this.addDependency("Show Ender Dragon","Enable DPU")
         this.addDependency("Enable Kuudra","Enable DPU")
         this.addDependency("Relevant Items","Enable DPU")
         this.addDependency("Fun Blacklist","Fun Commands")
@@ -280,6 +288,9 @@ class Settings {
         });
         this.registerListener("Show Equipment", newValue => {
             data.dpu.showEquipment = newValue
+        });
+        this.registerListener("Show Ender Dragon", newValue => {
+            data.dpu.showEdrag = newValue
         });
         this.registerListener("Relevant Items", newValue => {
             if (newValue.includes(",")) {

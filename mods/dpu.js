@@ -17,7 +17,7 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attrib
         output.addTextComponent(new TextComponent(" " + armor[i][0] + " ").setHover("show_text", armor[i][1]))
     }
     if (data.dpu.showEquipment) output.addTextComponent("\n§6Equipment: §6Dominance: §c" + attributes[0] + " §6Lifeline: §c" + attributes[1])
-    output.addTextComponent("\n\n§6Pet: §r" + pet[0])
+    data.dpu.showEdrag ? output.addTextComponent("\n\n§6Pet: §r" + pet[0] + "§7 / " + pet[2]) : output.addTextComponent("\n\n§6Pet: §r" + pet[0])
     output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
     output.addTextComponent("        ")
     output.addTextComponent(new TextComponent("§7[Ignore]").setClick("run_command", "/ignore add " + player))
@@ -54,7 +54,7 @@ register('Chat', (event) => {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
-                    let pets = ["§cNone", "§cNo"]
+                    let pets = ["§cNone", "§cNo", "§cNo Edrag"]
                     let cata = -1
                     let attributes = [0,0]
                     profiles.forEach(profile => {
@@ -129,6 +129,9 @@ register('Chat', (event) => {
                                         if (profile["members"][uuid]["pets"][i]["type"] == "SPIRIT") {
                                             pets[1] = "§aYes"
                                         }
+                                        if (profile["members"][uuid]["pets"][i]["type"] == "ENDER_DRAGON") {
+                                            pets[2] = "§7[Lvl " + getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],100).toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
+                                        }
                                         if (profile["members"][uuid]["pets"][i]["active"] == true) {
                                             let type = profile["members"][uuid]["pets"][i]["type"]
                                             let level = 0
@@ -140,7 +143,7 @@ register('Chat', (event) => {
                                             type = type.toLowerCase()
                                             type = type[0].toUpperCase() + type.slice(1, type.length)
                                             type = type.replace(/_/g, " ")
-                                            pets[0] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r\n"
+                                            pets[0] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
                                         }
                                     }
                                 }
