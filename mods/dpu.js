@@ -126,23 +126,28 @@ register('Chat', (event) => {
                             if (profile["members"][uuid]["pets"] != null) {
                                 if (profile["members"][uuid]["pets"].length != 0) {
                                     for (let i = 0; i < profile["members"][uuid]["pets"].length; i++) {
-                                        if (profile["members"][uuid]["pets"][i]["type"] == "SPIRIT") {
+                                        let type = profile["members"][uuid]["pets"][i]["type"]
+                                        let level = 0
+                                        if (profile["members"][uuid]["pets"][i]["type"] == "GOLDEN_DRAGON") {
+                                            level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],200)
+                                        } else {
+                                            level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],100)
+                                        }
+                                        type = type.toLowerCase()
+                                        type = type[0].toUpperCase() + type.slice(1, type.length)
+                                        type = type.replace(/_/g, " ")
+
+                                        if (type == "Spirit") {
                                             pets[1] = "§aYes"
                                         }
-                                        if (profile["members"][uuid]["pets"][i]["type"] == "ENDER_DRAGON") {
-                                            pets[2] = "§7[Lvl " + getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],100).toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
+                                        if (type == "Ender dragon") {
+                                            pets[2] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
+                                            if (profile["members"][uuid]["pets"][i]["heldItem"] == "PET_ITEM_TIER_BOOST") {
+                                                pets[2] = pets[2].replace("§5", "§6")
+                                                pets[2] += " §7(TB)§r"
+                                            }
                                         }
                                         if (profile["members"][uuid]["pets"][i]["active"] == true) {
-                                            let type = profile["members"][uuid]["pets"][i]["type"]
-                                            let level = 0
-                                            if (profile["members"][uuid]["pets"][i]["type"] == "GOLDEN_DRAGON") {
-                                                level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],200)
-                                            } else {
-                                                level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],100)
-                                            }
-                                            type = type.toLowerCase()
-                                            type = type[0].toUpperCase() + type.slice(1, type.length)
-                                            type = type.replace(/_/g, " ")
                                             pets[0] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
                                         }
                                     }
