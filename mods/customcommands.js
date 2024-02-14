@@ -20,7 +20,7 @@ for (let i = 0; i < tempCmds.length;i++) {
 
 register("command", (...args) => {
     if (args[0] && args[1]) {
-        if (!isInArrayIdx(args[0].toLowerCase().split(" ")[0].replace("/", ""),data.cc.commands,0)) {
+        if (typeof isInArrayIdx(args[0].toLowerCase().split(" ")[0].replace("/", ""),data.cc.commands,0) == "boolean") {
             let cmdArgs = args.slice(1).join(" ")
             data.cc.commands.push([args[0].toLowerCase(), cmdArgs])
             data.save()
@@ -38,7 +38,7 @@ register("command", (...args) => {
 
 register("command", (...args) => {
     if (args[0]) {
-        if (isInArrayIdx(args[0].toLowerCase().split(" ")[0].replace("/", ""),data.cc.commands,0)) {
+        if (typeof isInArrayIdx(args[0].toLowerCase().split(" ")[0].replace("/", ""),data.cc.commands,0) != "boolean") {
             for (let i = 0;i<data.cc.commands.length;i++) {
                 if (data.cc.commands[i][0] == args[0].toLowerCase()) {
                     data.cc.commands.splice(i,1)

@@ -78,6 +78,9 @@ const data = new PogObject("AsuAddons", {
       0,
       250
     ]
+  },
+  lowball: {
+    items: []
   }
 });
 

@@ -40,7 +40,13 @@ register("command", (...args) => {
 
 §6§lAlias
     §a/addalias <alias> <ign> §eAdds an alias.
-    §a/removealias <alias> §eRemoves an alias.`
+    §a/removealias <alias> §eRemoves an alias.
+
+§6§lLowball
+    §a/lowball add <item> <buyprice>
+    §alowball setsold <item> <sellprice>
+    §a/lowball remove <item>
+    §a/lowball list`
             )
     } else if (args[0] == "report" && used != true && args[1]) {
         //I mean I'll assume no one's gonna spam this webhook but do I care? not really. Please don't tho <3

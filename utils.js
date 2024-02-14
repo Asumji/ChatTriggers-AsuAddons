@@ -5,24 +5,24 @@ const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
 
 /**
  * Checks if an array made of smaller array includes a value at a specified index in the inner array.
- * @param {any} object1 The object to check for.
+ * @param {Any} object The object to check for.
  * @param {Array[]} array The array to look through. 
- * @returns {bool} If the value exists.
+ * @param {Number} index The index inside of the inner array to check.
+ * @returns {Number|Boolean} The index of the object or false.
  */
-export function isInArrayIdx(object1,array,index) {    
-    let returnBool = false
-    array.forEach(object2 => {
-        if (object2[index] == object1) {
-            returnBool = true
+export function isInArrayIdx(object,array,index) {    
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][index] == object) {
+            return i
         }
-    })
-    return returnBool;
+    }
+    return false;
 }
 
 /**
  * A shorthand for requestv2
- * @param {url} url The url to request.
- * @returns The request body.
+ * @param {URL} url The url to request.
+ * @returns {JSON} The request body.
  */
 export const getrequest = function(url) {
     return request({
@@ -39,7 +39,7 @@ export const getrequest = function(url) {
  * Calculates a pet's level.
  * @param {Number} petExp The Current xp of a pet.
  * @param {String} offsetRarity The rarity of a pet.
- * @returns The level of a pet.
+ * @returns {Number} The level of a pet.
  */
 export function getPetLevel(petExp, offsetRarity, maxLevel) {
     const offset = {
@@ -96,7 +96,7 @@ export function getPetLevel(petExp, offsetRarity, maxLevel) {
 /**
  * Calculate a player's cata level.
  * @param {Number} xp The cata xp of a player.
- * @returns The cata level of a player.
+ * @returns {Number} The cata level of a player.
  */
 export function getCataLevel(xp) {
     const cataLevelArray = [
@@ -121,7 +121,7 @@ export function getCataLevel(xp) {
  * Gets a JSON Key by it's value.
  * @param {JSON} object The JSON object.
  * @param {any} value The value of they key to look for.
- * @returns The Key in which the value is held.
+ * @returns {String} The Key in which the value is held.
  */
 export function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
@@ -150,7 +150,7 @@ export function upload(image) {
  * Calculate the distance between 2 places in 3D Space.
  * @param {Number[3]} p1 Start Place.
  * @param {Number[3]} p2 End Place.
- * @returns The Distance between the 2 places.
+ * @returns {Number} The Distance between the 2 places.
  */
 export function calculateDistanceQuick(p1, p2) {
     var a = p2[0] - p1[0];
@@ -169,7 +169,7 @@ export function calculateDistanceQuick(p1, p2) {
  * Lightens or Darkens a HEX colour.
  * @param {Number} num The HEX colour in number form.
  * @param {Number} amt The amount to darken (-) or lighten (+) it by.
- * @returns The new shifted colour.
+ * @returns {Number} The new shifted colour.
  */
 export function LightenDarkenColor(num, amt) {
     var r = (num >> 16) + amt;
@@ -224,7 +224,7 @@ export function sendWebhookMessage(params,webhook) {
 /**
  * Decode compressed nbt data.
  * @param {String} data 
- * @returns The uncompressed NBTTagList
+ * @returns {NBTTagList} The uncompressed nbt data.
  */
 export function decodeInv(data) {
     let bytearray = java.util.Base64.getDecoder().decode(data);
@@ -233,4 +233,37 @@ export function decodeInv(data) {
     let items = nbt.func_150295_c("i", 10); //NBTTagCompound.getTagList()
 
     return items
+}
+
+/**
+ * Expands a shortened Number
+ * @param {String} num Shortened number (ex. 1k, 106.2m, 25b)
+ * @returns {Number|Boolean} The new expanded Number or false if the input is not valid
+ */
+export function expandNumber(num) {
+    if (+(num)) return num
+    sizes = {
+        "b": 1000000000,
+        "m": 1000000,
+        "k": 1000
+    }
+    if (!+(num.substring(0, num.length-1))) return false
+    return +(num.substring(0, num.length-1))*sizes[num[num.length-1]]
+}
+
+/**
+ * Expands a shortened Number
+ * @param {Number} num Shortened number (ex. 1k, 106.2m, 25b)
+ * @returns {String|Boolean} The new shortened Number or false if the input is not valid
+ */
+export function shortenNumber(num) {
+    if (typeof num != "number") return false
+    sizes = ["", "k", "m", "b"]
+    for (let i = 0; i < sizes.length; i++) {
+        if (num/Math.pow(10,i*3) < 1) {
+            console.log("hiu")
+          return String((num/Math.pow(10,(i-1)*3)).toFixed(2))+sizes[i-1]
+        }
+    }
+    return String((num/1000000000).toFixed(2))+"b"
 }

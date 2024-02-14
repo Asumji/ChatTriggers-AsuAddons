@@ -31,7 +31,7 @@ register("chat", (event) => {
             const fileArray = f.listFiles()
             for (let i = 0; i < fileArray.length; i++) {
 
-                if (!isInArrayIdx(fileArray[i].toString().split("\\")[6].split(".")[0],data.partycmd.commands,0)) {
+                if (typeof isInArrayIdx(fileArray[i].toString().split("\\")[6].split(".")[0],data.partycmd.commands,0) == "boolean") {
                     data.partycmd.commands.push([fileArray[i].toString().split("\\")[6].split(".")[0],true])
                 }
 

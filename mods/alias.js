@@ -15,7 +15,7 @@ register("messageSent", (message, event) => {
 
 register("command", (...args) => {
     if (args[0] && args[1]) {
-        if (!isInArrayIdx(args[1].toLowerCase(),data.alias.names,1) && !isInArrayIdx(args[0].toLowerCase(),data.alias.names,0)) {
+        if (typeof isInArrayIdx(args[1].toLowerCase(),data.alias.names,1) && !isInArrayIdx(args[0].toLowerCase(),data.alias.names,0) == "boolean") {
             data.alias.names.push([args[0].toLowerCase(), args[1].toLowerCase()])
             data.save()
             ChatLib.chat(modPrefix + " §aAdded the alias \"" + args[0] + "\" for the player \"" + args[1] + "\".")
@@ -29,7 +29,7 @@ register("command", (...args) => {
 
 register("command", (...args) => {
     if (args[0]) {
-        if (isInArrayIdx(args[0].toLowerCase(),data.alias.names,0)) {
+        if (typeof isInArrayIdx(args[0].toLowerCase(),data.alias.names,0) != "boolean") {
             for (let i = 0;i<data.alias.names.length;i++) {
                 if (data.alias.names[i][0] == args[0].toLowerCase()) {
                     data.alias.names.splice(i,1)
