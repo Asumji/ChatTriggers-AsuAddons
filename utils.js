@@ -252,17 +252,16 @@ export function expandNumber(num) {
 }
 
 /**
- * Expands a shortened Number
- * @param {Number} num Shortened number (ex. 1k, 106.2m, 25b)
- * @returns {String|Boolean} The new shortened Number or false if the input is not valid
+ * Shortens a number
+ * @param {Number} num Starting number
+ * @returns {String|Boolean} The new shortened Number (ex. 1k, 106.2m, 25b) or false if the input is not valid
  */
 export function shortenNumber(num) {
     if (typeof num != "number") return false
     sizes = ["", "k", "m", "b"]
     for (let i = 0; i < sizes.length; i++) {
         if (num/Math.pow(10,i*3) < 1) {
-            console.log("hiu")
-          return String((num/Math.pow(10,(i-1)*3)).toFixed(2))+sizes[i-1]
+            return String((num/Math.pow(10,(i-1)*3)).toFixed(2))+sizes[i-1]
         }
     }
     return String((num/1000000000).toFixed(2))+"b"
