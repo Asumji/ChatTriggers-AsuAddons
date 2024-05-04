@@ -43,14 +43,14 @@ register('Chat', (event) => {
         getrequest("https://api.mojang.com/users/profiles/minecraft/" + name).then(response => {
             let uuid = response["id"];
             let secrets = "0"
-            getrequest("http://asumji.duckdns.org/player?uuid="+uuid).then(response => {
+            getrequest("http://asumji.duckdns.org/v2/player?uuid="+uuid).then(response => {
                 if (isDungeon) {
                     secrets = response["player"]["achievements"]["skyblock_treasure_hunter"]
                     if (secrets == undefined) {
                         secrets = "0"
                     }
                 }
-                getrequest("http://asumji.duckdns.org/skyblock/profiles?uuid="+uuid).then(response => {
+                getrequest("http://asumji.duckdns.org/v2/skyblock/profiles?uuid="+uuid).then(response => {
                     let profiles = response["profiles"]
                     let itemArray = []
                     let armorArray = []
@@ -59,8 +59,8 @@ register('Chat', (event) => {
                     let attributes = [0,0]
                     profiles.forEach(profile => {
                         if (profile.selected) {
-                            if (profile["members"][uuid]["inv_contents"] != null) {
-                                let items = decodeInv(profile["members"][uuid]["inv_contents"]["data"])
+                            if (profile["members"][uuid]["inventory"]["inv_contents"] != null) {
+                                let items = decodeInv(profile["members"][uuid]["inventory"]["inv_contents"]["data"])
                                 let length = items.func_74745_c(); //NBTTagList.tagCount()
                                 for (let i = 0; i < length; i++) {
                                     let item = items.func_150305_b(i); //NBTTagList.getCompoundTagAt()
@@ -85,8 +85,8 @@ register('Chat', (event) => {
                             } else {
                                 itemArray.push(["§cInventory API off!", ""])
                             }
-                            if (profile["members"][uuid]["inv_armor"] != null) {
-                                let armor = decodeInv(profile["members"][uuid]["inv_armor"]["data"])
+                            if (profile["members"][uuid]["inventory"]["inv_armor"] != null) {
+                                let armor = decodeInv(profile["members"][uuid]["inventory"]["inv_armor"]["data"])
                                 let length2 = armor.func_74745_c();
                                 for (let i = length2; i > -1; i--) {
                                     armorPiece = armor.func_150305_b(i)
@@ -105,8 +105,8 @@ register('Chat', (event) => {
                                     }
                                 }
                             }
-                            if (profile["members"][uuid]["equippment_contents"] != null) {
-                                let equipment = decodeInv(profile["members"][uuid]["equippment_contents"]["data"])
+                            if (profile["members"][uuid]["inventory"]["equippment_contents"] != null) {
+                                let equipment = decodeInv(profile["members"][uuid]["inventory"]["equippment_contents"]["data"])
                                 let length = equipment.func_74745_c();
                                 for (let i = length; i > -1; i--) {
                                     equipmentPiece = equipment.func_150305_b(i)
@@ -123,15 +123,15 @@ register('Chat', (event) => {
                                     }
                                 }
                             }
-                            if (profile["members"][uuid]["pets"] != null) {
-                                if (profile["members"][uuid]["pets"].length != 0) {
-                                    for (let i = 0; i < profile["members"][uuid]["pets"].length; i++) {
-                                        let type = profile["members"][uuid]["pets"][i]["type"]
+                            if (profile["members"][uuid]["pets_data"]["pets"] != null) {
+                                if (profile["members"][uuid]["pets_data"]["pets"].length != 0) {
+                                    for (let i = 0; i < profile["members"][uuid]["pets_data"]["pets"].length; i++) {
+                                        let type = profile["members"][uuid]["pets_data"]["pets"][i]["type"]
                                         let level = 0
-                                        if (profile["members"][uuid]["pets"][i]["type"] == "GOLDEN_DRAGON") {
-                                            level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],200)
+                                        if (profile["members"][uuid]["pets_data"]["pets"][i]["type"] == "GOLDEN_DRAGON") {
+                                            level = getPetLevel(profile["members"][uuid]["pets_data"]["pets"][i]["exp"],profile["members"][uuid]["pets_data"]["pets"][i]["tier"],200)
                                         } else {
-                                            level = getPetLevel(profile["members"][uuid]["pets"][i]["exp"],profile["members"][uuid]["pets"][i]["tier"],100)
+                                            level = getPetLevel(profile["members"][uuid]["pets_data"]["pets"][i]["exp"],profile["members"][uuid]["pets_data"]["pets"][i]["tier"],100)
                                         }
                                         type = type.toLowerCase()
                                         type = type[0].toUpperCase() + type.slice(1, type.length)
@@ -141,14 +141,14 @@ register('Chat', (event) => {
                                             pets[1] = "§aYes"
                                         }
                                         if (type == "Ender dragon") {
-                                            pets[2] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
-                                            if (profile["members"][uuid]["pets"][i]["heldItem"] == "PET_ITEM_TIER_BOOST") {
+                                            pets[2] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets_data"]["pets"][i]["tier"]] + type + "§r"
+                                            if (profile["members"][uuid]["pets_data"]["pets"][i]["heldItem"] == "PET_ITEM_TIER_BOOST") {
                                                 pets[2] = pets[2].replace("§5", "§6")
                                                 pets[2] += " §7(TB)§r"
                                             }
                                         }
-                                        if (profile["members"][uuid]["pets"][i]["active"] == true) {
-                                            pets[0] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets"][i]["tier"]] + type + "§r"
+                                        if (profile["members"][uuid]["pets_data"]["pets"][i]["active"] == true) {
+                                            pets[0] = "§7[Lvl " + level.toString() + "] " + rarities[profile["members"][uuid]["pets_data"]["pets"][i]["tier"]] + type + "§r"
                                         }
                                     }
                                 }
