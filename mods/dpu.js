@@ -105,8 +105,8 @@ register('Chat', (event) => {
                                     }
                                 }
                             }
-                            if (profile["members"][uuid]["inventory"]["equippment_contents"] != null) {
-                                let equipment = decodeInv(profile["members"][uuid]["inventory"]["equippment_contents"]["data"])
+                            if (profile["members"][uuid]["inventory"]["equipment_contents"] != null) {
+                                let equipment = decodeInv(profile["members"][uuid]["inventory"]["equipment_contents"]["data"])
                                 let length = equipment.func_74745_c();
                                 for (let i = length; i > -1; i--) {
                                     equipmentPiece = equipment.func_150305_b(i)
