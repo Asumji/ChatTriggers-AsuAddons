@@ -13,6 +13,7 @@ register("command", (...args) => {
     §a/au §eOpens the Config GUI.
     §a/au help §eShows this message.
     §a/attributevalue §eShows lowest BIN of the attributes on the item you are holding.
+    §a/auviewinv <uuid> §eShow a player's inventory (used for DPU hence only uuid)
 
 §6§lCarryHelper
     §a/movecarry §eMove the GUI.        
@@ -27,7 +28,7 @@ register("command", (...args) => {
     §a#togglemode §eToggles between the bot leaving or staying in the party when joining a dungeon.
     §a#toggleperms §eToggles between wether only you or everyone can execute commands.
     §a#addplayer <ign> §eAdds a new player to the players that can invite the bot.
-    §a#removeplayer <ign> §eRemoves a player from the player that can invite the bot.
+    §a#removeplayer <ign> §eRemoves a player from the players that can invite the bot.
     §a#settings §eDisplay an overview of the above mentioned settings.
 
 §6§lTrophyFish
@@ -43,10 +44,10 @@ register("command", (...args) => {
     §a/removealias <alias> §eRemoves an alias.
 
 §6§lLowball
-    §a/lowball add <item> <buyprice>
-    §alowball setsold <item> <sellprice>
-    §a/lowball remove <item>
-    §a/lowball list`
+    §a/lowball add <item> <buyprice> §eAdds an item to the list
+    §a/lowball setsold <item> <sellprice> §eSets the price for which you resold it.
+    §a/lowball remove <item> §eRemoves an item from the list.
+    §a/lowball list §eLists all items.`
             )
     } else if (args[0] == "report" && used != true && args[1]) {
         //I mean I'll assume no one's gonna spam this webhook but do I care? not really. Please don't tho <3

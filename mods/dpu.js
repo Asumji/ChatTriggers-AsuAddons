@@ -2,7 +2,7 @@ import { data, modPrefix } from "../index.js";
 import { getPetLevel, getrequest, getCataLevel, decodeInv } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons/jsonData", "rarities.json"))
 
-function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes) {
+function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes, uuid) {
     if (isDungeon) {
         var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
     } else {
@@ -21,6 +21,8 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attrib
     output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
     output.addTextComponent("        ")
     output.addTextComponent(new TextComponent("§7[Ignore]").setClick("run_command", "/ignore add " + player))
+    output.addTextComponent("        ")
+    output.addTextComponent(new TextComponent("§a[View Inv]").setClick("run_command", "/auvw " + uuid))
 
     ChatLib.chat(output)
 }
@@ -158,7 +160,7 @@ register('Chat', (event) => {
                             }
                         }
                     })
-                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes)
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes, uuid)
                 })
             })
         });
