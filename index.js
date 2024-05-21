@@ -59,7 +59,8 @@ const data = new PogObject("AsuAddons", {
   },
   bridge: {
     botIGN: "bridgebot",
-    bridgeMessage: "§2Bridge: §6<1>: §r<2>"
+    bridgeMessage: "&2Bridge > &6<1>: &r<2>",
+    officerMessage: "&3Bridge > &6<1>: &r<2>"
   },
   rp: {
     autojoin: false,
@@ -84,10 +85,9 @@ const data = new PogObject("AsuAddons", {
   }
 });
 
-if (data.dpu.showEdrag == null) {
-  data.dpu.showEdrag = false
+if (data.bridge.officerMessage == null) {
+  data.bridge.officerMessage = "&3Bridge > &6<1>: &r<2>"
 }
-
 data.save();
 
 const f = new File("config/ChatTriggers/modules/AsuAddons/", "mods")

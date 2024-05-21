@@ -25,7 +25,6 @@ register("command", (...args) => {
             } else {
                 let items = decodeInv(profile["members"][args[0]]["inventory"]["inv_contents"]["data"])
                 let length = items.func_74745_c(); //NBTTagList.tagCount()
-
                 let inv = new InventoryBasic("Inventory", true, 36);
 
                 for(let i = 0; i < length; i++){                                    
