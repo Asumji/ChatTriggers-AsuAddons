@@ -1,10 +1,10 @@
 import { data, modPrefix } from "../index.js";
-import { getPetLevel, getrequest, getCataLevel, decodeInv } from "../utils.js";
+import { getPetLevel, getrequest, getCataLevel, decodeInv, shortenNumber } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons/jsonData", "rarities.json"))
 
-function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes, uuid) {
+function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes, uuid, bank) {
     if (isDungeon) {
-        var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
+        var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Bank: " + shortenNumber(bank) + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
     } else {
         var output = new Message("§cName:§b " + player + "\n\n§6Items:§r\n")
     }
@@ -59,6 +59,7 @@ register('Chat', (event) => {
                     let pets = ["§cNone", "§cNo", "§cNo Edrag"]
                     let cata = -1
                     let attributes = [0,0]
+                    let bank = "Bank API off" 
                     profiles.forEach(profile => {
                         if (profile.selected) {
                             if (profile["members"][uuid]["inventory"]["inv_contents"] != null) {
@@ -158,9 +159,12 @@ register('Chat', (event) => {
                             if (isDungeon) {
                                 cata = getCataLevel(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
                             }
+                            if (profile["banking"] && profile["banking"]["balance"]) {
+                                bank = profile["banking"]["balance"]
+                            }
                         }
                     })
-                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes, uuid)
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes, uuid, bank)
                 })
             })
         });
