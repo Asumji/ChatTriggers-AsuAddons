@@ -20,7 +20,7 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attrib
     data.dpu.showEdrag ? output.addTextComponent("\n\n§6Pet: §r" + pet[0] + "§7 / " + pet[2]) : output.addTextComponent("\n\n§6Pet: §r" + pet[0])
     output.addTextComponent(new TextComponent("\n§4[Kick from Party]").setClick("run_command", "/party kick " + player))
     output.addTextComponent("        ")
-    output.addTextComponent(new TextComponent("§7[Ignore]").setClick("run_command", "/ignore add " + player))
+    output.addTextComponent(new TextComponent("§7[Ignore]").setClick("run_command", "/block add " + player))
     output.addTextComponent("        ")
     output.addTextComponent(new TextComponent("§a[View Inv]").setClick("run_command", "/auvw " + uuid))
 

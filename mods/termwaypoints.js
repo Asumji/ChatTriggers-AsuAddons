@@ -30,6 +30,13 @@ register("Chat", () => {
 
 register("Chat", (name,type,current,goal) => {
     let player = World.getPlayerByName(name)
+
+    if (data.dpu.i4) {
+        const bersIGN = ChatLib.removeFormatting(Scoreboard.getLines().filter(x => x.toString().includes("[B]"))).match(/\[B\] (.*) /)
+        if (bersIGN == null || player != null || type != "device") return
+        ChatLib.chat(modPrefix + " §aBers finished i4!")
+    }
+
     if (player == undefined) return
 
     if (!players[name]) {

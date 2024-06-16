@@ -13,6 +13,7 @@ const data = new PogObject("AsuAddons", {
     enabled: false,
     kuudra: false,
     termwaypoints: false,
+    i4: false,
     termsummary: false,
     termbeacon: false,
     showEquipment: true,
@@ -85,8 +86,8 @@ const data = new PogObject("AsuAddons", {
   }
 });
 
-if (data.bridge.officerMessage == null) {
-  data.bridge.officerMessage = "&3Bridge > &6<1>: &r<2>"
+if (data.dpu.i4 == null) {
+  data.dpu.i4 = false
 }
 data.save();
 

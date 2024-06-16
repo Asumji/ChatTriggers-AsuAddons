@@ -120,6 +120,13 @@ class Settings {
     dpuTermwaypoints = data.dpu.termwaypoints;
 
     @SwitchProperty({
+        name: "Notify i4 Status",
+        description: "Notifies you if i4 is done.",
+        category: "Dungeons"
+    })
+    dpui4 = data.dpu.i4;
+
+    @SwitchProperty({
         name: "Waypoint Beacon",
         description: "Toggles whether or not the term waypoint has a beacon or not.",
         category: "Dungeons"
@@ -283,6 +290,9 @@ class Settings {
         });
         this.registerListener("Terminal Waypoints", newValue => {
             data.dpu.termwaypoints = newValue
+        });
+        this.registerListener("Notify i4 Status", newValue => {
+            data.dpu.i4 = newValue
         });
         this.registerListener("Waypoint Beacon", newValue => {
             data.dpu.termbeacon = newValue

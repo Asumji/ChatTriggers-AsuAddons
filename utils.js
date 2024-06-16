@@ -258,6 +258,7 @@ export function expandNumber(num) {
  */
 export function shortenNumber(num) {
     if (typeof num != "number") return false
+    if (num < 1) return num.toFixed(2)
     sizes = ["", "k", "m", "b"]
     for (let i = 0; i < sizes.length; i++) {
         if (num/Math.pow(10,i*3) < 1) {
