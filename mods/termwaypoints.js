@@ -33,8 +33,18 @@ register("Chat", (name,type,current,goal) => {
 
     if (data.dpu.i4) {
         const bersIGN = ChatLib.removeFormatting(Scoreboard.getLines().filter(x => x.toString().includes("[B]"))).match(/\[B\] (.*) /)
-        if (bersIGN == null || player != null || type != "device") return
-        ChatLib.chat(modPrefix + " §aBers finished i4!")
+        if (bersIGN != null && player == null && type == "device") {
+            ChatLib.chat(modPrefix + " §a§lBers finished i4!")
+            termsDone.push(23)
+        }
+    }
+
+    if (current == goal) {
+        currentPhase += 1
+        console.log(currentPhase)
+        if (currentPhase == 3) {
+            ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
+        }
     }
 
     if (player == undefined) return
@@ -47,7 +57,6 @@ register("Chat", (name,type,current,goal) => {
         }
     }
     players[name][type]++
-    
 
     if (type == "device") {
         waypoints.forEach(waypoint => {
@@ -55,35 +64,16 @@ register("Chat", (name,type,current,goal) => {
                 termsDone.push(waypoint.id)
             }
         })
-        if (current == goal) {
-            currentPhase++
-        }
-    } else if (type == "lever") {
+    } else if (type == "lever" || type == "terminal") {
         let closest = [0,999999999999]
         waypoints.forEach(waypoint => {
-            if (waypoint.type == "lever") {
+            if (waypoint.phase == currentPhase && waypoint.type == type) {
                 if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])) {
                     closest = [waypoint.id,calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])]
                 }
             }
         })
         termsDone.push(closest[0])
-        if (current == goal) {
-            currentPhase++
-        }
-    } else if (type == "terminal") {
-        let closest = [0,999999999999]
-        waypoints.forEach(waypoint => {
-            if (waypoint.type == "terminal") {
-                if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()]) && !termsDone.includes(waypoint.id)) {
-                    closest = [waypoint.id,calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])]
-                }
-            }
-        })
-        termsDone.push(closest[0])
-        if (current == goal) {
-            currentPhase++
-        }
     }
 
     if (currentPhase > 3) {
