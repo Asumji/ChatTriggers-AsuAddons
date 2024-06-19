@@ -5,6 +5,7 @@ const waypoints = JSON.parse(FileLib.read("AsuAddons/jsonData","termCoords.json"
 let renderTrigger = undefined
 
 let currentPhase = 0
+let i4Done = false
 let termsDone = []
 let players = {}
 
@@ -35,14 +36,14 @@ register("Chat", (name,type,current,goal) => {
         const bersIGN = ChatLib.removeFormatting(Scoreboard.getLines().filter(x => x.toString().includes("[B]"))).match(/\[B\] (.*) /)
         if (bersIGN != null && player == null && type == "device") {
             ChatLib.chat(modPrefix + " §a§lBers finished i4!")
+            i4Done = true
             termsDone.push(23)
         }
     }
 
     if (current == goal) {
         currentPhase += 1
-        console.log(currentPhase)
-        if (currentPhase == 3) {
+        if (currentPhase == 3 && i4Done) {
             ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
         }
     }
