@@ -1,5 +1,5 @@
 import { data, modPrefix } from "../index.js"
-import { drawWaypoint, calculateDistanceQuick } from "../utils.js"
+import { drawWaypoint, calculateDistanceQuick, showAUTitle } from "../utils.js"
 const waypoints = JSON.parse(FileLib.read("AsuAddons/jsonData","termCoords.json"))
 
 let renderTrigger = undefined
@@ -45,6 +45,8 @@ register("Chat", (name,type,current,goal) => {
         currentPhase += 1
         if (currentPhase == 3 && i4Done) {
             ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
+            showAUTitle(modPrefix + " §a§l4th Device is done! (i4)", 1000)
+            if (data.dpu.i4Msg != "") ChatLib.command("pc " + i4Msg)
         }
     }
 

@@ -14,6 +14,7 @@ const data = new PogObject("AsuAddons", {
     kuudra: false,
     termwaypoints: false,
     i4: false,
+    i4Msg: "",
     termsummary: false,
     termbeacon: false,
     showEquipment: true,
@@ -86,8 +87,8 @@ const data = new PogObject("AsuAddons", {
   }
 });
 
-if (data.dpu.i4 == null) {
-  data.dpu.i4 = false
+if (data.dpu.i4Msg == null) {
+  data.dpu.i4Msg = ""
 }
 data.save();
 

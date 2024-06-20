@@ -126,6 +126,13 @@ class Settings {
     })
     dpui4 = data.dpu.i4;
 
+    @TextProperty({
+        name: "Send i4 Message",
+        description: "Send a message in party chat once you enter term phase 4 if i4 is done. (Leave blank to not send)",
+        category: "Dungeons"
+    })
+    dpui4Msg = data.dpu.i4Msg;
+
     @SwitchProperty({
         name: "Waypoint Beacon",
         description: "Toggles whether or not the term waypoint has a beacon or not.",
@@ -268,6 +275,7 @@ class Settings {
         this.addDependency("Relevant Items","Enable DPU")
         this.addDependency("Fun Blacklist","Fun Commands")
         this.addDependency("Waypoint Beacon","Terminal Waypoints")
+        this.addDependency("Send i4 Message","Notify i4 Status")
 
         this.registerListener("Enable FragBot", newValue => {
             data.frag.enabled = newValue
@@ -293,6 +301,9 @@ class Settings {
         });
         this.registerListener("Notify i4 Status", newValue => {
             data.dpu.i4 = newValue
+        });
+        this.registerListener("Send i4 Message", newValue => {
+            data.dpu.i4Msg = newValue
         });
         this.registerListener("Waypoint Beacon", newValue => {
             data.dpu.termbeacon = newValue
