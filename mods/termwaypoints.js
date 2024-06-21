@@ -3,13 +3,13 @@ import { drawWaypoint, calculateDistanceQuick, showAUTitle } from "../utils.js"
 const waypoints = JSON.parse(FileLib.read("AsuAddons/jsonData","termCoords.json"))
 
 let renderTrigger = undefined
-
 let currentPhase = 0
 let i4Done = false
 let termsDone = []
 let players = {}
 
 register("Chat", () => {
+    i4Done = false
     currentPhase = 0
     termsDone = []
     players = {}
@@ -46,7 +46,7 @@ register("Chat", (name,type,current,goal) => {
         if (currentPhase == 3 && i4Done) {
             ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
             showAUTitle(modPrefix + " §a§l4th Device is done! (i4)", 1000)
-            if (data.dpu.i4Msg != "") ChatLib.command("pc " + i4Msg)
+            if (data.dpu.i4Msg != "") ChatLib.command("pc " + data.dpu.i4Msg)
         }
     }
 
@@ -70,7 +70,7 @@ register("Chat", (name,type,current,goal) => {
     } else if (type == "lever" || type == "terminal") {
         let closest = [0,999999999999]
         waypoints.forEach(waypoint => {
-            if (waypoint.phase == currentPhase && waypoint.type == type) {
+            if (waypoint.type == type) {
                 if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])) {
                     closest = [waypoint.id,calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])]
                 }
