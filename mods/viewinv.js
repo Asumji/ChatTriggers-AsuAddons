@@ -6,6 +6,7 @@ import { decodeInv, getrequest } from "../utils"
 const ItemStack = Java.type("net.minecraft.item.ItemStack");
 const InventoryBasic = Java.type("net.minecraft.inventory.InventoryBasic");
 const GuiChest = Java.type("net.minecraft.client.gui.inventory.GuiChest");
+const S2FPacketSetSlot = Java.type("net.minecraft.network.play.server.S2FPacketSetSlot")
 
 let lastInv = null
 let invToOpen = null
@@ -54,8 +55,10 @@ register("tick", () => {
     }
 });
 
+register("packetReceived", (packet, event) => {
+    if (Client.getMinecraft().field_71462_r === lastInv && lastInv !== null) cancel(event)
+}).setFilteredClass(S2FPacketSetSlot)
+
 register("guiMouseClick", (x, y, button, gui, event) => {
-    if(Client.getMinecraft().field_71462_r === lastInv && lastInv !== null) {
-        cancel(event)
-    }
+    if(Client.getMinecraft().field_71462_r === lastInv && lastInv !== null) cancel(event)
 });

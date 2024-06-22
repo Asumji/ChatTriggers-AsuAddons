@@ -270,14 +270,22 @@ export function shortenNumber(num) {
 
 /**
  * Draws a title on the screen cuz I don't trust the vanilla one
- * @param {String} text The text that is displayed (supports formatting)
+ * @param {String} text The title that is displayed (supports formatting)
  * @param {Number} duration The duration how long it is displayed in ms
+ * @param {Boolean} shadow Add shadow to the text
+ * @param {String} subtitle The subtitle that is displayed (supports formatting)
  */
-export function showAUTitle(text, duration) {
+export function showAUTitle(title, duration, shadow = false, subtitle = "") {
     let overlay = register("renderOverlay", () => {
         Renderer.translate(Renderer.screen.getWidth()/2, Renderer.screen.getHeight()/2)
         Renderer.scale(4,4)
-        Renderer.drawString(text, -Renderer.getStringWidth(text)/2,-10)
+        Renderer.drawString(title, -Renderer.getStringWidth(title)/2,-10,shadow)
+
+        if (subtitle != "") {
+            Renderer.translate(Renderer.screen.getWidth()/2, Renderer.screen.getHeight()/2)
+            Renderer.scale(2,2)
+            Renderer.drawString(subtitle, -Renderer.getStringWidth(subtitle)/2,-3,shadow)
+        }
     })
     setTimeout(() => {
         if (overlay != undefined) overlay.unregister()
