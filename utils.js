@@ -291,3 +291,18 @@ export function showAUTitle(title, duration, shadow = false, subtitle = "") {
         if (overlay != undefined) overlay.unregister()
     },duration)
 }
+
+/**
+ * Gets all classes in the current dungeon
+ * @returns {JSON} Classes in the format {class: ign}
+ */
+export function getClasses() {
+    let classes = {}
+    TabList.getNames().forEach((line,index) => {
+        line = ChatLib.removeFormatting(line)
+        let matches = line.match(/\[\d+\] ([A-z_1-9]+)(?: .)? \((Berserk|Healer|Archer|Tank|Mage) ([I|V|X|L|C|D]+)\)/)
+        if (!matches) return
+        classes[matches[2]] ? classes[matches[2].toLowerCase()+String(index)] = matches[1] : classes[matches[2].toLowerCase()] = matches[1]
+    })
+    return classes
+}

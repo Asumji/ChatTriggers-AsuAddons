@@ -1,5 +1,5 @@
 import { data, modPrefix } from "../index.js"
-import { drawWaypoint, calculateDistanceQuick, showAUTitle } from "../utils.js"
+import { drawWaypoint, calculateDistanceQuick, showAUTitle, getClasses } from "../utils.js"
 const waypoints = JSON.parse(FileLib.read("AsuAddons/jsonData","termCoords.json"))
 
 let renderTrigger = undefined
@@ -31,11 +31,19 @@ register("Chat", () => {
 
 register("Chat", (name,type,current,goal) => {
     let player = World.getPlayerByName(name)
+    let classes = getClasses()
 
     if (data.dpu.i4) {
-        const bersIGN = ChatLib.removeFormatting(Scoreboard.getLines().filter(x => x.toString().includes("[B]"))).match(/\[B\] (.*) /)
-        if (bersIGN != null && player == null && type == "device") {
-            ChatLib.chat(modPrefix + " §a§lBers finished i4!")
+        if (classes["berserk"] != Player.name) {
+            if (classes["berserk"] != null && player == null && type == "device") {
+                ChatLib.chat(modPrefix + " §a§lBers finished i4!")
+                i4Done = true
+                termsDone.push(23)
+            }
+        } else if (name == Player.name && type == "device" && currentPhase == 0) {
+            ChatLib.chat(modPrefix + " §a§lYou finished device!")
+            showAUTitle(modPrefix + " §a§lYou finished device!", 1000, true)
+            if (data.dpu.compMsg != "") ChatLib.command("pc " + data.dpu.compMsg)
             i4Done = true
             termsDone.push(23)
         }
