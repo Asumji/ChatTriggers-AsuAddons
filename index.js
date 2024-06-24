@@ -15,7 +15,7 @@ const data = new PogObject("AsuAddons", {
     termwaypoints: false,
     i4: false,
     i4Msg: "",
-    compMSg: "",
+    compMsg: "",
     termsummary: false,
     termbeacon: false,
     showEquipment: true,
