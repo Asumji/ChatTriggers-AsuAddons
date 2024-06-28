@@ -35,7 +35,7 @@ register("Chat", (name,type,current,goal) => {
 
     if (data.dpu.i4) {
         if (classes["berserk"] != Player.name) {
-            if (classes["berserk"] != null && player == null && type == "device") {
+            if (classes["berserk"] != null && (player == null || calculateDistanceQuick([63,127,35],[player.getX(),player.getY(),player.getZ()]) < 7) && type == "device") {
                 ChatLib.chat(modPrefix + " §a§lBers finished i4!")
                 i4Done = true
                 termsDone.push(23)
@@ -51,10 +51,16 @@ register("Chat", (name,type,current,goal) => {
 
     if (current == goal) {
         currentPhase += 1
-        if (currentPhase == 3 && i4Done) {
-            ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
-            showAUTitle(modPrefix + " §a§l4th Device is done! (i4)", 1000, true)
-            if (data.dpu.i4Msg != "") ChatLib.command("pc " + data.dpu.i4Msg)
+        if (currentPhase == 3) {
+            if (i4Done) {
+                ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
+                showAUTitle(modPrefix + " §a§l4th Device is done! (i4)", 1000, true)
+                if (data.dpu.i4Msg != "") ChatLib.command("pc " + data.dpu.i4Msg)
+            } else {
+                ChatLib.chat(modPrefix + " §c§l4th Device is not done! (i4)")
+                showAUTitle(modPrefix + " §c§l4th Device is not done! (i4)", 1000, true)
+                if (data.dpu.i4failMsg != "") ChatLib.command("pc " + data.dpu.i4failMsg)
+            }
         }
     }
 

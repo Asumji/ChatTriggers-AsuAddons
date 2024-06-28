@@ -15,6 +15,7 @@ const data = new PogObject("AsuAddons", {
     termwaypoints: false,
     i4: false,
     i4Msg: "",
+    i4failMsg: "",
     compMsg: "",
     termsummary: false,
     termbeacon: false,
@@ -90,6 +91,9 @@ const data = new PogObject("AsuAddons", {
 
 if (data.dpu.compMsg == null) {
   data.dpu.compMsg = ""
+} 
+if (data.dpu.i4failMsg == null) {
+  data.dpu.i4failMsg = ""
 }
 data.save();
 
