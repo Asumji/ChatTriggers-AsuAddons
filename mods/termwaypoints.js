@@ -35,7 +35,7 @@ register("Chat", (name,type,current,goal) => {
 
     if (data.dpu.i4) {
         if (classes["berserk"] != Player.name) {
-            if (classes["berserk"] != null && (player == null || calculateDistanceQuick([63,127,35],[player.getX(),player.getY(),player.getZ()]) < 7) && type == "device") {
+            if (classes["berserk"] != null && classes["berserk"] == name && (player == null || calculateDistanceQuick([63,127,35],[player.getX(),player.getY(),player.getZ()]) < 7) && type == "device") {
                 ChatLib.chat(modPrefix + " §a§lBers finished i4!")
                 i4Done = true
                 termsDone.push(23)
@@ -85,8 +85,9 @@ register("Chat", (name,type,current,goal) => {
         let closest = [0,999999999999]
         waypoints.forEach(waypoint => {
             if (waypoint.type == type) {
-                if (closest[1] > calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])) {
-                    closest = [waypoint.id,calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])]
+                let distanceToWaypoint = calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])
+                if (closest[1] > distanceToWaypoint) {
+                    closest = [waypoint.id,distanceToWaypoint]
                 }
             }
         })
