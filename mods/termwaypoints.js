@@ -40,7 +40,7 @@ register("Chat", (name,type,current,goal) => {
                 i4Done = true
                 termsDone.push(23)
             }
-        } else if (name == Player.name && type == "device" && currentPhase == 0) {
+        } else if (name == Player.name && type == "device" && calculateDistanceQuick([63,127,35],[Player.getX(),Player.getY(),Player.getZ()]) < 7 && currentPhase == 0) {
             ChatLib.chat(modPrefix + " §a§lYou finished device!")
             showAUTitle(modPrefix + " §a§lYou finished device!", 1000, true)
             if (data.dpu.compMsg != "") ChatLib.command("pc " + data.dpu.compMsg)
