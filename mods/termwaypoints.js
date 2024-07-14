@@ -49,6 +49,36 @@ register("Chat", (name,type,current,goal) => {
         }
     }
 
+    if (player == undefined) {
+        if (!players[name]) {
+            players[name] = {
+                device: 0,
+                terminal: 0,
+                lever: 0
+            }
+        }
+        players[name][type]++
+
+        if (type == "device") {
+            waypoints.forEach(waypoint => {
+                if (waypoint.phase == currentPhase && waypoint.type == "device") {
+                    termsDone.push(waypoint.id)
+                }
+            })
+        } else if (type == "lever" || type == "terminal") {
+            let closest = [0,999999999999]
+            waypoints.forEach(waypoint => {
+                if (waypoint.type == type) {
+                    let distanceToWaypoint = calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])
+                    if (closest[1] > distanceToWaypoint) {
+                        closest = [waypoint.id,distanceToWaypoint]
+                    }
+                }
+            })
+            termsDone.push(closest[0])
+        }
+    }
+
     if (current == goal) {
         currentPhase += 1
         if (currentPhase == 3) {
@@ -62,36 +92,6 @@ register("Chat", (name,type,current,goal) => {
                 if (data.dpu.i4failMsg != "") ChatLib.command("pc " + data.dpu.i4failMsg)
             }
         }
-    }
-
-    if (player == undefined) return
-
-    if (!players[name]) {
-        players[name] = {
-            device: 0,
-            terminal: 0,
-            lever: 0
-        }
-    }
-    players[name][type]++
-
-    if (type == "device") {
-        waypoints.forEach(waypoint => {
-            if (waypoint.phase == currentPhase && waypoint.type == "device") {
-                termsDone.push(waypoint.id)
-            }
-        })
-    } else if (type == "lever" || type == "terminal") {
-        let closest = [0,999999999999]
-        waypoints.forEach(waypoint => {
-            if (waypoint.type == type) {
-                let distanceToWaypoint = calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])
-                if (closest[1] > distanceToWaypoint) {
-                    closest = [waypoint.id,distanceToWaypoint]
-                }
-            }
-        })
-        termsDone.push(closest[0])
     }
 
     if (currentPhase > 3) {
