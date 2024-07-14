@@ -238,7 +238,7 @@ export function decodeInv(data) {
 /**
  * Expands a shortened Number
  * @param {String} num Shortened number (ex. 1k, 106.2m, 25b)
- * @returns {Number|Boolean} The new expanded Number or false if the input is not valid
+ * @returns {Number|Boolean} The new expanded number or false if the input is not valid
  */
 export function expandNumber(num) {
     if (+(num)) return num
@@ -268,6 +268,7 @@ export function shortenNumber(num) {
     return String((num/1000000000).toFixed(2))+"b"
 }
 
+let titles = []
 /**
  * Draws a title on the screen cuz I don't trust the vanilla one
  * @param {String} text The title that is displayed (supports formatting)
@@ -276,6 +277,12 @@ export function shortenNumber(num) {
  * @param {String} subtitle The subtitle that is displayed (supports formatting)
  */
 export function showAUTitle(title, duration, shadow = false, subtitle = "") {
+    if (titles.length > 0) {
+        for (let i = 0; i < titles.length; i++) {
+            if (titles[i] != undefined) titles[i].unregister()
+            titles.splice(i,1)
+        }
+    }
     let overlay = register("renderOverlay", () => {
         Renderer.translate(Renderer.screen.getWidth()/2, Renderer.screen.getHeight()/2)
         Renderer.scale(4,4)
@@ -287,8 +294,10 @@ export function showAUTitle(title, duration, shadow = false, subtitle = "") {
             Renderer.drawString(subtitle, -Renderer.getStringWidth(subtitle)/2,-3,shadow)
         }
     })
+    titles.push(overlay)
     setTimeout(() => {
         if (overlay != undefined) overlay.unregister()
+        titles.splice(titles.indexOf(overlay),1)
     },duration)
 }
 

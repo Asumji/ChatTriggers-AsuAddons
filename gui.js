@@ -8,7 +8,7 @@ const PropertyData = Java.type("gg.essential.vigilance.data.PropertyData");
 
 @Vigilant("AsuAddons", "AsuAddons Settings", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["Bridge","PartyCommands","TrophyFish","Reparty","ReplaceGhost","FragBot","Dungeons"];
+        const categories = ["Bridge","PartyCommands","TrophyFish","Reparty","ReplaceGhost","FragBot","Dungeons","Misc"];
 
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
@@ -242,6 +242,13 @@ class Settings {
     })
     autojoinCD = data.rp.cooldown / 1000;
 
+    @SwitchProperty({
+        name: "Autopet Notification",
+        description: 'If an autopet rules procs draws a title on the screen with the respective pet.',
+        category: "Misc"
+    })
+    petruleNotif = data.petrules.notif;
+
     constructor() {
         this.initialize(this);
         
@@ -406,6 +413,9 @@ class Settings {
             } else {
                 data.partycmd.customBlacklist = [newValue.toLowerCase()]
             }
+        });
+        this.registerListener("Autopet Notification", newValue => {
+            data.petrules.notif = newValue
         });
 
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")

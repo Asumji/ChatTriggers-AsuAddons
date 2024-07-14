@@ -1,7 +1,10 @@
 import PogObject from "PogData";
+
+const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
 const File = Java.type("java.io.File")
 
 const data = new PogObject("AsuAddons", {
+  firstLoad: true,
   frag: {
     names: [],
     owner: "",
@@ -86,6 +89,9 @@ const data = new PogObject("AsuAddons", {
   },
   lowball: {
     items: []
+  },
+  petrules: {
+    notif:false
   }
 });
 
@@ -94,6 +100,18 @@ if (data.dpu.compMsg == null) {
 } 
 if (data.dpu.i4failMsg == null) {
   data.dpu.i4failMsg = ""
+}
+
+if (data.firstLoad) {
+  data.firstLoad = false
+
+  ChatLib.chat("§a"+ChatLib.getChatBreak("="))
+  ChatLib.chat(ChatLib.getCenteredText("§9§lAsuAddons "+metadata.version))
+  ChatLib.chat(ChatLib.getCenteredText("§bThis seems to be your first time loading the module"))
+  ChatLib.chat(ChatLib.getCenteredText("§bUse §6\"/au\"§b to open the config menu"))
+  ChatLib.chat(ChatLib.getCenteredText("§bUse §6\"/au help\"§b for more help on commands"))
+  ChatLib.chat(ChatLib.getCenteredText("§cIf any issues arise contact asumji on discord"))
+  ChatLib.chat("§a"+ChatLib.getChatBreak("="))
 }
 data.save();
 
