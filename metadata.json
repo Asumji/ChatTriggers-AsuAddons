@@ -2,7 +2,7 @@
   "name": "AsuAddons",
   "creator": "asumji",
   "description": "A collection of all the small mods I decide to make.",
-  "version": "3.4.4",
+  "version": "3.4.5",
   "entry": "index.js",
   "requires": ["PogData", "requestv2", "Vigilance", "RenderLib", "BeaconBeam"]
 }
