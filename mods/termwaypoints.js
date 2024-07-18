@@ -37,45 +37,17 @@ register("Chat", (name,type,current,goal) => {
         if (classes["berserk"] != Player.name) {
             if (classes["berserk"] != null && classes["berserk"] == name && (player == null || calculateDistanceQuick([63,127,35],[player.getX(),player.getY(),player.getZ()]) < 7) && type == "device") {
                 ChatLib.chat(modPrefix + " §a§lBers finished i4!")
+                World.playSound("note.pling", 1.0, 2.0);
                 i4Done = true
                 termsDone.push(23)
             }
         } else if (name == Player.name && type == "device" && calculateDistanceQuick([63,127,35],[Player.getX(),Player.getY(),Player.getZ()]) < 7 && currentPhase == 0) {
             ChatLib.chat(modPrefix + " §a§lYou finished device!")
             showAUTitle(modPrefix + " §a§lYou finished device!", 1000, true)
+            World.playSound("note.pling", 1.0, 2.0);
             if (data.dpu.compMsg != "") ChatLib.command("pc " + data.dpu.compMsg)
             i4Done = true
             termsDone.push(23)
-        }
-    }
-
-    if (player == undefined) {
-        if (!players[name]) {
-            players[name] = {
-                device: 0,
-                terminal: 0,
-                lever: 0
-            }
-        }
-        players[name][type]++
-
-        if (type == "device") {
-            waypoints.forEach(waypoint => {
-                if (waypoint.phase == currentPhase && waypoint.type == "device") {
-                    termsDone.push(waypoint.id)
-                }
-            })
-        } else if (type == "lever" || type == "terminal") {
-            let closest = [0,999999999999]
-            waypoints.forEach(waypoint => {
-                if (waypoint.type == type) {
-                    let distanceToWaypoint = calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])
-                    if (closest[1] > distanceToWaypoint) {
-                        closest = [waypoint.id,distanceToWaypoint]
-                    }
-                }
-            })
-            termsDone.push(closest[0])
         }
     }
 
@@ -92,6 +64,36 @@ register("Chat", (name,type,current,goal) => {
                 if (data.dpu.i4failMsg != "") ChatLib.command("pc " + data.dpu.i4failMsg)
             }
         }
+    }
+
+    if (player == undefined) return
+
+    if (!players[name]) {
+        players[name] = {
+            device: 0,
+            terminal: 0,
+            lever: 0
+        }
+    }
+    players[name][type]++
+
+    if (type == "device") {
+        waypoints.forEach(waypoint => {
+            if (waypoint.phase == currentPhase && waypoint.type == "device") {
+                termsDone.push(waypoint.id)
+            }
+        })
+    } else if (type == "lever" || type == "terminal") {
+        let closest = [0,999999999999]
+        waypoints.forEach(waypoint => {
+            if (waypoint.type == type) {
+                let distanceToWaypoint = calculateDistanceQuick([waypoint.location[0],waypoint.location[1],waypoint.location[2]],[player.getX(), player.getY(), player.getZ()])
+                if (closest[1] > distanceToWaypoint) {
+                    closest = [waypoint.id,distanceToWaypoint]
+                }
+            }
+        })
+        termsDone.push(closest[0])
     }
 
     if (currentPhase > 3) {

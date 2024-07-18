@@ -15,7 +15,7 @@ register("messageSent", (message, event) => {
 
 register("command", (...args) => {
     if (args[0] && args[1]) {
-        if (typeof isInArrayIdx(args[1].toLowerCase(),data.alias.names,1) && !isInArrayIdx(args[0].toLowerCase(),data.alias.names,0) == "boolean") {
+        if (!isInArrayIdx(args[1].toLowerCase(),data.alias.names,1) && typeof isInArrayIdx(args[0].toLowerCase(),data.alias.names,0) == "boolean") {
             data.alias.names.push([args[0].toLowerCase(), args[1].toLowerCase()])
             data.save()
             ChatLib.chat(modPrefix + " §aAdded the alias \"" + args[0] + "\" for the player \"" + args[1] + "\".")
@@ -44,3 +44,15 @@ register("command", (...args) => {
         ChatLib.chat("§cUsage: /removealias <alias>")
     }
 }).setName("removealias")
+
+register("command", (...args) => {
+    string = "§2Aliases:\n"
+    for (let i = 0; i < data.alias.names.length; i++) {
+        if (i != data.alias.names.length - 1) {
+            string = string + "§a" + data.alias.names[i][0] + "§2 -> " + "§a" + data.alias.names[i][1] + "\n"
+        } else {
+            string = string + "§a" + data.alias.names[i][0] + "§2 -> " + "§a" + data.alias.names[i][1]
+        }
+    }
+    ChatLib.chat(string)
+}).setName("listalias")

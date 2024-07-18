@@ -42,6 +42,7 @@ register("command", (...args) => {
 §6§lAlias
     §a/addalias <alias> <ign> §eAdds an alias.
     §a/removealias <alias> §eRemoves an alias.
+    §a/listalias §eLists all currently set up aliases.
 
 §6§lLowball
     §a/lowball add <item> <buyprice> §eAdds an item to the list
