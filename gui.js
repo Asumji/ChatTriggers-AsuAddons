@@ -114,14 +114,14 @@ class Settings {
 
     @SwitchProperty({
         name: "Terminal Waypoints",
-        description: "Marks undone terminals. (Same as Soopy but less buggy I think)",
+        description: "Marks undone terminals. (Same as Soopy but less buggy I think)\nWill break if boss messages are off.",
         category: "Dungeons"
     })
     dpuTermwaypoints = data.dpu.termwaypoints;
 
     @SwitchProperty({
         name: "Notify i4 Status",
-        description: "Notifies you if i4 is done. (You can be i4 or not)",
+        description: "Notifies you if i4 is done. (You can be i4 or not)\n\nWill break if boss messages are off.",
         category: "Dungeons"
     })
     dpui4 = data.dpu.i4;
@@ -244,7 +244,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Autopet Notification",
-        description: 'If an autopet rules procs draws a title on the screen with the respective pet.',
+        description: 'If an autopet rule procs draws a title on the screen with the respective pet.',
         category: "Misc"
     })
     petruleNotif = data.petrules.notif;

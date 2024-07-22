@@ -75,7 +75,7 @@ register('Chat', (event) => {
                                         let LLength = Lore.func_74745_c()
                                         for (let i = 0; i < LLength; i++) {
                                             let line = Lore.func_150307_f(i) //NBTTagList.getStringTagAt()
-                                            LoreString = LoreString + "\n " + line
+                                            LoreString = LoreString + "\n" + line
                                         }
 
                                         for (let i = 0; i < data.dpu.relevantItems.length; i++) {
@@ -101,7 +101,7 @@ register('Chat', (event) => {
                                         let LLength = Lore.func_74745_c()
                                         for (let i = 0; i < LLength; i++) {
                                             let line = Lore.func_150307_f(i) //NBTTagList.getStringTagAt()
-                                            LoreString = LoreString + "\n " + line
+                                            LoreString = LoreString + "\n" + line
                                         }
 
                                         armorArray.push([Name, LoreString])
