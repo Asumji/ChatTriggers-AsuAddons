@@ -53,7 +53,7 @@ register("Chat", (name,type,current,goal) => {
 
     if (current == goal) {
         currentPhase += 1
-        if (currentPhase == 3) {
+        if (currentPhase == 3 && data.dpu.i4) {
             if (i4Done) {
                 ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
                 showAUTitle(modPrefix + " §a§l4th Device is done! (i4)", 1000, true)
