@@ -92,6 +92,17 @@ const data = new PogObject("AsuAddons", {
   },
   petrules: {
     notif:false
+  },
+  spring: {
+    enabled: false,
+    checkpoints: [],
+    location: [
+      0,
+      420
+    ]
+  },
+  vamp: {
+    enabled: false
   }
 });
 

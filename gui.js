@@ -79,7 +79,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Enable DPU",
-        description: "Toggle the mod.",
+        description: "Toggle the party finder player preview.",
         category: "Dungeons"
     })
     dpuEnabled = data.dpu.enabled;
@@ -249,6 +249,20 @@ class Settings {
     })
     petruleNotif = data.petrules.notif;
 
+    @SwitchProperty({
+        name: "Spring Boots Height Display",
+        description: 'Displays the height your Spring boots will jump.\n/auspringcheckpoint will let you set visual checkpoints for different heights.\n/movespring to move the gui',
+        category: "Misc"
+    })
+    springBootHeight = data.spring.enabled;
+
+    @SwitchProperty({
+        name: "Vamp Slayer Mania Fix",
+        description: 'Shows where you have to stand even if another mania overlaps.',
+        category: "Misc"
+    })
+    vampSlyermaniafix = data.vamp.enabled;
+
     constructor() {
         this.initialize(this);
         
@@ -416,6 +430,12 @@ class Settings {
         });
         this.registerListener("Autopet Notification", newValue => {
             data.petrules.notif = newValue
+        });
+        this.registerListener("Spring Boots Height Display", newValue => {
+            data.spring.enabled = newValue
+        });
+        this.registerListener("Vamp Slayer Mania Fix", newValue => {
+            data.vamp.enabled = newValue
         });
 
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")
