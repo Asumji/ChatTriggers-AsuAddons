@@ -102,16 +102,12 @@ const data = new PogObject("AsuAddons", {
     ]
   },
   vamp: {
-    enabled: false
+    enabled: false,
+    debug: false
   }
 });
 
-if (data.dpu.compMsg == null) {
-  data.dpu.compMsg = ""
-} 
-if (data.dpu.i4failMsg == null) {
-  data.dpu.i4failMsg = ""
-}
+if (data.vamp.debug == null) data.vamp.debug = false
 
 if (data.firstLoad) {
   data.firstLoad = false

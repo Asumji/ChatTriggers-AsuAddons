@@ -263,6 +263,13 @@ class Settings {
     })
     vampSlyermaniafix = data.vamp.enabled;
 
+    @SwitchProperty({
+        name: "Mania Debug mode",
+        description: 'Shows extra information for mania fix (for development purposes)',
+        category: "Misc"
+    })
+    vampSlayermaniadebug = data.vamp.debug;
+
     constructor() {
         this.initialize(this);
         
@@ -313,6 +320,7 @@ class Settings {
         this.addDependency("Send i4 Message","Notify i4 Status")
         this.addDependency("Send i4 Fail Message","Notify i4 Status")
         this.addDependency("Send Complete Message","Notify i4 Status")
+        this.addDependency("Mania Debug mode","Vamp Slayer Mania Fix")
 
         this.registerListener("Enable FragBot", newValue => {
             data.frag.enabled = newValue
@@ -437,6 +445,9 @@ class Settings {
         this.registerListener("Vamp Slayer Mania Fix", newValue => {
             data.vamp.enabled = newValue
         });
+        this.registerListener("Mania Debug mode", newValue => {
+            data.vamp.debug = newValue
+        });
 
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")
         this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
@@ -445,6 +456,7 @@ class Settings {
         this.setCategoryDescription("ReplaceGhost", "A simple dungeons mod that replaced and became a ghost with any msg you want (includes formatting). Leaving the list of player to check for empty will replace the msg for everyone.")
         this.setCategoryDescription("FragBot", "A better FragBot mod than most other mods.\nSolo dungeons are being added so this is mostly irrelavent but keeping it here for anyone that needs it.\n\n§4Use At Your Own Risk! (fragbots are bannable)")
         this.setCategoryDescription("Dungeons", "A QOL mod for dungeons to give useful information for your runs.")
+        this.setCategoryDescription("Misc", "Any miscellaneous features that don't fit anywhere else.")
     }
 }
 
