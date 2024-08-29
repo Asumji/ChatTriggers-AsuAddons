@@ -56,11 +56,11 @@ register("Chat", (name,type,current,goal) => {
         if (currentPhase == 3 && data.dpu.i4) {
             if (i4Done) {
                 ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
-                showAUTitle(modPrefix + " §a§l4th Device is done! (i4)", 1000, true)
+                showAUTitle(data.dpu.i4Done)
                 if (data.dpu.i4Msg != "") ChatLib.command("pc " + data.dpu.i4Msg)
             } else {
                 ChatLib.chat(modPrefix + " §c§l4th Device is not done! (i4)")
-                showAUTitle(modPrefix + " §c§l4th Device is not done! (i4)", 1000, true)
+                showAUTitle(data.dpu.i4Failed, 1000, true)
                 if (data.dpu.i4failMsg != "") ChatLib.command("pc " + data.dpu.i4failMsg)
             }
         }

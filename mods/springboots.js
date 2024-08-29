@@ -22,7 +22,11 @@ let blocks = 0
 let currentPitch = 0
 let startBlocks = 0
 let checkpointsPassed = 0
+let displayShown = true
 register("soundPlay", (pos, name, vol, pitch) => {
+    if (!data.spring.enabled) return
+    if (Player.armor.getBoots().getNBT().getCompoundTag("tag").getCompoundTag("ExtraAttributes").getString("id") != "SPRING_BOOTS") return
+    if (!Player.isSneaking()) return
     if (pitch != currentPitch) {
         currentPitch = pitch
         startBlocks = blocks
@@ -35,9 +39,17 @@ register("soundPlay", (pos, name, vol, pitch) => {
 }).setCriteria("note.pling")
 
 register("tick", () => {
+    if (Player.armor.getBoots().getNBT().getCompoundTag("tag").getCompoundTag("ExtraAttributes").getString("id") != "SPRING_BOOTS" && displayShown) {
+        displayShown = false
+        return display.hide()
+    }
+    if (Player.armor.getBoots().getNBT().getCompoundTag("tag").getCompoundTag("ExtraAttributes").getString("id") == "SPRING_BOOTS" &! displayShown) {
+        displayShown = true
+        display.show()
+    }
     if (data.spring.enabled) display.setLine(0,`Spring Boots: ${Math.floor(blocks)} Blocks`)
     if (Player.getMotionY() > 0 && data.spring.enabled) {
-        if (blocks != 0) ChatLib.chat(new Message(`${modPrefix} §aPrevious Jump Height was: §6${Math.floor(blocks)}`).addTextComponent(new TextComponent("\n§a§l[CLICK HERE] §6to save as checkpoint.").setClick("run_command",`/auspringcheckpoint add ${Math.floor(blocks)}`)))
+        if (blocks != 0 && data.spring.editMode) ChatLib.chat(new Message(`${modPrefix} §aPrevious Jump Height was: §6${Math.floor(blocks)}`).addTextComponent(new TextComponent("\n§a§l[CLICK HERE] §6to save as checkpoint.").setClick("run_command",`/auspringcheckpoint add ${Math.floor(blocks)}`)))
         blocks = 0
         checkpointsPassed = 0
     }

@@ -64,7 +64,7 @@ register("command", (...args) => {
     } else {
         Settings.openGUI()
     }
-}).setName("au");
+}).setName("au").setAliases(["asu","asuaddons","asumji"]);
 
 register("guiClosed", (...gui) => {
     if(gui.toString().split("@")[0] == "gg.essential.vigilance.gui.SettingsGui") {

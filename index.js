@@ -19,6 +19,8 @@ const data = new PogObject("AsuAddons", {
     i4: false,
     i4Msg: "",
     i4failMsg: "",
+    i4Done: "&a&l4th Device is done! (i4)",
+    i4Failed: "&c&l4th Device is not done! (i4)",
     compMsg: "",
     termsummary: false,
     termbeacon: false,
@@ -95,6 +97,7 @@ const data = new PogObject("AsuAddons", {
   },
   spring: {
     enabled: false,
+    editMode: false,
     checkpoints: [],
     location: [
       0,
@@ -108,6 +111,9 @@ const data = new PogObject("AsuAddons", {
 });
 
 if (data.vamp.debug == null) data.vamp.debug = false
+if (data.spring.editMode == null) data.spring.editMode = false
+if (data.dpu.i4Done == null) data.dpu.i4Done = "&a&l4th Device is done! (i4)"
+if (data.dpu.i4Failed == null) data.dpu.i4Failed = "&c&l4th Device is not done! (i4)"
 
 if (data.firstLoad) {
   data.firstLoad = false

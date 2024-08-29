@@ -120,11 +120,33 @@ class Settings {
     dpuTermwaypoints = data.dpu.termwaypoints;
 
     @SwitchProperty({
+        name: "Waypoint Beacon",
+        description: "Toggles whether or not the term waypoint has a beacon or not.",
+        category: "Dungeons"
+    })
+    dpuTermbeacon = data.dpu.termbeacon;
+
+    @SwitchProperty({
         name: "Notify i4 Status",
         description: "Notifies you if i4 is done. (You can be i4 or not)\n\nWill break if boss messages are off.",
         category: "Dungeons"
     })
     dpui4 = data.dpu.i4;
+
+    @TextProperty({
+        name: "i4 Done Text",
+        description: "The text that is displayed if i4 is done.",
+        category: "Dungeons"
+    })
+    dpui4done = data.dpu.i4Done;
+
+    @TextProperty({
+        name: "i4 Failed Text",
+        description: "The text that is displayed if i4 is failed.",
+        category: "Dungeons"
+    })
+    dpui4failed = data.dpu.i4Failed;
+
 
     @TextProperty({
         name: "Send i4 Message",
@@ -146,13 +168,6 @@ class Settings {
         category: "Dungeons"
     })
     dpuCompMsg = data.dpu.compMsg;
-
-    @SwitchProperty({
-        name: "Waypoint Beacon",
-        description: "Toggles whether or not the term waypoint has a beacon or not.",
-        category: "Dungeons"
-    })
-    dpuTermbeacon = data.dpu.termbeacon;
 
     @SwitchProperty({
         name: "Terms Overview",
@@ -257,6 +272,13 @@ class Settings {
     springBootHeight = data.spring.enabled;
 
     @SwitchProperty({
+        name: "Spring Boots Edit Mode",
+        description: 'After every spring boots use will send a message in chat to save a checkpoint with the latest jump height.',
+        category: "Misc"
+    })
+    springBootEditMode = data.spring.editMode;
+
+    @SwitchProperty({
         name: "Vamp Slayer Mania Fix",
         description: 'Shows where you have to stand even if another mania overlaps.',
         category: "Misc"
@@ -317,6 +339,9 @@ class Settings {
         this.addDependency("Relevant Items","Enable DPU")
         this.addDependency("Fun Blacklist","Fun Commands")
         this.addDependency("Waypoint Beacon","Terminal Waypoints")
+        this.addDependency("i4 Done Text","Notify i4 Status")
+        this.addDependency("Spring Boots Edit Mode","Spring Boots Height Display")
+        this.addDependency("i4 Failed Text","Notify i4 Status")
         this.addDependency("Send i4 Message","Notify i4 Status")
         this.addDependency("Send i4 Fail Message","Notify i4 Status")
         this.addDependency("Send Complete Message","Notify i4 Status")
@@ -346,6 +371,12 @@ class Settings {
         });
         this.registerListener("Notify i4 Status", newValue => {
             data.dpu.i4 = newValue
+        });
+        this.registerListener("i4 Done Text", newValue => {
+            data.dpu.i4Done = newValue
+        });
+        this.registerListener("i4 Failed Text", newValue => {
+            data.dpu.i4Failed = newValue
         });
         this.registerListener("Send i4 Message", newValue => {
             data.dpu.i4Msg = newValue
@@ -441,6 +472,9 @@ class Settings {
         });
         this.registerListener("Spring Boots Height Display", newValue => {
             data.spring.enabled = newValue
+        });
+        this.registerListener("Spring Boots Edit Mode", newValue => {
+            data.spring.editMode = newValue
         });
         this.registerListener("Vamp Slayer Mania Fix", newValue => {
             data.vamp.enabled = newValue
