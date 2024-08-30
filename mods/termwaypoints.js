@@ -43,7 +43,7 @@ register("Chat", (name,type,current,goal) => {
             }
         } else if (name == Player.name && type == "device" && calculateDistanceQuick([63,127,35],[Player.getX(),Player.getY(),Player.getZ()]) < 7 && currentPhase == 0) {
             ChatLib.chat(modPrefix + " §a§lYou finished device!")
-            showAUTitle(modPrefix + " §a§lYou finished device!", 1000, true)
+            showAUTitle(data.dpu.i4Done, 1000, true)
             World.playSound("note.pling", 1.0, 2.0);
             if (data.dpu.compMsg != "") ChatLib.command("pc " + data.dpu.compMsg)
             i4Done = true
@@ -56,7 +56,7 @@ register("Chat", (name,type,current,goal) => {
         if (currentPhase == 3 && data.dpu.i4) {
             if (i4Done) {
                 ChatLib.chat(modPrefix + " §a§l4th Device is done! (i4)")
-                showAUTitle(data.dpu.i4Done)
+                showAUTitle(data.dpu.i4Done, 1000, true)
                 if (data.dpu.i4Msg != "") ChatLib.command("pc " + data.dpu.i4Msg)
             } else {
                 ChatLib.chat(modPrefix + " §c§l4th Device is not done! (i4)")
