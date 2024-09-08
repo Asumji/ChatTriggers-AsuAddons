@@ -292,6 +292,20 @@ class Settings {
     })
     vampSlayermaniadebug = data.vamp.debug;
 
+    @SwitchProperty({
+        name: "Vamp Splits",
+        description: 'Shows vamp split times in ticks.',
+        category: "Misc"
+    })
+    vampSlayerSplits = data.vamp.splits;
+
+    @SwitchProperty({
+        name: "Vamp All Hit",
+        description: 'Stupid challenge blastelectro made. better name coming soontm\nAwards you points for every attack that hits you (ignores Coagulation).',
+        category: "Misc"
+    })
+    vampSlayerAllHit = data.vamp.allhit;
+
     constructor() {
         this.initialize(this);
         
@@ -481,6 +495,12 @@ class Settings {
         });
         this.registerListener("Mania Debug mode", newValue => {
             data.vamp.debug = newValue
+        });
+        this.registerListener("Vamp Splits", newValue => {
+            data.vamp.splits = newValue
+        });
+        this.registerListener("Vamp All Hit", newValue => {
+            data.vamp.allhit = newValue
         });
 
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")

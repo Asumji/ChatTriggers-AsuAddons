@@ -106,14 +106,23 @@ const data = new PogObject("AsuAddons", {
   },
   vamp: {
     enabled: false,
-    debug: false
+    debug: false,
+    location: [
+      0,250
+    ],
+    splits: false,
+    allhit: false
   }
 });
 
-if (data.vamp.debug == null) data.vamp.debug = false
-if (data.spring.editMode == null) data.spring.editMode = false
-if (data.dpu.i4Done == null) data.dpu.i4Done = "&a&l4th Device is done! (i4)"
-if (data.dpu.i4Failed == null) data.dpu.i4Failed = "&c&l4th Device is not done! (i4)"
+if (data.vamp.location == null) {
+  data.vamp.location = [
+    0,
+    250
+  ]
+  data.vamp.splits = false
+  data.vamp.allhit = false
+}
 
 if (data.firstLoad) {
   data.firstLoad = false

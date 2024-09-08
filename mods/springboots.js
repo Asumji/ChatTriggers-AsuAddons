@@ -25,7 +25,7 @@ let checkpointsPassed = 0
 let displayShown = true
 register("soundPlay", (pos, name, vol, pitch) => {
     if (!data.spring.enabled) return
-    if (Player.armor.getBoots().getNBT().getCompoundTag("tag").getCompoundTag("ExtraAttributes").getString("id") != "SPRING_BOOTS") return
+    if (Player?.armor?.getBoots()?.getNBT()?.getCompoundTag("tag")?.getCompoundTag("ExtraAttributes")?.getString("id") != "SPRING_BOOTS") return
     if (!Player.isSneaking()) return
     if (pitch != currentPitch) {
         currentPitch = pitch
@@ -39,11 +39,11 @@ register("soundPlay", (pos, name, vol, pitch) => {
 }).setCriteria("note.pling")
 
 register("tick", () => {
-    if (Player.armor.getBoots().getNBT().getCompoundTag("tag").getCompoundTag("ExtraAttributes").getString("id") != "SPRING_BOOTS" && displayShown) {
+    if (Player?.armor?.getBoots()?.getNBT()?.getCompoundTag("tag")?.getCompoundTag("ExtraAttributes")?.getString("id") != "SPRING_BOOTS" && displayShown) {
         displayShown = false
         return display.hide()
     }
-    if (Player.armor.getBoots().getNBT().getCompoundTag("tag").getCompoundTag("ExtraAttributes").getString("id") == "SPRING_BOOTS" &! displayShown) {
+    if (Player?.armor?.getBoots()?.getNBT()?.getCompoundTag("tag")?.getCompoundTag("ExtraAttributes")?.getString("id") == "SPRING_BOOTS" &! displayShown) {
         displayShown = true
         display.show()
     }
