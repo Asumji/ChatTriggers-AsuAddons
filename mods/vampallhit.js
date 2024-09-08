@@ -1,6 +1,8 @@
 import { data, modPrefix } from "../index.js"
 import { Overlay } from "../moveGUI.js"
 
+const comboMulti = 0.5
+
 let validRun = true
 let points = 0
 let combo = 0
@@ -13,8 +15,8 @@ display.hide()
 
 register("chat", (hearts,iced,attack) => {
     if (!data.vamp.allhit) return
-    iced == "(ICED)" ? points += (Number(hearts) * 0.2) * (combo+1) : points += (Number(hearts)) * (combo+1)
-    ChatLib.chat(modPrefix + ` §aYou scored §c${(iced == "(ICED)" ? (Number(hearts) * 0.2) * (combo+1) : (Number(hearts)) * (combo+1)).toFixed(1)} points §aon that attack! §6(${combo}x Combo)`)
+    iced == "(ICED)" ? points += (Number(hearts) * 0.2) * (comboMulti*combo+1) : points += (Number(hearts)) * (comboMulti*combo+1)
+    ChatLib.chat(modPrefix + ` §aYou scored §c${(iced == "(ICED)" ? (Number(hearts) * 0.2) * (comboMulti*combo+1) : (Number(hearts)) * (comboMulti*combo+1)).toFixed(1)} points §aon that attack! §6(${combo}x Combo)`)
     comboTicks = 10
     combo++
     display.show()
