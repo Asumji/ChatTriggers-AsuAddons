@@ -18,7 +18,7 @@ function render() {
     }
 }
 
-new Overlay("trophy","movetrophy","trophyfish.js")
+new Overlay("trophy","location","movetrophy","trophyfish.js","Placeholder Fish\n".repeat(18))
 
 if (data.trophy.firstUse) {
     data.trophy.firstUse = false

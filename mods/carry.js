@@ -15,7 +15,7 @@ function render() {
     display.setRenderLoc(data.carry.location[0],data.carry.location[1])
 }
 
-new Overlay("carry","movecarry","carry.js")
+new Overlay("carry","location","movecarry","carry.js","\nIGN: Player Runs: 2/10")
 
 register("command", (...args) => {
     if (args[0]) {

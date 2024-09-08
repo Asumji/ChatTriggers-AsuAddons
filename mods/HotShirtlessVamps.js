@@ -19,7 +19,7 @@ let displayShown = false
 
 export const display = new Display();
 display.setRenderLoc(data.vamp.location[0],data.vamp.location[1])
-new Overlay("vamp","movevamp","HotShirtlessVamp.js")
+new Overlay("vamp","location","movevamp","HotShirtlessVamps.js", "§aDamage: §c20t §6/ §c1.0s\n§5Mania\n§aDamage: §c20t §6/ §c1.0s\n§aFull Boss: §c40t &6/ §c2.0s")
 display.hide()
 
 function scanMania(boss,attempt) {

@@ -108,15 +108,24 @@ const data = new PogObject("AsuAddons", {
     enabled: false,
     debug: false,
     location: [
-      0,250
+      0,
+      250
     ],
     splits: false,
-    allhit: false
+    allhit: false,
+    allhitloc: [
+      0,
+      250
+    ]
   }
 });
 
 if (data.vamp.location == null) {
   data.vamp.location = [
+    0,
+    250
+  ]
+  data.vamp.allhitloc = [
     0,
     250
   ]

@@ -16,7 +16,7 @@ const levels = {
 
 export const display = new Display();
 display.setRenderLoc(data.spring.location[0],data.spring.location[1])
-new Overlay("spring","movespring","springboots.js")
+new Overlay("spring","location","movespring","springboots.js","Spring Boots: 50 Blocks")
 
 let blocks = 0
 let currentPitch = 0
