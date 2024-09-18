@@ -8,6 +8,7 @@ let bossUUID = 0;
 let renderRegistered = false
 let renderRegister = undefined
 let toMark = []
+let closestBlock = [undefined,99999999999]
 let maniaTimes = [24.8,21.6,18.3,15.1,11.9,8.6,5.3,2.0]
 let maniaStage = 0
 let ringRadius = 14
@@ -16,6 +17,7 @@ let splitTimer = 0
 let fullTimer = 0
 let splits = []
 let displayShown = false
+let entityDistance = 0
 
 export const display = new Display();
 display.setRenderLoc(data.vamp.location[0],data.vamp.location[1])
@@ -30,8 +32,10 @@ function scanMania(boss,attempt) {
     for (let i = 1; i <= 784; i++) {
         let block = World.getBlockAt(boss.field_70165_t+ringRadius-xOffset,boss.field_70163_u-4,boss.field_70161_v-ringRadius+zOffset)
         if (block.type.getRegistryName() == "minecraft:stained_hardened_clay" && block.getMetadata() == 13) {
-            if (calculateDistanceQuick([boss.field_70165_t,boss.field_70163_u,boss.field_70161_v],[block.x,block.y,block.z]) > 196 && attempt < 1) return setTimeout(() => { scanMania(boss,1) },1300)
+            let distance = calculateDistanceQuick([boss.field_70165_t,boss.field_70163_u,boss.field_70161_v],[block.x,block.y,block.z])
+            if (distance > 196 && attempt < 1) return setTimeout(() => { scanMania(boss,1) },1300)
             toMark.push(block)
+            if (closestBlock[1] > distance) closestBlock = [block, distance]
         }
         if (i % 28 == 0) {
             xOffset++
@@ -43,7 +47,7 @@ function scanMania(boss,attempt) {
 
 register("tick", () => {
     if (ChatLib.removeFormatting(Scoreboard.getLines().join(" ")).match(/Slay the boss!/) == null || ChatLib.removeFormatting(Scoreboard.getLines().join(" ")).match(/Rift Dimensio🔮n/) == null) return
-    if (data.vamp.splits) {
+    if (data.vamp.splits && bossUUID) {
         if (displayShown == false) {
             display.show()
             displayShown = true
@@ -84,6 +88,8 @@ register("tick", () => {
                 if (inMania == false) inMania = true
                 if (Number(name.join(" ").match(/§5§lMANIA §b§l(\d+\.\d)/)[1]) <= maniaTimes[maniaStage]) {
                     maniaStage++
+                    entityDistance = 0
+                    closestBlock = [undefined,99999999999]
                     scanMania(boss,0)
                     if (data.vamp.debug) console.log(toMark, boss)
                 }
@@ -92,9 +98,17 @@ register("tick", () => {
                     if (renderRegister == undefined) {
                         renderRegister = register("renderWorld", () => {
                             if (data.vamp.debug) RenderLib.drawInnerEspBox(boss.field_70165_t,boss.field_70163_u,boss.field_70161_v,1,1,0,255,0,0.5,false)
-                            for (let i = 0; i < toMark.length; i++) {
-                                RenderLib.drawInnerEspBox(toMark[i].x+0.5,toMark[i].y+0.01,toMark[i].z+0.5,1,1,0,255,0,0.5,false)
-                                if (data.vamp.debug && toMark[i] != undefined) Tessellator.drawString(i.toString(),toMark[i].x+0.5,toMark[i].y+1,toMark[i].z+0.5,0x00ff00,true,1,true)
+                            if (!data.vamp.performance) {
+                                for (let i = 0; i < toMark.length; i++) {
+                                    RenderLib.drawInnerEspBox(toMark[i].x+0.5,toMark[i].y+0.01,toMark[i].z+0.5,1,1,0,255,0,0.5,false)
+                                    if (data.vamp.debug && toMark[i] != undefined) Tessellator.drawString(i.toString(),toMark[i].x+0.5,toMark[i].y+1,toMark[i].z+0.5,0x00ff00,true,1,true)
+                                }
+                            } else {
+                                if (closestBlock[0] != undefined) {
+                                    if (entityDistance == 0) entityDistance = Math.sqrt((Math.floor(boss.field_70165_t)-closestBlock[0].x)**2+(toMark[0].y-(closestBlock[0].y))**2+(Math.floor(boss.field_70161_v)-closestBlock[0].z)**2);
+                                    if (data.vamp.debug) RenderLib.drawInnerEspBox(Math.floor(boss.field_70165_t)+0.5,toMark[0].y+0.01,Math.floor(boss.field_70161_v)+0.5,1,1,0,255,0,0.5,false)
+                                    RenderLib.drawDisk(Math.floor(boss.field_70165_t)+0.5,toMark[0].y+1.01,Math.floor(boss.field_70161_v)+0.5,entityDistance,entityDistance+2.5,30,1,90,0,0,0,1,0,0.5,false,false)
+                                }
                             }
                         })
                     } else {
@@ -107,7 +121,9 @@ register("tick", () => {
                     renderRegister.unregister()
                     renderRegistered = false
                     toMark = []
+                    closestBlock = [undefined,99999999999]
                     maniaStage = 0
+                    entityDistance = 0
                     inMania = false
                 }
             }
@@ -121,6 +137,7 @@ register("chat", () => {
     renderRegistered = false
     renderRegister = undefined
     toMark = []
+    display.clearLines()
     if (displayShown == true) {
         display.hide()
         inMania = false

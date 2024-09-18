@@ -286,11 +286,18 @@ class Settings {
     vampSlyermaniafix = data.vamp.enabled;
 
     @SwitchProperty({
-        name: "Mania Debug mode",
+        name: "Mania Debug Mode",
         description: 'Shows extra information for mania fix (for development purposes)',
         category: "Misc"
     })
     vampSlayermaniadebug = data.vamp.debug;
+
+    @SwitchProperty({
+        name: "Mania Performance Mode",
+        description: 'Changes how the mania is displayed (higher fps, lower accuracy)',
+        category: "Misc"
+    })
+    vampSlayermaniaüerformance = data.vamp.performance;
 
     @SwitchProperty({
         name: "Vamp Splits",
@@ -359,7 +366,8 @@ class Settings {
         this.addDependency("Send i4 Message","Notify i4 Status")
         this.addDependency("Send i4 Fail Message","Notify i4 Status")
         this.addDependency("Send Complete Message","Notify i4 Status")
-        this.addDependency("Mania Debug mode","Vamp Slayer Mania Fix")
+        this.addDependency("Mania Debug Mode","Vamp Slayer Mania Fix")
+        this.addDependency("Mania Performance Mode","Vamp Slayer Mania Fix")
 
         this.registerListener("Enable FragBot", newValue => {
             data.frag.enabled = newValue
@@ -493,8 +501,11 @@ class Settings {
         this.registerListener("Vamp Slayer Mania Fix", newValue => {
             data.vamp.enabled = newValue
         });
-        this.registerListener("Mania Debug mode", newValue => {
+        this.registerListener("Mania Debug Mode", newValue => {
             data.vamp.debug = newValue
+        });
+        this.registerListener("Mania Performance Mode", newValue => {
+            data.vamp.performance = newValue
         });
         this.registerListener("Vamp Splits", newValue => {
             data.vamp.splits = newValue

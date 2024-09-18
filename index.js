@@ -116,7 +116,8 @@ const data = new PogObject("AsuAddons", {
     allhitloc: [
       0,
       250
-    ]
+    ],
+    performance: false
   }
 });
 
@@ -131,6 +132,10 @@ if (data.vamp.location == null) {
   ]
   data.vamp.splits = false
   data.vamp.allhit = false
+}
+
+if (data.vamp.performance == null) {
+  data.vamp.performance = false
 }
 
 if (data.firstLoad) {
