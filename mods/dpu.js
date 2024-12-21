@@ -2,9 +2,9 @@ import { data, modPrefix } from "../index.js";
 import { getPetLevel, getrequest, getCataLevel, decodeInv, shortenNumber } from "../utils.js";
 const rarities = JSON.parse(FileLib.read("AsuAddons/jsonData", "rarities.json"))
 
-function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes, uuid, bank) {
+function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attributes, uuid, bank, mp, pb) {
     if (isDungeon) {
-        var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6Bank: " + shortenNumber(bank) + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
+        var output = new Message("§cName:§b " + player + "\n§6Cata: §a" + cata.toString() + "\n§6Secrets: §c" + secrets + "\n§6MP: §c" + mp.toString() + "\n§6Bank: " + shortenNumber(bank) + "\n§6Spirit: " + pet[1] + "\n\n§6Items:§r\n")
     } else {
         var output = new Message("§cName:§b " + player + "\n\n§6Items:§r\n")
     }
@@ -23,6 +23,10 @@ function buildOutput(player, items, armor, secrets, pet, cata, isDungeon, attrib
     output.addTextComponent(new TextComponent("§7[Ignore]").setClick("run_command", "/block add " + player))
     output.addTextComponent("        ")
     output.addTextComponent(new TextComponent("§a[View Inv]").setClick("run_command", "/auvw " + uuid))
+    if (isDungeon) {
+        output.addTextComponent("        ")
+        output.addTextComponent(new TextComponent("§6[PBs]").setHover("show_text", pb.trim()))
+    }
 
     ChatLib.chat(output)
 }
@@ -60,6 +64,8 @@ register('Chat', (event) => {
                     let cata = -1
                     let attributes = [0,0]
                     let bank = "Bank API off" 
+                    let mp = 0
+                    let pb = ""
                     profiles.forEach(profile => {
                         if (profile.selected) {
                             if (profile["members"][uuid]["inventory"]["inv_contents"] != null) {
@@ -158,13 +164,27 @@ register('Chat', (event) => {
                             }
                             if (isDungeon) {
                                 cata = getCataLevel(profile["members"][uuid]["dungeons"]["dungeon_types"]["catacombs"]["experience"])
+                                let dungeonType = profile["members"][uuid]["dungeons"]["dungeon_types"]
+                                if (dungeonType["catacombs"]["fastest_time_s_plus"]) {
+                                    for (let floor in dungeonType["catacombs"]["fastest_time_s_plus"]) {
+                                        let pbDate = new Date(dungeonType["catacombs"]["fastest_time_s_plus"][floor]);
+                                        if (floor != "best") pb += `§aF${floor}: §6 ${pbDate.getMinutes()}:${pbDate.getSeconds().toString().length == 1 ? "0"+pbDate.getSeconds() : pbDate.getSeconds()}\n`
+                                    }
+                                }
+                                if (dungeonType["master_catacombs"]["fastest_time_s_plus"]) {
+                                    for (let floor in dungeonType["master_catacombs"]["fastest_time_s_plus"]) {
+                                        let pbDate = new Date(dungeonType["master_catacombs"]["fastest_time_s_plus"][floor]);
+                                        if (floor != "best") pb += `§cM${floor}: §6 ${pbDate.getMinutes()}:${pbDate.getSeconds().toString().length == 1 ? "0"+pbDate.getSeconds() : pbDate.getSeconds()}\n`
+                                    }
+                                }
                             }
                             if (profile["banking"] && profile["banking"]["balance"]) {
                                 bank = profile["banking"]["balance"]
                             }
+                            mp = profile["members"][uuid]["accessory_bag_storage"]["highest_magical_power"]
                         }
                     })
-                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes, uuid, bank)
+                    buildOutput(name, itemArray, armorArray, secrets, pets, cata, isDungeon, attributes, uuid, bank, mp, pb)
                 })
             })
         });

@@ -25,7 +25,9 @@ const data = new PogObject("AsuAddons", {
     termsummary: false,
     termbeacon: false,
     showEquipment: true,
-    showEdrag: false
+    showEdrag: false,
+    devNotification: false,
+    devOnlySelf: false
   },
   rghost: {
     names: [],
@@ -118,24 +120,18 @@ const data = new PogObject("AsuAddons", {
       250
     ],
     performance: false
+  },
+  wither: {
+    hitbox: false,
+    type: 0,
+    color: ["255","0","0"]
   }
 });
 
-if (data.vamp.location == null) {
-  data.vamp.location = [
-    0,
-    250
-  ]
-  data.vamp.allhitloc = [
-    0,
-    250
-  ]
-  data.vamp.splits = false
-  data.vamp.allhit = false
-}
-
-if (data.vamp.performance == null) {
+if (data.dpu.devNotification == null) {
   data.vamp.performance = false
+  data.dpu.devNotification = false
+  data.dpu.devOnlySelf = false
 }
 
 if (data.firstLoad) {

@@ -1,11 +1,10 @@
 import { data } from "./index.js";
-import { @Vigilant, @ButtonProperty, @SliderProperty, @SwitchProperty, @ParagraphProperty, @TextProperty, @SelectorProperty, createPropertyAttributesExt } from 'Vigilance';
+import { @Vigilant, Color, @ColorProperty, @ButtonProperty, @SliderProperty, @SwitchProperty, @ParagraphProperty, @TextProperty, @SelectorProperty, createPropertyAttributesExt } from 'Vigilance';
 
 const File = Java.type("java.io.File")
 const ValueBackedPropertyValue = Java.type("gg.essential.vigilance.data.ValueBackedPropertyValue");
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 const PropertyData = Java.type("gg.essential.vigilance.data.PropertyData");
-
 @Vigilant("AsuAddons", "AsuAddons Settings", {
     getCategoryComparator: () => (a, b) => {
         const categories = ["Bridge","PartyCommands","TrophyFish","Reparty","ReplaceGhost","FragBot","Dungeons","Misc"];
@@ -170,6 +169,20 @@ class Settings {
     dpuCompMsg = data.dpu.compMsg;
 
     @SwitchProperty({
+        name: "Device Notification",
+        description: "Displays a title on device completion.",
+        category: "Dungeons"
+    })
+    devNotif = data.dpu.devNotification;
+
+    @SwitchProperty({
+        name: "Device Notification Only For Self",
+        description: "Only displays the notification if you completed the device.",
+        category: "Dungeons"
+    })
+    devOnlySelf = data.dpu.devOnlySelf;
+
+    @SwitchProperty({
         name: "Terms Overview",
         description: "Shows you a list of what party members did in f7 p3.",
         category: "Dungeons"
@@ -313,6 +326,28 @@ class Settings {
     })
     vampSlayerAllHit = data.vamp.allhit;
 
+    @SwitchProperty({
+        name: "Wither Hitbox",
+        description: 'Render a hitbox around withers.',
+        category: "Misc"
+    })
+    witherHitbox = data.wither.hitbox;
+
+    @ColorProperty({
+        name: "Wither Hitbox Color",
+        description: "The color the hitbox should have.",
+        category: "Misc"
+    })
+    witherHitboxColor = Color.RED;
+
+    @SelectorProperty({
+        name: "Wither Hitbox Type",
+        description: 'The type the hitbox should be.',
+        category: "Misc",
+        options: ["outline", "filled"]
+    })
+    witherHitboxType = data.wither.type;
+
     constructor() {
         this.initialize(this);
         
@@ -366,9 +401,11 @@ class Settings {
         this.addDependency("Send i4 Message","Notify i4 Status")
         this.addDependency("Send i4 Fail Message","Notify i4 Status")
         this.addDependency("Send Complete Message","Notify i4 Status")
+        this.addDependency("Device Notification Only For Self","Device Notification")
         this.addDependency("Mania Debug Mode","Vamp Slayer Mania Fix")
         this.addDependency("Mania Performance Mode","Vamp Slayer Mania Fix")
-
+        this.addDependency("Wither Hitbox Type", "Wither Hitbox")
+        this.addDependency("Wither Hitbox Color", "Wither Hitbox")
         this.registerListener("Enable FragBot", newValue => {
             data.frag.enabled = newValue
         });
@@ -408,6 +445,12 @@ class Settings {
         });
         this.registerListener("Send Complete Message", newValue => {
             data.dpu.compMsg = newValue
+        });
+        this.registerListener("Device Notification", newValue => {
+            data.dpu.devNotification = newValue
+        });
+        this.registerListener("Device Notification Only For Self", newValue => {
+            data.dpu.devOnlySelf = newValue
         });
         this.registerListener("Waypoint Beacon", newValue => {
             data.dpu.termbeacon = newValue
@@ -513,6 +556,15 @@ class Settings {
         this.registerListener("Vamp All Hit", newValue => {
             data.vamp.allhit = newValue
         });
+        this.registerListener("Wither Hitbox", newValue => {
+            data.wither.hitbox = newValue
+        });
+        this.registerListener("Wither Hitbox Type", newValue => {
+            data.wither.type = newValue
+        });
+        this.registerListener("Wither Hitbox Color", newValue => {
+            data.wither.color = newValue.toString().replace(/(java.awt.Color\[|]|.=)/g,"").split(",")
+        });
 
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")
         this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
@@ -524,5 +576,4 @@ class Settings {
         this.setCategoryDescription("Misc", "Any miscellaneous features that don't fit anywhere else.")
     }
 }
-
 export default new Settings();
