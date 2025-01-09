@@ -134,6 +134,10 @@ if (data.dpu.devNotification == null) {
   data.dpu.devOnlySelf = false
 }
 
+if (data.vamp.allhitloc == null) {
+  data.vamp.allhitloc = [0, 250]
+}
+
 if (data.firstLoad) {
   data.firstLoad = false
 
