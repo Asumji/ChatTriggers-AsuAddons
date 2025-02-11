@@ -51,14 +51,14 @@ register("command", (...args) => {
     §a/lowball list §eLists all items.`
             )
     } else if (args[0] == "report" && used != true && args[1]) {
-        //I mean I'll assume no one's gonna spam this webhook but do I care? not really. Please don't tho <3
-        sendWebhookMessage({username:"AsuAddons API Reports",content:"Someone has reported an api outage.",embeds:[{
+        //fuck this this works too (I could also just obfuscate the webhook cuz nobody's gonna bother deobfuscating it but shrug effort (also meh for ppl verifying module ig))
+        if (data.statusWebhook != null) sendWebhookMessage({username:"AsuAddons API Reports",content:"Someone has reported an api outage.",embeds:[{
             title:"New API Outage Report",
             color:0xFF0000,
             description:Player.name + " has reported that the API is down.\nError:" + args.slice(1).join(" ") + "\n\n" + String(new Date(Date.now())).split(" GMT")[0],
             footer:{text:"This message was sent through the /au report command."},
             thumbnail:{url:"https://mc-heads.net/player/"+Player.name}
-        }]},"https://discord.com/api/webhooks/1286703815801831559/uTHHQuf2Nr-h3nOQev9zad-nW8gjNofHeOAbN3FNn6yfl-baH4gUfVGQkZdS4Bxg2q62")
+        }]},data.statusWebhook)
         used = true
         ChatLib.chat(modPrefix + " §aYour report has been sent.")
     } else {

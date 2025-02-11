@@ -5,6 +5,7 @@ const File = Java.type("java.io.File")
 
 const data = new PogObject("AsuAddons", {
   firstLoad: true,
+  statusWebhook: null,
   frag: {
     names: [],
     owner: "",
