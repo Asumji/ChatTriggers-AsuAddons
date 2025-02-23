@@ -2,6 +2,13 @@ import request from "requestV2"
 import RenderLib from "RenderLib"
 import renderBeaconBeam from "../BeaconBeam"
 const metadata = JSON.parse(FileLib.read("AsuAddons", "metadata.json"))
+const ItemStack = Java.type("net.minecraft.item.ItemStack");
+const InventoryBasic = Java.type("net.minecraft.inventory.InventoryBasic");
+const GuiChest = Java.type("net.minecraft.client.gui.inventory.GuiChest");
+const S2FPacketSetSlot = Java.type("net.minecraft.network.play.server.S2FPacketSetSlot")
+
+let lastInv = null
+let invToOpen = null
 
 /**
  * Checks if an array made of smaller array includes a value at a specified index in the inner array.
@@ -491,3 +498,43 @@ export function drawInnerBox(x, y, z, w, h, red, green, blue, alpha, phase) {
             
     Tessellator.popMatrix();
 };
+
+/**
+ * Opens a GUI Chest populated with a NBTTagList of items (e.g. from a player's inventory) (Adapted from https://www.chattriggers.com/modules/v/SBInvSee)
+ * @param {NBTTagList} items 
+ */
+export function openInv(items) {
+    let length = items.func_74745_c(); //NBTTagList.tagCount()
+    let inv = new InventoryBasic("Inventory", true, 36);
+
+    for(let i = 0; i < length; i++){                                    
+        let item = items.func_150305_b(i); //NBTTagList.getCompoundTagAt()
+        if(!item.func_82582_d()) { //NBTTagCompound.hasNoTags()
+            let itemstack = new ItemStack(net.minecraft.init.Blocks.field_150350_a); //Blocks.air
+            itemstack.func_77963_c(item); //ItemStack.readFromNBT()
+            console.log(itemstack.func_77973_b())
+            let slot = i < 9 ? i + 27 : i - 9 //Move hotbar slots to bottom
+            inv.func_70299_a(slot, itemstack); //InventoryBasic.setInventorySlotContents()
+        }
+    }
+
+    let guiChest = new GuiChest(Player.getPlayer().field_71071_by, inv); //EntityPlayer.inventory
+
+    lastInv = guiChest;
+    invToOpen = guiChest;
+}
+
+register("tick", () => {
+    if(invToOpen !== null) {
+        Client.getMinecraft().func_147108_a(invToOpen); //Minecraft.displayGuiScreen()
+        invToOpen = null;
+    }
+});
+
+register("packetReceived", (packet, event) => {
+    if (Client.getMinecraft().field_71462_r === lastInv && lastInv !== null) cancel(event)
+}).setFilteredClass(S2FPacketSetSlot)
+
+register("guiMouseClick", (x, y, button, gui, event) => {
+    if(Client.getMinecraft().field_71462_r === lastInv && lastInv !== null) cancel(event)
+});
