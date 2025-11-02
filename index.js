@@ -126,6 +126,13 @@ const data = new PogObject("AsuAddons", {
     hitbox: false,
     type: 0,
     color: ["255","0","0"]
+  },
+  ticktimer: {
+    enabled: false,
+    location: [
+      0,
+      250
+    ]
   }
 });
 

@@ -348,6 +348,13 @@ class Settings {
     })
     witherHitboxType = data.wither.type;
 
+    @SwitchProperty({
+        name: "Clear Tick Timer",
+        description: 'Render a timer for 20 ticks in clear.',
+        category: "Misc"
+    })
+    tickTimerClear = data.ticktimer.enabled;
+
     constructor() {
         this.initialize(this);
         
@@ -565,6 +572,10 @@ class Settings {
         this.registerListener("Wither Hitbox Color", newValue => {
             data.wither.color = newValue.toString().replace(/(java.awt.Color\[|]|.=)/g,"").split(",")
         });
+        this.registerListener("Clear Tick Timer", newValue => {
+            data.ticktimer.enabled = newValue
+        });
+        
 
         this.setCategoryDescription("PartyCommands", "Quick one to let specific players execute party commands on your behalf.\n\n§4Use At Your Own Risk! (chat macro)")
         this.setCategoryDescription("TrophyFish", "Tracks all the Trophy Fish you've fished up so far. Since I could only find mods that track based off api I made a live tracking one")
