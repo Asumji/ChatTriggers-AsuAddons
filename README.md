@@ -1,3 +1,6 @@
+#No longer maintained go to https://github.com/Asumji/asuaddons-fabric
+#for the updated 1.21 version.
+
 How to Install
 
 1. Download [Forge 1.8.9](https://maven.minecraftforge.net/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/forge-1.8.9-11.15.1.2318-1.8.9-installer.jar)
