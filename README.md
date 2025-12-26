@@ -1,5 +1,4 @@
-#No longer maintained go to https://github.com/Asumji/asuaddons-fabric
-#for the updated 1.21 version.
+# No longer maintained go to https://github.com/Asumji/asuaddons-fabric for the updated 1.21 version.
 
 How to Install
 
